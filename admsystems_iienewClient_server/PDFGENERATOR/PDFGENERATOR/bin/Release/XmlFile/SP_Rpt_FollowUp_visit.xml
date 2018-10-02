@@ -1,0 +1,132 @@
+<?xml version="1.0" standalone="yes"?>
+<xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="SP_Rpt_FollowUp_visit" msdata:UseCurrentLocale="true">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="SP_Rpt_FollowUp_visit">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Pk_VisitorDetailID" type="xs:long" minOccurs="0" />
+              <xs:element name="FK_AddressID" type="xs:long" minOccurs="0" />
+              <xs:element name="V_Date" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="VFNo" type="xs:string" minOccurs="0" />
+              <xs:element name="V_Status" type="xs:string" minOccurs="0" />
+              <xs:element name="SalesExc" type="xs:string" minOccurs="0" />
+              <xs:element name="Remarks" type="xs:string" minOccurs="0" />
+              <xs:element name="FollowBy" type="xs:string" minOccurs="0" />
+              <xs:element name="Duration" type="xs:string" minOccurs="0" />
+              <xs:element name="E_Type" type="xs:string" minOccurs="0" />
+              <xs:element name="JBVRemarks" type="xs:string" minOccurs="0" />
+              <xs:element name="OfferNo" type="xs:string" minOccurs="0" />
+              <xs:element name="Pk_AddressID" type="xs:long" minOccurs="0" />
+              <xs:element name="FK_EnqTypeID" type="xs:int" minOccurs="0" />
+              <xs:element name="EnqNo" type="xs:string" minOccurs="0" />
+              <xs:element name="FK_CategoryID" type="xs:int" minOccurs="0" />
+              <xs:element name="FK_SubCategoryID" type="xs:int" minOccurs="0" />
+              <xs:element name="Name" type="xs:string" minOccurs="0" />
+              <xs:element name="Address" type="xs:string" minOccurs="0" />
+              <xs:element name="Area" type="xs:string" minOccurs="0" />
+              <xs:element name="City" type="xs:string" minOccurs="0" />
+              <xs:element name="Pincode" type="xs:string" minOccurs="0" />
+              <xs:element name="Taluka" type="xs:string" minOccurs="0" />
+              <xs:element name="District" type="xs:string" minOccurs="0" />
+              <xs:element name="State" type="xs:string" minOccurs="0" />
+              <xs:element name="DeliveryAddress" type="xs:string" minOccurs="0" />
+              <xs:element name="DeliveryArea" type="xs:string" minOccurs="0" />
+              <xs:element name="DeliveryCity" type="xs:string" minOccurs="0" />
+              <xs:element name="DeliveryPincode" type="xs:string" minOccurs="0" />
+              <xs:element name="DeliveryTaluka" type="xs:string" minOccurs="0" />
+              <xs:element name="DeliveryDistrict" type="xs:string" minOccurs="0" />
+              <xs:element name="DeliveryState" type="xs:string" minOccurs="0" />
+              <xs:element name="ContactPerson" type="xs:string" minOccurs="0" />
+              <xs:element name="LandlineNo" type="xs:string" minOccurs="0" />
+              <xs:element name="MobileNo" type="xs:string" minOccurs="0" />
+              <xs:element name="EmailID" type="xs:string" minOccurs="0" />
+              <xs:element name="EmailID1" type="xs:string" minOccurs="0" />
+              <xs:element name="EmailID2" type="xs:string" minOccurs="0" />
+              <xs:element name="Remark" type="xs:string" minOccurs="0" />
+              <xs:element name="EnqDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="CreateDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="EnqStatus" type="xs:string" minOccurs="0" />
+              <xs:element name="Reference1" type="xs:string" minOccurs="0" />
+              <xs:element name="Reference2" type="xs:string" minOccurs="0" />
+              <xs:element name="TypeOfEnq" type="xs:string" minOccurs="0" />
+              <xs:element name="EnqAttendBy" type="xs:string" minOccurs="0" />
+              <xs:element name="EnqFor" type="xs:string" minOccurs="0" />
+              <xs:element name="CapacityHour" type="xs:string" minOccurs="0" />
+              <xs:element name="AddressAll" type="xs:string" minOccurs="0" />
+              <xs:element name="City1" type="xs:string" minOccurs="0" />
+              <xs:element name="State1" type="xs:string" minOccurs="0" />
+              <xs:element name="Pk_EnqMasterID" type="xs:long" minOccurs="0" />
+              <xs:element name="Fk_AddressID1" type="xs:long" minOccurs="0" />
+              <xs:element name="Reference" type="xs:string" minOccurs="0" />
+              <xs:element name="EnqDate1" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="EnqTime" type="xs:string" minOccurs="0" />
+              <xs:element name="EnqFor1" type="xs:string" minOccurs="0" />
+              <xs:element name="PerHr" type="xs:string" minOccurs="0" />
+              <xs:element name="PerDay" type="xs:string" minOccurs="0" />
+              <xs:element name="PerReg" type="xs:string" minOccurs="0" />
+              <xs:element name="RTDS" type="xs:string" minOccurs="0" />
+              <xs:element name="TTDS" type="xs:string" minOccurs="0" />
+              <xs:element name="RTH" type="xs:string" minOccurs="0" />
+              <xs:element name="TTH" type="xs:string" minOccurs="0" />
+              <xs:element name="RPH" type="xs:string" minOccurs="0" />
+              <xs:element name="TPH" type="xs:string" minOccurs="0" />
+              <xs:element name="Pk_VisitorID" type="xs:long" minOccurs="0" />
+              <xs:element name="Fk_AddressID2" type="xs:long" minOccurs="0" />
+              <xs:element name="Incliness" type="xs:string" minOccurs="0" />
+              <xs:element name="Readiness" type="xs:string" minOccurs="0" />
+              <xs:element name="Mkt_Vision" type="xs:string" minOccurs="0" />
+              <xs:element name="ImpPerson" type="xs:string" minOccurs="0" />
+              <xs:element name="Influ" type="xs:string" minOccurs="0" />
+              <xs:element name="Strength" type="xs:string" minOccurs="0" />
+              <xs:element name="Sp_Expect" type="xs:string" minOccurs="0" />
+              <xs:element name="Fin_Strength" type="xs:string" minOccurs="0" />
+              <xs:element name="Mkt_Strength" type="xs:string" minOccurs="0" />
+              <xs:element name="AwtFo" type="xs:string" minOccurs="0" />
+              <xs:element name="Product" type="xs:string" minOccurs="0" />
+              <xs:element name="Land" type="xs:string" minOccurs="0" />
+              <xs:element name="Power" type="xs:string" minOccurs="0" />
+              <xs:element name="VFNo1" type="xs:string" minOccurs="0" />
+              <xs:element name="Contruction" type="xs:string" minOccurs="0" />
+              <xs:element name="Pk_BioDataID" type="xs:long" minOccurs="0" />
+              <xs:element name="FK_AddressID3" type="xs:long" minOccurs="0" />
+              <xs:element name="Photo1" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="Ph1_Value1" type="xs:string" minOccurs="0" />
+              <xs:element name="Ph1_Value2" type="xs:string" minOccurs="0" />
+              <xs:element name="Ph1_Value3" type="xs:string" minOccurs="0" />
+              <xs:element name="Ph1_Value4" type="xs:string" minOccurs="0" />
+              <xs:element name="Ph1_Value5" type="xs:string" minOccurs="0" />
+              <xs:element name="Ph1_Value6" type="xs:string" minOccurs="0" />
+              <xs:element name="Photo2" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="Ph2_Value1" type="xs:string" minOccurs="0" />
+              <xs:element name="Ph2_Value2" type="xs:string" minOccurs="0" />
+              <xs:element name="Ph2_Value3" type="xs:string" minOccurs="0" />
+              <xs:element name="Ph2_Value4" type="xs:string" minOccurs="0" />
+              <xs:element name="Ph2_Value5" type="xs:string" minOccurs="0" />
+              <xs:element name="Ph2_Value6" type="xs:string" minOccurs="0" />
+              <xs:element name="Photo3" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="Ph3_Value1" type="xs:string" minOccurs="0" />
+              <xs:element name="Ph3_Value2" type="xs:string" minOccurs="0" />
+              <xs:element name="Ph3_Value3" type="xs:string" minOccurs="0" />
+              <xs:element name="Ph3_Value4" type="xs:string" minOccurs="0" />
+              <xs:element name="Ph3_Value5" type="xs:string" minOccurs="0" />
+              <xs:element name="Ph3_Value6" type="xs:string" minOccurs="0" />
+              <xs:element name="Photo4" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="Ph4_Value1" type="xs:string" minOccurs="0" />
+              <xs:element name="Ph4_Value2" type="xs:string" minOccurs="0" />
+              <xs:element name="Ph4_Value3" type="xs:string" minOccurs="0" />
+              <xs:element name="Ph4_Value4" type="xs:string" minOccurs="0" />
+              <xs:element name="Ph4_value5" type="xs:string" minOccurs="0" />
+              <xs:element name="Ph4_Value6" type="xs:string" minOccurs="0" />
+              <xs:element name="PK_ClientDetailsID" type="xs:long" minOccurs="0" />
+              <xs:element name="FK_AddressID4" type="xs:long" minOccurs="0" />
+              <xs:element name="ClientPhoto" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="EntryDate" type="xs:dateTime" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

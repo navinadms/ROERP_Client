@@ -1,0 +1,47 @@
+<?xml version="1.0" standalone="yes"?>
+<NewDataSet>
+  <Get_Rpt_Enquiry_Formate>
+    <Pk_AddressID>8</Pk_AddressID>
+    <FK_EnqTypeID>2</FK_EnqTypeID>
+    <EnqNo>B3193</EnqNo>
+    <Name>rajnish singhasdsadsadsadRAJAJJAJAAJJAJAJAJAJJ</Name>
+    <Address>-</Address>
+    <Area />
+    <City>aurangabad</City>
+    <Pincode />
+    <Taluka />
+    <District>-</District>
+    <State>BIHAR</State>
+    <ContactPerson>rajnish singh</ContactPerson>
+    <LandlineNo>-</LandlineNo>
+    <MobileNo>9798035825</MobileNo>
+    <EmailID>rsrajnishsingh06@gmail.com</EmailID>
+    <Remark />
+    <AMEnqDate>2013-01-19T00:00:00+05:30</AMEnqDate>
+    <CreateDate>2013-01-19T00:00:00+05:30</CreateDate>
+    <EnqStatus>1</EnqStatus>
+    <Reference>B2B</Reference>
+    <EMEnqDate>2013-01-19T00:00:00+05:30</EMEnqDate>
+    <EnqTime>0:0:0</EnqTime>
+    <EnqFor>MWP</EnqFor>
+    <PerHr />
+    <PerDay />
+    <PerReg />
+    <RTDS />
+    <TTDS />
+    <RTH />
+    <TTH />
+    <RPH />
+    <TPH />
+    <Application />
+    <TypeofEnq>OB</TypeofEnq>
+    <Remarks />
+    <EnqAttandBy>MGR</EnqAttandBy>
+    <SalesExc />
+    <EnqAllotted />
+    <Strength />
+    <Readiness />
+    <Power />
+    <Remarks1>s</Remarks1>
+  </Get_Rpt_Enquiry_Formate>
+</NewDataSet>

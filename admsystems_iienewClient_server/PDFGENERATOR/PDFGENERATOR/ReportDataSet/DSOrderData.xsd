@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DSOrderData" targetNamespace="http://tempuri.org/DSOrderData.xsd" xmlns:mstns="http://tempuri.org/DSOrderData.xsd" xmlns="http://tempuri.org/DSOrderData.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DSOrderData" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DSOrderData" msprop:Generator_UserDSName="DSOrderData">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="TblOrderPlant" msprop:Generator_TableClassName="TblOrderPlantDataTable" msprop:Generator_TableVarName="tableTblOrderPlant" msprop:Generator_TablePropName="TblOrderPlant" msprop:Generator_RowDeletingName="TblOrderPlantRowDeleting" msprop:Generator_RowChangingName="TblOrderPlantRowChanging" msprop:Generator_RowEvHandlerName="TblOrderPlantRowChangeEventHandler" msprop:Generator_RowDeletedName="TblOrderPlantRowDeleted" msprop:Generator_UserTableName="TblOrderPlant" msprop:Generator_RowChangedName="TblOrderPlantRowChanged" msprop:Generator_RowEvArgName="TblOrderPlantRowChangeEvent" msprop:Generator_RowClassName="TblOrderPlantRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ImageName" msprop:Generator_ColumnVarNameInTable="columnImageName" msprop:Generator_ColumnPropNameInRow="ImageName" msprop:Generator_ColumnPropNameInTable="ImageNameColumn" msprop:Generator_UserColumnName="ImageName" type="xs:string" minOccurs="0" />
+              <xs:element name="Description" msprop:Generator_ColumnVarNameInTable="columnDescription" msprop:Generator_ColumnPropNameInRow="Description" msprop:Generator_ColumnPropNameInTable="DescriptionColumn" msprop:Generator_UserColumnName="Description" type="xs:string" minOccurs="0" />
+              <xs:element name="Image" msprop:Generator_ColumnVarNameInTable="columnImage" msprop:Generator_ColumnPropNameInRow="Image" msprop:Generator_ColumnPropNameInTable="ImageColumn" msprop:Generator_UserColumnName="Image" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

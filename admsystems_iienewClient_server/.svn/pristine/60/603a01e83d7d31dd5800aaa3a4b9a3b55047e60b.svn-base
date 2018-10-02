@@ -1,0 +1,628 @@
+﻿
+Public Class PartyAccountMaster
+
+    Dim linq_obj As New RoErpDataContext(System.Configuration.ConfigurationManager.AppSettings("constr").ToString())
+    Dim Address_ID As Integer
+    Dim PartyId As Integer
+    Dim PartyDebitId As Integer
+    Dim PartyCreditId As Integer
+    Dim tblDebit As New DataTable
+    Dim tblCredit As New DataTable
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+        AutoComplete_Text()
+        GvInEnq_Bind()
+        txtDebitNo.Text = If(gvDebit.Rows.Count = 0, 1, gvDebit.Rows.Count + 1).ToString()
+        txtCreditNo.Text = If(gvCredit.Rows.Count = 0, 1, gvCredit.Rows.Count + 1).ToString()
+
+        PartyId = 0
+    End Sub
+
+    Public Sub AutoComplete_Text()
+        Dim Getadd = linq_obj.SP_Get_AddressList().ToList()
+        For Each iteam As SP_Get_AddressListResult In Getadd
+            txtPartyName.AutoCompleteCustomSource.Add(iteam.Name)
+        Next
+    End Sub
+
+    Public Sub GvInEnq_Bind()
+        Dim enq = linq_obj.SP_Get_AddressForOrder().ToList()
+        Dim dt As New DataTable
+        dt.Columns.Add("ID")
+        dt.Columns.Add("Name")
+        dt.Columns.Add("EnqNo")
+        For Each item As SP_Get_AddressForOrderResult In enq
+            dt.Rows.Add(item.Pk_AddressID, item.Name, item.EnqNo)
+        Next
+        gvAddressList.DataSource = dt
+        'Me.gvAddressList.Columns(0).Visible = False
+
+    End Sub
+
+    Public Sub bindAllData(ByVal address As Integer)
+        ClearAll()
+        Address_ID = Convert.ToInt32(address)
+        GetClientDetails_Bind()
+        tblDebit.Clear()
+        tblCredit.Clear()
+        Dim data = linq_obj.SP_Select_Party_Master_ByAddressId(Address_ID).ToList()
+        If data.Count > 0 Then
+            GetClientDetails_Bind()
+            PartyId = data(0).Pk_PartyId
+            txtEntryNo.Text = Convert.ToString(data(0).EntryNo)
+            dtODate.Value = data(0).OrderDate.Value
+            txtPONo.Text = Convert.ToString(data(0).PONo)
+            txtOType.Text = Convert.ToString(data(0).OType)
+            txtPlantName.Text = Convert.ToString(data(0).PlantName)
+            txtCapacity.Text = (Convert.ToString(data(0).Capacity))
+            dtDispatchDate.Value = data(0).DispatchDate.Value
+            txtExecutive.Text = Convert.ToString(data(0).ExecutiveName)
+            txtOrderStatus.Text = Convert.ToString(data(0).OrderStatus)
+            txtRemarks.Text = Convert.ToString(data(0).Remarks)
+            txtBreakNo.Text = Convert.ToString(data(0).BreakSrNo)
+            txtPDCRem.Text = Convert.ToString(data(0).PDCReminder)
+            Dim debitData = linq_obj.SP_Select_Party_DebitDetail_ByPartyId(data(0).Pk_PartyId).ToList()
+            For Each item As SP_Select_Party_DebitDetail_ByPartyIdResult In debitData
+                Dim dr As DataRow
+                dr = tblDebit.NewRow()
+                dr("No") = item.DebitEntryNo
+                dr("PlantName") = item.PlantScheme
+                dr("Amount") = item.Amount
+                tblDebit.Rows.Add(dr)
+                txtDebitDiscount.Text = Convert.ToString(item.Discount)
+                txtDebitNetDebit.Text = Convert.ToString(item.NetDebit)
+                txtDebitTotal.Text = Convert.ToString(item.TotalDebit)
+                PartyDebitId = item.Pk_PartyDebitId
+            Next
+
+            gvDebit.DataSource = tblDebit
+            txtDebitNo.Text = If(gvDebit.Rows.Count = 0, 1, gvDebit.Rows.Count + 1).ToString()
+
+            Dim creditData = linq_obj.SP_Select_Party_CreditDetail_ByPartyId(data(0).Pk_PartyId).ToList()
+            For Each item As SP_Select_Party_CreditDetail_ByPartyIdResult In creditData
+                Dim dr As DataRow
+                dr = tblCredit.NewRow()
+
+                dr("No") = item.EntryNo
+                dr("PType") = item.PType
+                dr("PDate") = item.PDate
+                dr("Amount") = item.Amount
+                tblCredit.Rows.Add(dr)
+                txtCreditAdvance.Text = Convert.ToString(item.Advance)
+                txtCreditOutstanding.Text = Convert.ToString(item.Outstanding)
+                txtCreditTotal.Text = Convert.ToString(item.TotalCredit)
+                txtCreditKasar.Text = Convert.ToString(item.Kasar)
+                PartyCreditId = item.Pk_PartyCreditId
+            Next
+            gvCredit.DataSource = tblCredit
+            txtCreditNo.Text = If(gvCredit.Rows.Count = 0, 1, gvCredit.Rows.Count + 1).ToString()
+
+            btnPOSave.Enabled = False
+
+        Else
+            GetClientDetails_Bind()
+            PartyId = 0
+            btnPOSave.Enabled = True
+
+        End If
+    End Sub
+
+    Private Sub gvAddressList_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles gvAddressList.DoubleClick
+        Address_ID = Me.gvAddressList.SelectedCells(0).Value
+        bindAllData(Address_ID)
+    End Sub
+
+    Public Sub GetClientDetails_Bind()
+        Try
+            Dim Claient = linq_obj.SP_Get_AddressList().ToList().Where(Function(t) t.Pk_AddressID = Address_ID)
+            For Each item As SP_Get_AddressListResult In Claient
+                txtPartyName.Text = item.Name
+                txtAddress.Text = item.Address
+                txtStationName.Text = item.City
+                txtState.Text = item.State
+                txtContactPerson.Text = item.ContactPerson
+                txtContact.Text = item.MobileNo
+                txtEmailAddress.Text = item.EmailID
+                txtEntryNo.Text = item.EnqNo
+            Next
+            'Get Enquiry Client Master Details
+        Catch ex As Exception
+            MessageBox.Show("Error :" + ex.Message)
+        End Try
+    End Sub
+
+    Private Sub btn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn.Click
+        If (PartyId = 0) Then
+            txtDebitNo.Text = ""
+            txtDebitAmount.Text = ""
+            txtDebitDiscount.Text = ""
+            txtDebitNetDebit.Text = ""
+            txtDebitPlantName.Text = ""
+            txtDisStatus.Text = ""
+        Else
+            txtDebitNo.Text = ""
+            txtDebitAmount.Text = ""
+            txtDebitPlantName.Text = ""
+        End If
+
+        txtDebitNo.Text = If(gvDebit.Rows.Count = 0, 1, gvDebit.Rows.Count + 1).ToString()
+    End Sub
+
+    Private Sub btnDebitDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        txtDebitNo.Text = ""
+        txtDebitAmount.Text = ""
+        txtDebitPlantName.Text = ""
+        txtDisStatus.Text = ""
+        For index = 1 To gvCredit.SelectedRows.Count
+            gvCredit.Rows.Remove(gvCredit.SelectedRows.Item(index))
+        Next
+        txtDebitNo.Text = If(gvDebit.Rows.Count = 0, 1, gvDebit.Rows.Count + 1).ToString()
+
+    End Sub
+
+    Private Sub PartyAccountMaster_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
+
+
+        ''add column into creditData
+
+        tblCredit.Columns.Add("No")
+        tblCredit.Columns.Add("PType")
+        tblCredit.Columns.Add("PDate")
+        tblCredit.Columns.Add("Amount")
+        gvCredit.DataSource = tblCredit
+
+        'add columns in debitdata
+
+        tblDebit.Columns.Add("No")
+        tblDebit.Columns.Add("PlantName")
+        tblDebit.Columns.Add("Qty")
+        tblDebit.Columns.Add("Amount")
+        gvDebit.DataSource = tblDebit
+
+    End Sub
+
+    Private Sub btnDebitSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDebitSave.Click
+        ''add new row runtime and display into grid. it will save after click on save button
+        txtDebitNo.Text = If(gvDebit.Rows.Count = 0, 1, gvDebit.Rows.Count + 1).ToString()
+        Dim dr As DataRow
+        dr = tblDebit.NewRow()
+        dr("No") = txtDebitNo.Text
+        dr("PlantName") = txtDebitPlantName.Text
+        dr("Amount") = txtDebitAmount.Text
+        dr("Qty") = txtQty.Text
+
+        txtDebitTotal.Text = (If(txtDebitAmount.Text.Trim() = "", 0, Convert.ToDecimal(txtDebitAmount.Text)) + If(txtDebitTotal.Text.Trim() = "", 0, Convert.ToDecimal(txtDebitTotal.Text.Trim()))) * Convert.ToInt32(txtQty.Text).ToString()
+
+        tblDebit.Rows.Add(dr)
+        gvDebit.DataSource = tblDebit
+        txtDebitNo.Text = If(gvDebit.Rows.Count = 0, 1, gvDebit.Rows.Count + 1).ToString()
+        txtQty.Text = ""
+        txtDebitAmount.Text = ""
+        txtDebitPlantName.Text = ""
+
+    End Sub
+
+    Private Sub btnCreditSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCreditSave.Click
+
+        ''add new row runtime and display into grid. it will save after click on save button
+        txtCreditNo.Text = If(gvCredit.Rows.Count = 0, 1, gvCredit.Rows.Count + 1).ToString()
+
+        Dim dr As DataRow
+        dr = tblCredit.NewRow()
+        dr("No") = txtCreditNo.Text
+        dr("PType") = txtCreditPType.Text
+        dr("PDate") = dtCreditPDate.Value.Date
+        dr("Amount") = txtCreditAmount.Text
+        tblCredit.Rows.Add(dr)
+        gvCredit.DataSource = tblCredit
+        txtCreditTotal.Text = (If(txtCreditAmount.Text.Trim() = "", 0, Convert.ToDecimal(txtCreditAmount.Text.Trim())) + If(txtCreditTotal.Text.Trim() = "", 0, Convert.ToDecimal(txtCreditTotal.Text.Trim()))).ToString()
+
+        txtCreditNo.Text = If(gvCredit.Rows.Count = 0, 1, gvCredit.Rows.Count + 1).ToString()
+
+        txtCreditAmount.Text = ""
+        txtCreditNo.Text = ""
+        txtCreditPType.Text = ""
+
+
+    End Sub
+
+    Private Sub btnCreditDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        txtCreditAmount.Text = ""
+        txtCreditNo.Text = ""
+        txtCreditPType.Text = ""
+
+
+        txtCreditNo.Text = If(gvCredit.Rows.Count = 0, 1, gvCredit.Rows.Count + 1).ToString()
+
+        For index = 1 To gvCredit.SelectedRows.Count
+            gvCredit.Rows.Remove(gvCredit.SelectedRows.Item(index))
+        Next
+
+
+
+    End Sub
+
+    Private Sub btnCreditAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCreditAdd.Click
+
+        If (PartyId = 0) Then
+            txtCreditAmount.Text = ""
+            txtCreditNo.Text = ""
+            txtCreditPType.Text = ""
+            txtCreditAdvance.Text = ""
+            txtCreditKasar.Text = ""
+            txtCreditOutstanding.Text = ""
+            txtCreditTotal.Text = ""
+        Else
+            txtCreditAmount.Text = ""
+            txtCreditNo.Text = ""
+            txtCreditPType.Text = ""
+        End If
+
+
+        txtCreditNo.Text = If(gvCredit.Rows.Count = 0, 1, gvCredit.Rows.Count + 1).ToString()
+
+
+    End Sub
+
+    Function validateForm() As Boolean
+        Return True
+    End Function
+
+    Private Sub btnPOAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPOAdd.Click
+        ClearAll()
+
+
+    End Sub
+
+    Private Sub btnPOSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPOSave.Click
+        If txtAddress.Text.Trim() = "" Then
+            Label39.Text = "Error... "
+            ErrorProvider1.SetError(txtAddress, Label39.Text)
+            ' Return
+        End If
+        If (PartyId < 0) Then
+
+
+            Dim result As Integer
+
+            result = linq_obj.SP_Insert_Party_Master(If(txtEntryNo.Text.Trim() = "", 0, Convert.ToInt64(txtEntryNo.Text)), dtODate.Value.Date, txtPONo.Text, txtOType.Text, Address_ID, txtPlantName.Text, txtCapacity.Text,
+                                                     dtDispatchDate.Value.Date, txtExecutive.Text, txtOrderStatus.Text, txtRemarks.Text, If(txtBreakNo.Text.Trim() = "", 0, Convert.ToInt32(txtBreakNo.Text)), txtPDCRem.Text)
+
+            If result > 0 Then
+                linq_obj.SubmitChanges()
+
+                Dim resDebit As Integer
+
+                resDebit = linq_obj.SP_Insert_Party_Debit(result, If(txtDebitTotal.Text.Trim() = "", 0, Convert.ToDecimal(txtDebitTotal.Text.Trim())), If(txtDebitDiscount.Text.Trim() = "", 0, Convert.ToDecimal(txtDebitDiscount.Text.Trim())), If(txtDebitNetDebit.Text.Trim() = "", 0, Convert.ToDecimal(txtDebitNetDebit.Text.Trim())))
+
+                If resDebit > 0 Then
+                    linq_obj.SubmitChanges()
+                    Dim resdetail As Integer
+                    For index = 0 To tblDebit.Rows.Count - 1
+                        resdetail = linq_obj.SP_Insert_Party_DebitDetail(resDebit, If(tblDebit.Rows(index)("No").ToString() = "", 0, Convert.ToInt32(tblDebit.Rows(index)("No").ToString())), tblDebit.Rows(index)("PlantName").ToString(), If(tblDebit.Rows(index)("Qty").ToString() = "", 0, Convert.ToInt32(tblDebit.Rows(index)("Qty").ToString())), If(tblDebit.Rows(index)("Amount").ToString() = "", 0, Convert.ToDecimal(tblDebit.Rows(index)("Amount").ToString())))
+                        If (resdetail > 0) Then
+                            linq_obj.SubmitChanges()
+                        End If
+                    Next
+                End If
+
+                Dim resCredit As Integer
+                resCredit = linq_obj.SP_Insert_Party_Credit(result, If(txtCreditTotal.Text.Trim() = "", 0, Convert.ToDecimal(txtCreditTotal.Text.Trim())), If(txtCreditKasar.Text.Trim() = "", 0, Convert.ToDecimal(txtCreditKasar.Text.Trim())), If(txtCreditOutstanding.Text.Trim() = "", 0, Convert.ToDecimal(txtCreditOutstanding.Text.Trim())), If(txtCreditAdvance.Text.Trim() = "", 0, Convert.ToDecimal(txtCreditAdvance.Text.Trim())))
+                If resCredit > 0 Then
+                    linq_obj.SubmitChanges()
+                    Dim resdetail As Integer
+                    For index = 0 To tblCredit.Rows.Count - 1
+                        resdetail = linq_obj.SP_Insert_Party_CreditDetail(resCredit, If(tblCredit.Rows(index)("No").ToString() = "", 0, Convert.ToInt32(tblCredit.Rows(index)("No").ToString())), tblCredit.Rows(index)("PType").ToString(), Convert.ToDateTime(tblCredit.Rows(index)("PDate").ToString()), If(tblCredit.Rows(index)("Amount").ToString() = "", 0, Convert.ToDecimal(tblCredit.Rows(index)("Amount").ToString())))
+                        If (resdetail > 0) Then
+                            linq_obj.SubmitChanges()
+                        End If
+                    Next
+                End If
+                MessageBox.Show("Successfully Saved")
+                ClearAll()
+            Else
+                MessageBox.Show("Error In Save")
+            End If
+        Else
+            btnPOSave.Enabled = False
+        End If
+
+    End Sub
+
+    Private Sub txtDebitDiscount_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtDebitDiscount.Leave
+        txtDebitNetDebit.Text = (If(txtDebitTotal.Text.Trim() = "", 0, Convert.ToDecimal(txtDebitTotal.Text.Trim())) - If(txtDebitDiscount.Text.Trim() = "", 0, Convert.ToDecimal(txtDebitDiscount.Text))).ToString()
+
+    End Sub
+
+    Private Sub txtCreditKasar_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCreditKasar.Leave
+        txtCreditOutstanding.Text = (If(txtCreditTotal.Text.Trim() = "", 0, Convert.ToDecimal(txtCreditTotal.Text.Trim())) - If(txtCreditKasar.Text.Trim() = "", 0, Convert.ToDecimal(txtCreditKasar.Text))).ToString()
+
+    End Sub
+
+    Private Sub btnchangePO_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnchangePO.Click
+        If txtAddress.Text.Trim() = "" Then
+            Label39.Text = "Error... "
+            ErrorProvider1.SetError(txtAddress, Label39.Text)
+            ' Return
+        End If
+        If (PartyId > 0) Then
+
+
+            Dim result As Integer
+
+            result = linq_obj.SP_Update_Party_Master(If(txtEntryNo.Text.Trim() = "", 0, Convert.ToInt64(txtEntryNo.Text)), dtODate.Value.Date, txtPONo.Text, txtOType.Text, Address_ID, txtPlantName.Text, txtCapacity.Text,
+                                                     dtDispatchDate.Value.Date, txtExecutive.Text, txtOrderStatus.Text, txtRemarks.Text, If(txtBreakNo.Text.Trim() = "", 0, Convert.ToInt32(txtBreakNo.Text)), txtPDCRem.Text, PartyId)
+
+            If result >= 0 Then
+                linq_obj.SubmitChanges()
+                Dim resdeleteDebit As Integer
+                resdeleteDebit = linq_obj.SP_Delete_Party_Debit(PartyDebitId)
+                resdeleteDebit = linq_obj.SP_Delete_Party_DebitDetail(PartyDebitId)
+                linq_obj.SubmitChanges()
+
+                Dim resDebit As Integer
+
+                resDebit = linq_obj.SP_Insert_Party_Debit(PartyId, If(txtDebitTotal.Text.Trim() = "", 0, Convert.ToDecimal(txtDebitTotal.Text.Trim())), If(txtDebitDiscount.Text.Trim() = "", 0, Convert.ToDecimal(txtDebitDiscount.Text.Trim())), If(txtDebitNetDebit.Text.Trim() = "", 0, Convert.ToDecimal(txtDebitNetDebit.Text.Trim())))
+
+                If resDebit >= 0 Then
+                    linq_obj.SubmitChanges()
+                    Dim resdetail As Integer
+                    For index = 0 To tblDebit.Rows.Count - 1
+                        resdetail = linq_obj.SP_Insert_Party_DebitDetail(resDebit, If(tblDebit.Rows(index)("No").ToString() = "", 0, Convert.ToInt32(tblDebit.Rows(index)("No").ToString())), tblDebit.Rows(index)("PlantName").ToString(), If(tblDebit.Rows(index)("Qty").ToString() = "", 0, Convert.ToInt32(tblDebit.Rows(index)("Qty").ToString())), If(tblDebit.Rows(index)("Amount").ToString() = "", 0, Convert.ToDecimal(tblDebit.Rows(index)("Amount").ToString())))
+                        If (resdetail > 0) Then
+                            linq_obj.SubmitChanges()
+                        End If
+                    Next
+                End If
+                Dim resdeletecredit As Integer
+                resdeletecredit = linq_obj.SP_Delete_Party_Credit(PartyCreditId)
+                resdeletecredit = linq_obj.SP_Delete_Party_CreditDetail(PartyCreditId)
+
+                linq_obj.SubmitChanges()
+                Dim resCredit As Integer
+                resCredit = linq_obj.SP_Insert_Party_Credit(PartyId, If(txtCreditTotal.Text.Trim() = "", 0, Convert.ToDecimal(txtCreditTotal.Text.Trim())), If(txtCreditKasar.Text.Trim() = "", 0, Convert.ToDecimal(txtCreditKasar.Text.Trim())), If(txtCreditOutstanding.Text.Trim() = "", 0, Convert.ToDecimal(txtCreditOutstanding.Text.Trim())), If(txtCreditAdvance.Text.Trim() = "", 0, Convert.ToDecimal(txtCreditAdvance.Text.Trim())))
+                If resCredit > 0 Then
+                    linq_obj.SubmitChanges()
+                    Dim resdetail As Integer
+                    For index = 0 To tblCredit.Rows.Count - 1
+                        resdetail = linq_obj.SP_Insert_Party_CreditDetail(resCredit, If(tblCredit.Rows(index)("No").ToString() = "", 0, Convert.ToInt32(tblCredit.Rows(index)("No").ToString())), tblCredit.Rows(index)("PType").ToString(), Convert.ToDateTime(tblCredit.Rows(index)("PDate").ToString()), If(tblCredit.Rows(index)("Amount").ToString() = "", 0, Convert.ToDecimal(tblCredit.Rows(index)("Amount").ToString())))
+                        If (resdetail > 0) Then
+                            linq_obj.SubmitChanges()
+                        End If
+                    Next
+                End If
+                MessageBox.Show("Successfully Updated")
+                ClearAll()
+            Else
+                MessageBox.Show("Error In Update")
+            End If
+
+        Else
+            MessageBox.Show("Error : No Data Found For Update")
+
+        End If
+
+    End Sub
+
+    Private Sub ClearAll()
+        txtDebitNo.Text = ""
+        txtDebitAmount.Text = ""
+        txtDebitTotal.Text = ""
+        txtDebitDiscount.Text = ""
+        txtDebitNetDebit.Text = ""
+        txtDebitPlantName.Text = ""
+        txtDisStatus.Text = ""
+        txtCreditAmount.Text = ""
+        txtCreditNo.Text = ""
+        txtCreditPType.Text = ""
+        txtCreditAdvance.Text = ""
+        txtCreditKasar.Text = ""
+        txtCreditOutstanding.Text = ""
+        txtCreditTotal.Text = ""
+        txtPartyName.Text = ""
+        txtAddress.Text = ""
+        txtStationName.Text = ""
+        txtState.Text = ""
+        txtContactPerson.Text = ""
+        txtContact.Text = ""
+        txtEmailAddress.Text = ""
+        txtEntryNo.Text = ""
+        txtEntryNo.Text = ""
+        txtPONo.Text = ""
+        txtOType.Text = ""
+        txtPlantName.Text = ""
+        txtCapacity.Text = ""
+        dtDispatchDate.Value = Date.Now
+        txtExecutive.Text = ""
+        txtOrderStatus.Text = ""
+        txtRemarks.Text = ""
+        txtBreakNo.Text = ""
+        txtPDCRem.Text = ""
+        tblCredit.Clear()
+        tblDebit.Clear()
+        PartyId = 0
+        Address_ID = 0
+    End Sub
+
+    Private Sub btnCancelPO_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancelPO.Click
+        ClearAll()
+    End Sub
+
+    Private Sub btnDelPO_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelPO.Click
+        Dim result As DialogResult = MessageBox.Show("Are You Sure?", "Important Message", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)
+        If result = DialogResult.Yes Then
+
+            MessageBox.Show("Successfully Deleted")
+            linq_obj.SP_Delete_Party_Master(PartyId)
+
+            linq_obj.SubmitChanges()
+
+            ClearAll()
+        End If
+
+    End Sub
+
+    Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+
+        'Dim criteria As String
+        'criteria = " Where "
+        'If txtInqSearchParty.Text.Trim() <> "" Then
+        '    criteria = criteria + " Name like '''%" + txtInqSearchParty.Text + "%''' and"
+        'End If
+        'If txtInqSearchCOperson.Text.Trim() <> "" Then
+        '    criteria = criteria + " ContactPerson like '%" + txtInqSearchCOperson.Text + "%' and"
+        'End If
+        'If txtInqSearchStation.Text.Trim <> "" Then
+        '    criteria = criteria + " Area like '%" + txtInqSearchStation.Text + "%' and"
+        'End If
+        ''If txtInqSearchLandLineNo.Text.Trim() <> "" Then
+        ''    criteria = criteria + " LandlineNo like '%" + txtInqSearchLandLineNo.Text + "%' and"
+        ''End If
+        'If txtInqSearchMobileNo.Text.Trim() <> "" Then
+        '    criteria = criteria + " MobileNo like '''%" + txtInqSearchMobileNo.Text + "%''' and"
+        'End If
+        'If txtInqSearchEmailID.Text.Trim() <> "" Then
+        '    criteria = criteria + " EmialID like '%" + txtInqSearchEmailID.Text + "%' and"
+        'End If
+        'If txtInqSearchOfferNo.Text.Trim() <> "" Then
+        '    criteria = criteria + " EnqNo like '%" + txtInqSearchOfferNo.Text + "%' and"
+        'End If
+
+        'If criteria = " Where " Then
+        '    criteria = ""
+        'End If
+
+        'If (criteria.Length > 0) Then
+        '    criteria = criteria.ToString().Substring(0, criteria.Length - 3)
+        'End If
+
+        'Dim cmd As New SqlCommand
+        'cmd.CommandText = "SP_Search_Inquiry"
+        'cmd.Parameters.Add("@criteria", SqlDbType.VarChar).Value = criteria
+        'Dim objclass As New Class1
+
+        'Dim ds As DataSet
+        'ds = objclass.GetSearchData(cmd)
+        'If ds.Tables(1).Rows.Count < 1 Then
+        '    MessageBox.Show("Record Not Found", "No Records", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        'End If
+        'GvInquery.DataSource = ds.Tables(1)
+        'Me.GvInquery.Columns(0).Visible = False
+        'ds.Dispose()
+
+    End Sub
+
+    Private Sub btnBackPO_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBackPO.Click
+        Me.Close()
+    End Sub
+
+    Private Sub btnPOAdd_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles btnPOAdd.KeyPress
+
+    End Sub
+
+    Private Sub PartyAccountMaster_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles MyBase.KeyPress
+
+
+    End Sub
+
+    Private Sub PartyAccountMaster_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles MyBase.KeyDown
+    End Sub
+
+    Private Sub btnReportPrint_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
+        If Address_ID > 0 Then
+            Dim frm As New ReportPartyOutstanding(Address_ID)
+            frm.MdiParent = MDIMainForm
+            frm.StartPosition = FormStartPosition.CenterScreen
+            frm.Show()
+        End If
+
+
+
+    End Sub
+
+    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
+        grpCFORM.Visible = True
+    End Sub
+
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+        grpPDC.Visible = True
+    End Sub
+
+    Public Sub clearCForm()
+        txtCFormNo.Text = ""
+        txtCFormRemarks.Text = ""
+        dtCFormRecDate.Value = DateTime.Now
+
+    End Sub
+
+    Private Sub btnCFormOk_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCFormOk.Click
+        If (Address_ID > 0) Then
+
+            linq_obj.SP_Insert_Tbl_PartyCFormDetail(Address_ID, IIf(RBCFormYes.Checked, True, False), IIf(RBStatusReceived.Checked, True, False), Convert.ToDateTime(dtCFormRecDate.Text), txtCFormNo.Text, txtCFormRemarks.Text)
+            linq_obj.SubmitChanges()
+            clearCForm()
+
+            grpCFORM.Visible = False
+        End If
+
+    End Sub
+
+    Public Sub clearPDC()
+        txtPDCRem.Text = ""
+        dtChequeDate.Value = Date.Now
+        txtChequeAmount.Text = ""
+
+    End Sub
+
+    Private Sub btnPDCOk_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPDCOk.Click
+        If (Address_ID > 0) Then
+
+
+            linq_obj.SP_Insert_Tbl_PartyPDCDetail(Address_ID, Convert.ToDateTime(dtChequeDate.Text), Convert.ToDecimal(txtChequeAmount.Text), IIf(RBClear.Checked, True, False))
+            linq_obj.SubmitChanges()
+
+            clearPDC()
+
+            grpPDC.Visible = False
+        End If
+    End Sub
+
+    Private Sub btnCFromClear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCFromClear.Click
+        clearCForm()
+        grpCFORM.Visible = False
+
+    End Sub
+
+    Private Sub btnPDCClear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPDCClear.Click
+        clearPDC()
+        grpPDC.Visible = False
+
+    End Sub
+
+    Private Sub txtPartyName_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPartyName.Leave
+        If (txtPartyName.Text <> "") Then
+            ClearAll()
+            Address_ID = linq_obj.SP_Get_AddressListByName(txtPartyName.Text).ToList().First().Pk_AddressID
+            bindAllData(Address_ID)
+        End If
+
+    End Sub
+
+    Private Sub btnReportPrint_new_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnReportPrint_new.Click
+        If Address_ID > 0 Then
+            Dim frm As New ReportPartyOutstandingPrint(Address_ID)
+            frm.MdiParent = MDIMainForm
+            frm.StartPosition = FormStartPosition.CenterScreen
+            frm.Show()
+        End If
+    End Sub
+
+    Private Sub gvAddressList_PreviewKeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PreviewKeyDownEventArgs) Handles gvAddressList.PreviewKeyDown
+        Address_ID = Me.gvAddressList.SelectedCells(0).Value
+        bindAllData(Address_ID)
+    End Sub
+
+End Class

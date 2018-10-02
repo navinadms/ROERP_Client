@@ -1,0 +1,39 @@
+<?xml version="1.0" standalone="yes"?>
+<xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="SP_Search_CourierPrint" msdata:UseCurrentLocale="true">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="SP_Search_CourierPrint">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Pk_CourierID" type="xs:long" minOccurs="0" />
+              <xs:element name="FK_CategoryID" type="xs:int" minOccurs="0" />
+              <xs:element name="FK_SubCategoryID" type="xs:int" minOccurs="0" />
+              <xs:element name="PrintType" type="xs:string" minOccurs="0" />
+              <xs:element name="Name" type="xs:string" minOccurs="0" />
+              <xs:element name="Address" type="xs:string" minOccurs="0" />
+              <xs:element name="Area" type="xs:string" minOccurs="0" />
+              <xs:element name="City" type="xs:string" minOccurs="0" />
+              <xs:element name="Pincode" type="xs:string" minOccurs="0" />
+              <xs:element name="Taluka" type="xs:string" minOccurs="0" />
+              <xs:element name="District" type="xs:string" minOccurs="0" />
+              <xs:element name="State" type="xs:string" minOccurs="0" />
+              <xs:element name="ContactPerson" type="xs:string" minOccurs="0" />
+              <xs:element name="ContactNo" type="xs:string" minOccurs="0" />
+              <xs:element name="CourierTh" type="xs:string" minOccurs="0" />
+              <xs:element name="DocketNo" type="xs:string" minOccurs="0" />
+              <xs:element name="CreateDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="RecDate" type="xs:string" minOccurs="0" />
+              <xs:element name="FollowBy" type="xs:string" minOccurs="0" />
+              <xs:element name="RecBy" type="xs:string" minOccurs="0" />
+              <xs:element name="EnqNo" type="xs:string" minOccurs="0" />
+              <xs:element name="Remarks" type="xs:string" minOccurs="0" />
+              <xs:element name="SubCategory" type="xs:string" minOccurs="0" />
+              <xs:element name="SubCategory1" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

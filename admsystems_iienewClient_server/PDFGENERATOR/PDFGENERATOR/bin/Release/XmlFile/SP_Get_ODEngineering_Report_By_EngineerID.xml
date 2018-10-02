@@ -1,0 +1,26 @@
+<?xml version="1.0" standalone="yes"?>
+<xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="ODEngineerDS" msdata:UseCurrentLocale="true">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="ODEngineerDS">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="SiteNo" type="xs:int" minOccurs="0" />
+              <xs:element name="ClientName" type="xs:string" minOccurs="0" />
+              <xs:element name="Station" type="xs:string" minOccurs="0" />
+              <xs:element name="District" type="xs:string" minOccurs="0" />
+              <xs:element name="State" type="xs:string" minOccurs="0" />
+              <xs:element name="ContactNo" type="xs:string" minOccurs="0" />
+              <xs:element name="EngineerName" type="xs:string" minOccurs="0" />
+              <xs:element name="StartDate" type="xs:string" minOccurs="0" />
+              <xs:element name="EndDate" type="xs:string" minOccurs="0" />
+              <xs:element name="Purpose" type="xs:string" minOccurs="0" />
+              <xs:element name="Engineer" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

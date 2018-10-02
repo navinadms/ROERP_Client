@@ -1,0 +1,444 @@
+﻿Public Class InwardRegister
+
+    Dim linq_obj As New RoErpDataContext(System.Configuration.ConfigurationManager.AppSettings("constr").ToString())
+    Dim PRID As Long
+
+
+    Dim InwardId As Long
+    Dim InwardDetailId As Long
+    Dim tblItem As New DataTable
+    Dim RWID As Long
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+        bindDropDown()
+        bindGrid()
+        PRID = 0
+        txtNo.Text = IIf(DGVPurchaseItems.Rows.Count = 0, 1, DGVPurchaseItems.Rows.Count)
+        bindItemGrid()
+        If (InwardId > 0) Then
+            btnSave.Enabled = False
+        Else
+            btnSave.Enabled = True
+        End If
+        getPageRight()
+
+    End Sub
+
+    Public Sub getPageRight()
+        Try
+            Dim dv As New DataTable
+            Dim dataView As DataView
+            Dim Class1 As New Class1
+            Dim RowCount As Integer
+            Dim statusCheck As Boolean = False
+            Dim strName As String = ""
+
+
+            dataView = Class1.global.UserPermissionDataset.Tables(0).DefaultView
+            dataView.RowFilter = "([DetailName] like 'InwardRegister')"
+
+            If (dataView.Count > 0) Then
+                dv = dataView.ToTable()
+
+                If (dv.Rows(0)("Type") = 1) Then
+
+                Else
+                    For RowCount = 0 To dv.Rows.Count - 1
+                        If (dv.Rows(RowCount)("IsAdd") = True) Then
+                            btnAdd.Enabled = True
+                            btnSave.Enabled = True
+                        Else
+                            btnAdd.Enabled = False
+                            btnSave.Enabled = False
+                        End If
+                        If (dv.Rows(RowCount)("IsUpdate") = True) Then
+                            btnChange.Enabled = True
+                        Else
+                            btnChange.Enabled = False
+                        End If
+                        If (dv.Rows(RowCount)("IsDelete") = True) Then
+                            btnDelete.Enabled = True
+                        Else
+                            btnDelete.Enabled = False
+                        End If
+                        If (dv.Rows(RowCount)("IsPrint") = True) Then
+
+                        Else
+
+                        End If
+
+                    Next
+                End If
+            End If
+
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+
+    End Sub
+
+    Protected Sub bindDropDown()
+        cmbCategory.Items.Clear()
+        Dim dt As New DataTable
+        dt.Columns.Add("Id")
+        dt.Columns.Add("Category")
+        Dim productMain = linq_obj.SP_Select_All_ProductRegisterByStockRegister().ToList()
+        For Each item As SP_Select_All_ProductRegisterByStockRegisterResult In productMain
+            dt.Rows.Add(item.Pk_ProductRegisterId, item.CategoryName)
+        Next
+        Dim dr As DataRow = dt.NewRow()
+        dr(1) = "Select"
+        dt.Rows.InsertAt(dr, 0)
+        cmbCategory.DataSource = dt
+        cmbCategory.DisplayMember = "Category"
+        cmbCategory.ValueMember = "Id"
+        cmbCategory.AutoCompleteMode = AutoCompleteMode.Append
+        cmbCategory.DropDownStyle = ComboBoxStyle.DropDownList
+        cmbCategory.AutoCompleteSource = AutoCompleteSource.ListItems
+    End Sub
+    Public Sub bindGrid()
+        Dim mainData = linq_obj.SP_Select_All_Tbl_InwardStockMaster().ToList()
+        Dim dt As New DataTable
+        dt.Columns.Add("Pk_InwardId")
+        dt.Columns.Add("Bill No")
+        dt.Columns.Add("Bill Date")
+        dt.Columns.Add("Company Name")
+        For Each item As SP_Select_All_Tbl_InwardStockMasterResult In mainData
+            dt.Rows.Add(item.Pk_InwardId, item.BillNo, item.BillDate, item.SupplierName)
+        Next
+        GDVInwardDetail.DataSource = dt
+        If (GDVInwardDetail.RowCount > 0) Then
+            GDVInwardDetail.Columns(0).Visible = False
+            txtTotalRecords.Text = GDVInwardDetail.RowCount
+        End If
+    End Sub
+
+    Public Sub bindItemGrid()
+        'bind a data
+        Dim itemData = linq_obj.SP_Select_All_Tbl_InwardDetailByInward(InwardId).ToList()
+        If (itemData.Count > 0) Then
+            DGVPurchaseItems.DataSource = itemData
+            Dim rowCount As Integer
+            rowCount = DGVPurchaseItems.RowCount
+            If rowCount > 0 Then
+                DGVPurchaseItems.Columns(0).Visible = False
+                DGVPurchaseItems.Columns(1).Visible = False
+                DGVPurchaseItems.Columns(2).Visible = False
+                DGVPurchaseItems.Columns(3).Visible = False
+            End If
+        End If
+        txtNo.Text = IIf(DGVPurchaseItems.Rows.Count = 0, 1, DGVPurchaseItems.Rows.Count + 1)
+    End Sub
+    Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+        Dim mainData = linq_obj.SP_Select_All_Tbl_InwardStockMaster().Where(Function(t) t.BillDate >= dtStartDate.Value And t.BillDate <= dtEndDate.Value).ToList()
+        Dim dt As New DataTable
+        dt.Columns.Add("Bill No")
+        dt.Columns.Add("Bill Date")
+        dt.Columns.Add("Company Name")
+        For Each item As SP_Select_All_Tbl_InwardStockMasterResult In mainData
+            dt.Rows.Add(item.BillNo, item.BillDate, item.SupplierName)
+        Next
+        GDVInwardDetail.DataSource = dt
+    End Sub
+    Private Sub cmbCategory_SelectionChangeCommitted(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbCategory.SelectionChangeCommitted
+        Try
+            If cmbCategory.SelectedValue > 0 Then
+                PRID = cmbCategory.SelectedValue
+                Dim rowMaterial = linq_obj.SP_Select_All_RawMaterialByStockRegister(PRID).ToList()
+                cmbRowMaterial.DataSource = rowMaterial
+                cmbRowMaterial.DisplayMember = "RowMaterialName"
+                cmbRowMaterial.ValueMember = "Pk_RowMaterialId"
+                cmbRowMaterial.AutoCompleteMode = AutoCompleteMode.Append
+                cmbRowMaterial.DropDownStyle = ComboBoxStyle.DropDownList
+                cmbRowMaterial.AutoCompleteSource = AutoCompleteSource.ListItems
+            End If
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+    End Sub
+    Private Sub btnAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd.Click
+        Try
+            If txtBillNo.Text.Trim() <> "" And InwardId = 0 Then
+                InwardId = linq_obj.SP_Insert_Tbl_InwardStockMaster(txtPONo.Text, dtInwardDate.Value, txtBillNo.Text, Convert.ToDateTime(If(dtBillDate.Text.Trim() = "", "01-01-1900", dtBillDate.Text)), txtCompanyName.Text, txtAddress.Text)
+            End If
+            If (InwardId > 0) Then
+                If (btnAdd.Text = "Add") Then
+                    'insert into  Details
+                    linq_obj.SP_Insert_Tbl_InwardDetail(Convert.ToInt64(cmbCategory.SelectedValue), Convert.ToInt64(cmbRowMaterial.SelectedValue), InwardId, Convert.ToInt64(txtQty.Text.Trim()), txtUnit.Text, txtRemarks.Text)
+                    'MessageBox.Show("Successfully Saved")
+                Else
+                    'insert into  Details
+                    linq_obj.SP_Update_Tbl_InwardDetail(Convert.ToInt64(cmbCategory.SelectedValue), Convert.ToInt64(cmbRowMaterial.SelectedValue), InwardId, Convert.ToInt64(txtQty.Text.Trim()), txtUnit.Text, InwardDetailId, txtRemarks.Text)
+                    '  MessageBox.Show("Successfully Saved")
+                End If
+
+            End If
+            bindItemGrid()
+            txtNo.Text = IIf(DGVPurchaseItems.Rows.Count = 0, 1, DGVPurchaseItems.Rows.Count + 1)
+            subClear()
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+    End Sub
+    Private Sub InwardRegister_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        For Each control As Control In Me.Controls
+            'The textbox control.
+            Dim parentControl As New Control
+            If (control.GetType() Is GetType(GroupBox)) Then
+                Dim grpBox As GroupBox = TryCast(control, GroupBox)
+                parentControl = grpBox
+            ElseIf (control.GetType() Is GetType(TabControl)) Then
+                Dim TC As TabControl = TryCast(control, TabControl)
+                parentControl = TC
+            Else
+                Try
+                    parentControl = control
+                Catch ex As Exception
+
+                End Try
+            End If
+
+            For Each subcontrol As Control In parentControl.Controls
+                If (subcontrol.GetType() Is GetType(TextBox)) Then
+                    Dim textBox As TextBox = TryCast(subcontrol, TextBox)
+                    ' If not null, set the handler.
+                    If textBox IsNot Nothing Then
+                        AddHandler textBox.Enter, AddressOf TextBox_Enter
+                        AddHandler textBox.Leave, AddressOf TextBox_Leave
+                    End If
+                End If
+
+                ' Set the handler.
+            Next
+
+            ' Set the handler.
+        Next
+    End Sub
+    Private Sub TextBox_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Dim txt As New TextBox()
+        txt = DirectCast(sender, TextBox)
+
+        txt.BackColor = Color.LightYellow
+    End Sub
+    Private Sub TextBox_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Dim txt As New TextBox()
+        txt = DirectCast(sender, TextBox)
+
+        txt.BackColor = Color.White
+    End Sub
+    Public Sub subClear()
+        cmbCategory.SelectedIndex = 0
+        txtUnit.Text = ""
+        txtQty.Text = ""
+        txtRemarks.Text = ""
+        btnAdd.Text = "Add"
+        txtNo.Text = IIf(DGVPurchaseItems.Rows.Count = 0, 1, DGVPurchaseItems.Rows.Count + 1)
+
+    End Sub
+    Public Sub clear()
+        txtAddress.Text = ""
+        txtBillNo.Text = ""
+        txtCompanyName.Text = ""
+        txtRemarks.Text = ""
+        txtNo.Text = ""
+        txtPONo.Text = ""
+        txtQty.Text = ""
+        txtUnit.Text = ""
+        btnSave.Enabled = True
+        InwardId = 0
+        cmbCategory.SelectedIndex = 0
+    End Sub
+    Public Sub bindAllData()
+        If (Me.GDVInwardDetail.SelectedCells(0).Value > 0) Then
+            InwardId = Convert.ToInt64(Me.GDVInwardDetail.SelectedCells(0).Value)
+            bindItemGrid()
+            Dim inwardData = linq_obj.SP_Select_Tbl_InwardStockMaster_ById(InwardId).ToList()
+            If (inwardData.Count > 0) Then
+                txtAddress.Text = Convert.ToString(inwardData(0).SupplierAddress)
+                txtCompanyName.Text = Convert.ToString(inwardData(0).SupplierName)
+                txtBillNo.Text = Convert.ToString(inwardData(0).BillNo)
+                dtBillDate.Text = If(Convert.ToString(inwardData(0).BillDate.Value.ToShortDateString()) = "01-01-1900", "", Convert.ToString(inwardData(0).BillDate.Value.ToShortDateString()))
+                txtPONo.Text = Convert.ToString(inwardData(0).PONo)
+                dtInwardDate.Value = Convert.ToString(inwardData(0).InwardDate)
+                If (inwardData(0).Status = False) Then
+                    btnAdd.Enabled = True
+                    btnChange.Enabled = True
+                    btnDelete.Enabled = True
+                    btnDeleteSub.Enabled = True
+                    txtPONo.BackColor = Color.White
+                Else
+                    btnAdd.Enabled = False
+                    btnChange.Enabled = False
+                    btnDelete.Enabled = False
+                    btnDeleteSub.Enabled = False
+                    txtPONo.BackColor = Color.Yellow
+                End If
+            End If
+            If (InwardId > 0) Then
+                btnSave.Enabled = False
+            Else
+                btnSave.Enabled = True
+            End If
+        End If
+    End Sub
+    Private Sub GDVInwardDetail_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GDVInwardDetail.DoubleClick
+
+        bindAllData()
+    End Sub
+    Private Sub btnNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew.Click
+        subClear()
+    End Sub
+    Private Sub DGVPurchaseItems_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DGVPurchaseItems.DoubleClick
+        If Me.DGVPurchaseItems.SelectedRows.Count > 0 Then
+            InwardDetailId = DGVPurchaseItems.SelectedCells(0).Value
+            cmbCategory.SelectedValue = DGVPurchaseItems.SelectedCells(1).Value
+            cmbCategory_SelectionChangeCommitted(Nothing, Nothing)
+            cmbRowMaterial.SelectedValue = DGVPurchaseItems.SelectedCells(2).Value
+            txtUnit.Text = DGVPurchaseItems.SelectedRows(0).Cells("Unit").Value
+            txtRemarks.Text = DGVPurchaseItems.SelectedRows(0).Cells("Remarks").Value
+            txtQty.Text = DGVPurchaseItems.SelectedRows(0).Cells("Quantity").Value
+            ''InwardId = DGVPurchaseItems.SelectedRows(0).Cells("Fk_InwardId").Value
+            btnAdd.Text = "Update"
+        End If
+
+    End Sub
+    Private Sub btnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete.Click
+        If (InwardId > 0) Then
+            Dim result As DialogResult = MessageBox.Show("Are You Sure Delete?", "Important Message", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)
+            If result = DialogResult.Yes Then
+                Dim res As Integer
+                res = linq_obj.SP_Delete_Tbl_InwardStockMaster(InwardId)
+                MessageBox.Show("Delete Successfully..")
+                btnAdd.Enabled = True
+                btnChange.Enabled = True
+                btnDelete.Enabled = True
+                btnDeleteSub.Enabled = True
+
+                txtPONo.BackColor = Color.White
+            End If
+        Else
+            MessageBox.Show("No Data Selected!!!")
+        End If
+
+
+
+    End Sub
+    Private Sub btnAddNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddNew.Click
+        clear()
+        tblItem.Clear()
+        DGVPurchaseItems.DataSource = tblItem
+        btnAdd.Enabled = True
+        btnChange.Enabled = True
+        btnDelete.Enabled = True
+        btnDeleteSub.Enabled = True
+
+        txtPONo.BackColor = Color.White
+    End Sub
+    Private Sub btnChange_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnChange.Click
+        Try
+            If (InwardId > 0) Then
+                Dim res As Integer
+                If txtBillNo.Text.Trim() <> "" Then
+                    res = linq_obj.SP_Update_Tbl_InwardStockMaster(txtPONo.Text, dtInwardDate.Value, txtBillNo.Text, Convert.ToDateTime(If(dtBillDate.Text.Trim() = "", "01-01-1900", dtBillDate.Text)), InwardId, txtCompanyName.Text, txtAddress.Text)
+                    If (res >= 0) Then
+                        linq_obj.SubmitChanges()
+                        MessageBox.Show("Successfully Updated...")
+                        bindGrid()
+                    End If
+                Else
+                    MessageBox.Show("No Address Detail Found")
+                End If
+            Else
+                MessageBox.Show("No Record For Updations")
+            End If
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+        clear()
+        DGVPurchaseItems.DataSource = Nothing
+        btnAdd.Enabled = True
+        btnChange.Enabled = True
+        btnDelete.Enabled = True
+        btnDeleteSub.Enabled = True
+
+        txtPONo.BackColor = Color.White
+    End Sub
+
+    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Me.Close()
+    End Sub
+    Private Sub cmbRowMaterial_SelectionChangeCommitted(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbRowMaterial.SelectionChangeCommitted
+        Dim dataRaw = linq_obj.SP_Select_RowMaterialMaster_ById(cmbRowMaterial.SelectedValue).ToList()
+        If (dataRaw.Count > 0) Then
+            txtUnit.Text = Convert.ToString(dataRaw(0).Unit)
+        End If
+    End Sub
+
+    Private Sub btnDeleteSub_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDeleteSub.Click
+        Dim result As DialogResult = MessageBox.Show("Are You Sure To Delete?", "Important Message", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)
+        If result = DialogResult.Yes Then
+            Dim cntSelect As Integer = DGVPurchaseItems.SelectedRows.Count
+            For Each dr As DataGridViewRow In DGVPurchaseItems.SelectedRows
+                Dim resDelete As Integer = linq_obj.SP_Delete_InwardDetailById(Convert.ToInt32(dr.Cells(0).Value))
+                linq_obj.SubmitChanges()
+            Next
+            MessageBox.Show("Successfully Deleted!!!")
+            bindItemGrid()
+        End If
+
+    End Sub
+
+    Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
+        btnChange_Click(Nothing, Nothing)
+    End Sub
+    Private Sub btnTransEffect_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTransEffect.Click
+        Try
+            linq_obj.SP_Update_Tbl_InwardTransaction(InwardId, True)
+            linq_obj.SubmitChanges()
+            btnAdd.Enabled = False
+            btnChange.Enabled = False
+            btnDelete.Enabled = False
+            btnDeleteSub.Enabled = False
+
+            txtPONo.BackColor = Color.Yellow
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub btnCancelTrans_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancelTrans.Click
+        Try
+            linq_obj.SP_Update_Tbl_InwardTransaction(InwardId, False)
+            linq_obj.SubmitChanges()
+            btnAdd.Enabled = True
+            btnChange.Enabled = True
+            btnDelete.Enabled = True
+            btnDeleteSub.Enabled = True
+
+            txtPONo.BackColor = Color.White
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+    End Sub
+
+
+    Private Sub btnRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRefresh.Click
+        bindGrid()
+    End Sub
+
+    Private Sub GDVInwardDetail_CellClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles GDVInwardDetail.CellClick
+        bindAllData()
+    End Sub
+
+    Private Sub txtQty_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtQty.KeyPress
+        If Char.IsLetter(e.KeyChar) Then
+            e.Handled = True
+        Else
+            e.Handled = False
+        End If
+    End Sub
+End Class

@@ -1,0 +1,43 @@
+<?xml version="1.0" standalone="yes"?>
+<xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="OrderPage3" msdata:UseCurrentLocale="true">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="OrderPage3">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="T_Image1" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="T_Image2" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="T_Image3" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="T_Image4" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="T_Image5" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="T_Image6" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="T_Image7" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="T_Image8" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="T_Image9" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="T_Image10" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="T_Image11" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="T_Image12" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="T_Image13" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="T_Image14" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="T_Image15" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="Sys1_Tech1" type="xs:string" minOccurs="0" />
+              <xs:element name="Sys1_Tech2" type="xs:string" minOccurs="0" />
+              <xs:element name="Sys1_Tech3" type="xs:string" minOccurs="0" />
+              <xs:element name="Sys1_Tech4" type="xs:string" minOccurs="0" />
+              <xs:element name="Sys1_Tech5" type="xs:string" minOccurs="0" />
+              <xs:element name="Sys1_Tech6" type="xs:string" minOccurs="0" />
+              <xs:element name="Sys1_Tech7" type="xs:string" minOccurs="0" />
+              <xs:element name="Sys1_Tech8" type="xs:string" minOccurs="0" />
+              <xs:element name="Sys1_Tech9" type="xs:string" minOccurs="0" />
+              <xs:element name="Sys1_Tech10" type="xs:string" minOccurs="0" />
+              <xs:element name="Sys1_Tech11" type="xs:string" minOccurs="0" />
+              <xs:element name="Sys1_Tech12" type="xs:string" minOccurs="0" />
+              <xs:element name="Sys1_Tech13" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

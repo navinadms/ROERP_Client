@@ -1,0 +1,600 @@
+﻿Public Class OrderMaster_2_
+
+    Dim linq_obj As New RoErpDataContext(System.Configuration.ConfigurationManager.AppSettings("constr").ToString())
+    Dim AddressId As Integer
+    Dim PartyId As Integer
+    Dim tblDebit As New DataTable
+    Dim tblCredit As New DataTable
+    Dim TblISIDesc As New DataTable
+    Dim TblProInst As New DataTable
+    Dim TblLetter As New DataTable
+
+    Private Sub OrderMaster_2__Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        '/ ISI Desc
+        TblISIDesc.Columns.Add("Desc_Date")
+        TblISIDesc.Columns.Add("Desc_Remark")
+        TblISIDesc.Columns.Add("Desc_ByWhom")
+
+        '/ Product Install
+        TblProInst.Columns.Add("PDate")
+        TblProInst.Columns.Add("Dis_Date")
+        TblProInst.Columns.Add("Product_Name")
+        TblProInst.Columns.Add("Vendor_Name")
+        TblProInst.Columns.Add("Station")
+        TblProInst.Columns.Add("Send_CU_To")
+        TblProInst.Columns.Add("Rec_CU_From")
+        TblProInst.Columns.Add("CU_To_Venue")
+        TblProInst.Columns.Add("Comp_Date_With_Inst")
+        TblProInst.Columns.Add("By_Whom")
+        TblProInst.Columns.Add("Remark")
+
+        '/ Letter Desc
+        TblLetter.Columns.Add("Date")
+        TblLetter.Columns.Add("Card_Date")
+        TblLetter.Columns.Add("Card_Rem")
+        TblLetter.Columns.Add("Mail_Rec")
+        TblLetter.Columns.Add("Mail_Send")
+        TblLetter.Columns.Add("BY_Whom")
+        TblLetter.Columns.Add("Mail_Rem")
+    End Sub
+
+    '/ ISI Desc Add More
+    Private Sub BtnDescSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnDescSave.Click
+        Dim dr As DataRow
+        dr = TblISIDesc.NewRow()
+        dr("Desc_Date") = TxtDescDate.Text
+        dr("Desc_Remark") = TxtDescRemark.Text
+        dr("Desc_ByWhom") = TxtDescByWhom.Text
+
+        TblISIDesc.Rows.Add(dr)
+        DataISIGrid.DataSource = TblISIDesc
+        TxtDescDate.Text = DateTime.Now
+        TxtDescRemark.Text = ""
+        TxtDescByWhom.Text = ""
+
+    End Sub
+
+    '/ Product Install Add More
+    Private Sub BtnSaveProInst_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSaveProInst.Click
+        Dim dr As DataRow
+        dr = TblProInst.NewRow()
+        dr("PDate") = TxtProDate.Text
+        dr("Dis_Date") = TxtProDisDate.Text
+        dr("Product_Name") = TxtProProductName.Text
+        dr("Vendor_Name") = TxtProVenderName.Text
+        dr("Station") = TxtProStation.Text
+        dr("Send_CU_To") = TxtProSendCuTo.Text
+        dr("Rec_CU_From") = TxtProRecCUFrom.Text
+        dr("CU_To_Venue") = TxtProCuToVenue.Text
+        dr("Comp_Date_With_Inst") = TxtProCompDateInst.Text
+        dr("By_Whom") = TxtProByWhom.Text
+        dr("Remark") = TxtProRemark.Text
+
+        TblProInst.Rows.Add(dr)
+        DataProInst.DataSource = TblProInst
+        TxtProDate.Text = Date.Now
+        TxtProDisDate.Text = Date.Now
+        TxtProProductName.Text = ""
+        TxtProVenderName.Text = ""
+        TxtProStation.Text = ""
+        TxtProSendCuTo.Text = ""
+        TxtProRecCUFrom.Text = ""
+        TxtProCuToVenue.Text = ""
+        TxtProCompDateInst.Text = Date.Now
+        TxtProByWhom.Text = ""
+        TxtProRemark.Text = ""
+    End Sub
+
+
+    '/ Letter Desc Add More
+    Private Sub BtnLetterSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnLetterSave.Click
+        Dim dr As DataRow
+        dr = TblLetter.NewRow()
+        dr("Date") = TxtLetterDate.Text
+        dr("Card_Date") = TxtLetterCreDate.Text
+        dr("Card_Rem") = TxtLetterCardRem.Text
+        dr("Mail_Rec") = TxtLetterMailRec.Text
+        dr("Mail_Send") = TxtLetterMailSend.Text
+        dr("BY_Whom") = TxtLetterByWhom.Text
+        dr("Mail_Rem") = TxtLetterMailRem.Text
+        TblLetter.Rows.Add(dr)
+        DataLetter.DataSource = TblLetter
+        TxtLetterDate.Text = Date.Now
+        TxtLetterCreDate.Text = Date.Now
+        TxtLetterCardRem.Text = ""
+        TxtLetterMailRec.Text = ""
+        TxtLetterMailSend.Text = ""
+        TxtLetterByWhom.Text = ""
+        TxtLetterMailRem.Text = ""
+
+    End Sub
+
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+        '  AutoComplete_Text()
+        GvInEnq_Bind()
+
+        ' PartyId = 0
+    End Sub
+    Public Sub GvInEnq_Bind()
+        Dim enq = linq_obj.SP_Get_AddressForOrder().ToList()
+        Dim dt As New DataTable
+        dt.Columns.Add("ID")
+        dt.Columns.Add("Name")
+        dt.Columns.Add("EnqNo")
+        For Each item As SP_Get_AddressForOrderResult In enq
+            dt.Rows.Add(item.Pk_AddressID, item.Name, item.EnqNo)
+        Next
+        DGVOrderMast2.DataSource = dt
+        'Me.gvAddressList.Columns(0).Visible = False
+
+    End Sub
+    Private Sub btnOrdersave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOrdersave.Click
+
+        '/Order Entry 
+        linq_obj.SP_Insert_Tbl_OrderMaster_Two(txtEntryNo.Text,
+                                               Convert.ToDateTime(txtEntryDt.Text),
+                                               txtPOno.Text,
+                                               txtOrderNo.Text,
+                                               Convert.ToDateTime(txtOrderDt.Text),
+                                               Convert.ToDateTime(txtdispatchDt.Text),
+                                               txtPartyName.Text,
+                                               txtbrandName.Text,
+                                               AddressId)
+        linq_obj.SubmitChanges()
+
+        '/Project Information
+        linq_obj.SP_Insert_Tbl_ProjectInformationMaster_Two(AddressId,
+                                                            TxtInfoPlantName.Text,
+                                                            TxtInfoModel.Text,
+                                                            TxtInfoProject.Text,
+                                                            TxtInfoCapacity.Text,
+                                                            TxtInfoPowerAvl.Text,
+                                                            TxtInfoPlantShape.Text,
+                                                            TxtInfoLandArea.Text,
+                                                            TxtInfoTreatScheme.Text)
+        linq_obj.SubmitChanges()
+
+        '/ Letter Header 
+        linq_obj.SP_Insert_Tbl_LetterMailComMaster_Two(AddressId,
+                                                       TxtLetterProDetail.Text)
+        linq_obj.SubmitChanges()
+
+        '/ Letter Description
+        For i As Integer = 0 To TblLetter.Rows.Count - 1
+            linq_obj.SP_Insert_Tbl_LetterMailComMaster_Detail_Two(AddressId,
+            Convert.ToDateTime(TblLetter.Rows(i)("Date").ToString()),
+            Convert.ToDateTime(TblLetter.Rows(i)("Card_Date").ToString()),
+            TblLetter.Rows(i)("Card_Rem").ToString(),
+            TblLetter.Rows(i)("Mail_Rec").ToString(),
+            TblLetter.Rows(i)("Mail_Send").ToString(),
+            TblLetter.Rows(i)("BY_Whom").ToString(),
+            TblLetter.Rows(i)("Mail_Rem").ToString())
+            linq_obj.SubmitChanges()
+        Next
+
+
+
+        '/ Product Instalation
+        For i As Integer = 0 To TblProInst.Rows.Count - 1
+            linq_obj.SP_Insert_Tbl_ProductInstallationMaster_Two(AddressId,
+            Convert.ToDateTime(TblProInst.Rows(i)("PDate").ToString()),
+            Convert.ToDateTime(TblProInst.Rows(i)("Dis_Date").ToString()),
+            TblProInst.Rows(i)("Product_Name").ToString(),
+            TblProInst.Rows(i)("Vendor_Name").ToString(),
+            TblProInst.Rows(i)("Station").ToString(),
+            TblProInst.Rows(i)("Send_CU_To").ToString(),
+            TblProInst.Rows(i)("Rec_CU_From").ToString(),
+            TblProInst.Rows(i)("CU_To_Venue").ToString(),
+            Convert.ToDateTime(TblProInst.Rows(i)("Comp_Date_With_Inst").ToString()),
+            TblProInst.Rows(i)("By_Whom").ToString(),
+            TblProInst.Rows(i)("Remark").ToString())
+            linq_obj.SubmitChanges()
+        Next
+
+
+        '/ISI Header
+
+        linq_obj.SP_Insert_Tbl_ISIProcessMaster_Two(AddressId,
+                                                    TxtScheme.Text,
+                                                    Convert.ToDateTime(TxtRecDate.Text),
+                                                    Convert.ToDateTime(TxtDocFDate.Text),
+                                                    Convert.ToDateTime(TxtDocRDate.Text),
+                                                    TxtSToP.Text, TxtFSubmit.Text,
+                                                    Convert.ToDateTime(TxtFileRegDate.Text),
+                                                    Convert.ToDateTime(TxtBISInspDate.Text),
+                                                    Convert.ToDateTime(TxtLicenceDate.Text),
+                                                    TxtVender.Text,
+                                                    TxtRemark.Text)
+        linq_obj.SubmitChanges()
+
+        '/ ISI Description 
+        For i As Integer = 0 To TblISIDesc.Rows.Count - 1
+            linq_obj.SP_Insert_Tbl_ISIProcess_DetailMaster_Two(AddressId,
+            Convert.ToDateTime(TblISIDesc.Rows(i)("Desc_Date").ToString()),
+            TblISIDesc.Rows(i)("Desc_Remark").ToString(),
+            TblISIDesc.Rows(i)("Desc_ByWhom").ToString())
+            linq_obj.SubmitChanges()
+        Next
+
+        MessageBox.Show("Information successfully saved...!!")
+
+    End Sub
+    Public Sub clearAll()
+
+        TxtScheme.Text = ""
+        TxtRecDate.Text = DateTime.Now
+        TxtDocFDate.Text = DateTime.Now
+        TxtDocRDate.Text = DateTime.Now
+        TxtSToP.Text = ""
+        TxtFSubmit.Text = ""
+        TxtFileRegDate.Text = DateTime.Now
+        TxtBISInspDate.Text = DateTime.Now
+        TxtLicenceDate.Text = DateTime.Now
+        TxtVender.Text = ""
+        TxtRemark.Text = ""
+
+        TxtDescDate.Text = DateTime.Now
+        TxtDescRemark.Text = ""
+        TxtDescByWhom.Text = ""
+
+        TxtProDate.Text = Date.Now
+        TxtProDisDate.Text = Date.Now
+        TxtProProductName.Text = ""
+        TxtProVenderName.Text = ""
+        TxtProStation.Text = ""
+        TxtProSendCuTo.Text = ""
+        TxtProRecCUFrom.Text = ""
+        TxtProCuToVenue.Text = ""
+        TxtProCompDateInst.Text = Date.Now
+        TxtProByWhom.Text = ""
+        TxtProRemark.Text = ""
+
+        TxtLetterProDetail.Text = ""
+        TxtLetterDate.Text = Date.Now
+        TxtLetterCreDate.Text = Date.Now
+        TxtLetterCardRem.Text = ""
+        TxtLetterMailRec.Text = ""
+        TxtLetterMailSend.Text = ""
+        TxtLetterByWhom.Text = ""
+        TxtLetterMailRem.Text = ""
+
+        TblISIDesc.Clear()
+        TblProInst.Clear()
+        TblLetter.Clear()
+
+    End Sub
+
+
+    Private Sub DGVOrderMast2_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DGVOrderMast2.DoubleClick
+        AddressId = Me.DGVOrderMast2.SelectedCells(0).Value
+        bindAllData(AddressId)
+    End Sub
+
+    Public Sub bindAllData(ByVal address As Integer)
+
+        AddressId = Convert.ToInt32(address)
+        GetClientDetails_Bind()
+
+        Dim data = linq_obj.SP_Select_Party_Master_ByAddressId(AddressId).ToList()
+        If data.Count > 0 Then
+            GetClientDetails_Bind()
+            PartyId = data(0).Pk_PartyId
+            txtEntryNo.Text = Convert.ToString(data(0).EntryNo)
+            txtOrderDt.Text = data(0).OrderDate.Value
+            txtPOno.Text = Convert.ToString(data(0).PONo)
+            TxtInfoPlantName.Text = Convert.ToString(data(0).PlantName)
+            TxtInfoCapacity.Text = (Convert.ToString(data(0).Capacity))
+            txtdispatchDt.Text = data(0).DispatchDate.Value
+
+
+
+            '/ Fill Data by Tbl_OrderMaster_Two Table
+            Dim Order = linq_obj.SP_Select_Tbl_OrderMaster_Two(AddressId).ToList()
+            If Order.Count > 0 Then
+                txtEntryNo.Text = Order(0).EntryNo
+                txtEntryDt.Text = Convert.ToDateTime(Order(0).EntryDate).ToString()
+                txtPOno.Text = Order(0).PONo
+                txtOrderNo.Text = Order(0).OrderNo
+                txtOrderDt.Text = Convert.ToDateTime(Order(0).OrderDate).ToString()
+                txtdispatchDt.Text = Convert.ToDateTime(Order(0).DispatchDate).ToString()
+                txtPartyName.Text = Order(0).PartyName
+                txtbrandName.Text = Order(0).BrandName
+            End If
+
+            '/ Fill Data by Tbl_ProjectInformationMaster_Two Table
+            Dim Project = linq_obj.SP_Select_Tbl_ProjectInformationMaster_Two(AddressId).ToList()
+            If Project.Count > 0 Then
+                TxtInfoPlantName.Text = Project(0).PlantName
+                TxtInfoModel.Text = Project(0).Model
+                TxtInfoProject.Text = Project(0).ProjectName
+                TxtInfoCapacity.Text = Project(0).Capacity
+                TxtInfoPowerAvl.Text = Project(0).PowerAvailable
+                TxtInfoPlantShape.Text = Project(0).PlantShape
+                TxtInfoLandArea.Text = Project(0).LandArea
+                TxtInfoTreatScheme.Text = Project(0).TreatmentScheme
+            End If
+
+            '/ Fill Data by Tbl_LetterMailComMaster_Two Table
+            Dim LetterH = linq_obj.SP_Select_Tbl_LetterMailComMaster_Two(AddressId).ToList()
+            If LetterH.Count > 0 Then
+                TxtLetterProDetail.Text = LetterH(0).ProjectDetail
+            End If
+
+            TblLetter.Clear()
+            '/ Fill Data by Tbl_LetterMailComMaster_Detail_Two Table
+            Dim LetterDesc = linq_obj.SP_Select_Tbl_LetterMailComMaster_Detail_Two(AddressId).ToList()
+            If LetterDesc.Count > 0 Then
+                For Each item As SP_Select_Tbl_LetterMailComMaster_Detail_TwoResult In LetterDesc
+                    Dim dr As DataRow
+                    dr = TblLetter.NewRow()
+                    dr("Date") = item.LDate
+                    dr("Card_Date") = item.Card_Date
+                    dr("Card_Rem") = item.Card_Rem
+                    dr("Mail_Rec") = item.Mail_Rec
+                    dr("Mail_Send") = item.Mail_Send
+                    dr("BY_Whom") = item.BY_Whom
+                    dr("Mail_Rem") = item.Mail_Rem
+                    TblLetter.Rows.Add(dr)
+                Next
+                DataLetter.DataSource = TblLetter
+            End If
+
+            TblProInst.Clear()
+            '/ Fill Data by Tbl_ProductInstallationMaster_Two Table
+            Dim ProInst = linq_obj.SP_Select_Tbl_ProductInstallationMaster_Two(AddressId).ToList()
+            If ProInst.Count > 0 Then
+                For Each item As SP_Select_Tbl_ProductInstallationMaster_TwoResult In ProInst
+                    Dim dr As DataRow
+                    dr = TblProInst.NewRow()
+                    dr("PDate") = item.PDate
+                    dr("Dis_Date") = item.Dis_Date
+                    dr("Product_Name") = item.Product_Name
+                    dr("Vendor_Name") = item.Vendor_Name
+                    dr("Station") = item.Station
+                    dr("Send_CU_To") = item.Send_CU_To
+                    dr("Rec_CU_From") = item.Rec_CU_From
+                    dr("CU_To_Venue") = item.CU_To_Venue
+                    dr("Comp_Date_With_Inst") = item.Comp_Date_With_Inst
+                    dr("By_Whom") = item.By_Whom
+                    dr("Remark") = item.Remark
+                    TblProInst.Rows.Add(dr)
+                Next
+                DataProInst.DataSource = TblProInst
+            End If
+
+            '/ Fill Data by Tbl_ProductInstallationMaster_Two Table
+            Dim ISI = linq_obj.SP_Select_Tbl_ISIProcessMaster_Two(AddressId).ToList()
+            If ISI.Count > 0 Then
+                TxtScheme.Text = ISI(0).Scheme_Name
+                TxtRecDate.Text = Convert.ToDateTime(ISI(0).D_Rec_Date).ToString()
+                TxtDocFDate.Text = Convert.ToDateTime(ISI(0).P_Doc_F_Date).ToString()
+                TxtDocRDate.Text = Convert.ToDateTime(ISI(0).P_Doc_R_Date).ToString()
+                TxtSToP.Text = ISI(0).F_Ok_S_Tc_P
+                TxtFSubmit.Text = ISI(0).F_Submit_P
+                TxtFileRegDate.Text = Convert.ToDateTime(ISI(0).File_Reg_Date).ToString()
+                TxtBISInspDate.Text = Convert.ToDateTime(ISI(0).BIS_Insp_Date).ToString()
+                TxtLicenceDate.Text = Convert.ToDateTime(ISI(0).Licence_Date).ToString()
+                TxtVender.Text = ISI(0).Vender
+                TxtRemark.Text = ISI(0).ISIRemark
+            End If
+
+
+            TblISIDesc.Clear()
+            '/ Fill Data by Tbl_ISIProcess_DetailMaster_Two Table
+            Dim ISIDes = linq_obj.SP_Select_Tbl_ISIProcess_DetailMaster_Two(AddressId).ToList()
+            If ISIDes.Count > 0 Then
+                For Each item As SP_Select_Tbl_ISIProcess_DetailMaster_TwoResult In ISIDes
+                    Dim dr As DataRow
+                    dr = TblISIDesc.NewRow()
+                    dr("Desc_Date") = item.Desc_Date
+                    dr("Desc_Remark") = item.Desc_Remark
+                    dr("Desc_ByWhom") = item.Desc_ByWhom
+                    TblISIDesc.Rows.Add(dr)
+                Next
+                DataISIGrid.DataSource = TblISIDesc
+            End If
+
+        Else
+            GetClientDetails_Bind()
+            PartyId = 0
+
+        End If
+    End Sub
+
+    Public Sub GetClientDetails_Bind()
+        Try
+            Dim partyDetail = linq_obj.SP_Select_Party_Master_ByAddressId(AddressId).ToList()
+            If partyDetail.Count > 0 Then
+                txtPOno.Text = partyDetail(0).PONo
+                txtOrderDt.Value = partyDetail(0).OrderDate
+            End If
+
+
+            Dim Claient = linq_obj.SP_Get_AddressList().ToList().Where(Function(t) t.Pk_AddressID = AddressId)
+            For Each item As SP_Get_AddressListResult In Claient
+                txtPartyName.Text = item.Name
+                txtBillAdresss.Text = item.Address
+                txtCity.Text = item.City
+                txtState.Text = item.State
+                txtDistrict.Text = item.District
+                txtTaluka.Text = item.Taluka
+                txtPincode.Text = item.Pincode
+                txtArea.Text = item.Area
+                txtcontctName.Text = item.ContactPerson
+                TxtAddContact.Text = item.MobileNo
+                txtEmail.Text = item.EmailID
+                txtEntryNo.Text = item.EnqNo
+                txtEntryDt.Value = item.EnqDate
+
+                txtDeladress.Text = item.DeliveryAddress
+                txtDelArea.Text = item.DeliveryArea
+                txtDelCity.Text = item.DeliveryCity
+                txtDelDistrict.Text = item.DeliveryDistrict
+                txtDelPincode.Text = item.DeliveryPincode
+                txtDelState.Text = item.DeliveryState
+                txtDelTaluka.Text = item.DeliveryTaluka
+            Next
+
+        Catch ex As Exception
+            MessageBox.Show("Error :" + ex.Message)
+        End Try
+    End Sub
+
+
+
+    Private Sub BtnChange_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnChange.Click
+        '/Order Entry 
+        linq_obj.SP_Update_Tbl_OrderMaster_Two(txtEntryNo.Text,
+                                               Convert.ToDateTime(txtEntryDt.Text),
+                                               txtPOno.Text,
+                                               txtOrderNo.Text,
+                                               Convert.ToDateTime(txtOrderDt.Text),
+                                               Convert.ToDateTime(txtdispatchDt.Text),
+                                               txtPartyName.Text,
+                                               txtbrandName.Text,
+                                               AddressId)
+        linq_obj.SubmitChanges()
+
+        '/Project Information
+        linq_obj.SP_Update_Tbl_ProjectInformationMaster_Two(AddressId,
+                                                            TxtInfoPlantName.Text,
+                                                            TxtInfoModel.Text,
+                                                            TxtInfoProject.Text,
+                                                            TxtInfoCapacity.Text,
+                                                            TxtInfoPowerAvl.Text,
+                                                            TxtInfoPlantShape.Text,
+                                                            TxtInfoLandArea.Text,
+                                                            TxtInfoTreatScheme.Text)
+        linq_obj.SubmitChanges()
+
+        '/ Letter Header 
+        linq_obj.SP_Update_Tbl_LetterMailComMaster_Two(AddressId, TxtLetterProDetail.Text)
+        linq_obj.SubmitChanges()
+
+        '/ Letter Description
+        linq_obj.SP_Delete_Tbl_LetterMailComMaster_Detail_Two(AddressId)
+        linq_obj.SubmitChanges()
+        For i As Integer = 0 To TblLetter.Rows.Count - 1
+            linq_obj.SP_Insert_Tbl_LetterMailComMaster_Detail_Two(AddressId,
+            Convert.ToDateTime(TblLetter.Rows(i)("Date").ToString()),
+            Convert.ToDateTime(TblLetter.Rows(i)("Card_Date").ToString()),
+            TblLetter.Rows(i)("Card_Rem").ToString(),
+            TblLetter.Rows(i)("Mail_Rec").ToString(),
+            TblLetter.Rows(i)("Mail_Send").ToString(),
+            TblLetter.Rows(i)("BY_Whom").ToString(),
+            TblLetter.Rows(i)("Mail_Rem").ToString())
+            linq_obj.SubmitChanges()
+        Next
+
+
+
+        '/ Product Instalation
+        linq_obj.SP_Delete_Tbl_ProductInstallationMaster_Two(AddressId)
+        linq_obj.SubmitChanges()
+        For i As Integer = 0 To TblProInst.Rows.Count - 1
+            linq_obj.SP_Insert_Tbl_ProductInstallationMaster_Two(AddressId,
+            Convert.ToDateTime(TblProInst.Rows(i)("PDate").ToString()),
+            Convert.ToDateTime(TblProInst.Rows(i)("Dis_Date").ToString()),
+            TblProInst.Rows(i)("Product_Name").ToString(),
+            TblProInst.Rows(i)("Vendor_Name").ToString(),
+            TblProInst.Rows(i)("Station").ToString(),
+            TblProInst.Rows(i)("Send_CU_To").ToString(),
+            TblProInst.Rows(i)("Rec_CU_From").ToString(),
+            TblProInst.Rows(i)("CU_To_Venue").ToString(),
+            Convert.ToDateTime(TblProInst.Rows(i)("Comp_Date_With_Inst").ToString()),
+            TblProInst.Rows(i)("By_Whom").ToString(),
+            TblProInst.Rows(i)("Remark").ToString())
+            linq_obj.SubmitChanges()
+        Next
+
+
+        '/ISI Header
+
+        linq_obj.SP_Update_Tbl_ISIProcessMaster_Two(AddressId,
+                                                    TxtScheme.Text,
+                                                    Convert.ToDateTime(TxtRecDate.Text),
+                                                    Convert.ToDateTime(TxtDocFDate.Text),
+                                                    Convert.ToDateTime(TxtDocRDate.Text),
+                                                    TxtSToP.Text, TxtFSubmit.Text,
+                                                    Convert.ToDateTime(TxtFileRegDate.Text),
+                                                    Convert.ToDateTime(TxtBISInspDate.Text),
+                                                    Convert.ToDateTime(TxtLicenceDate.Text),
+                                                    TxtVender.Text,
+                                                    TxtRemark.Text)
+        linq_obj.SubmitChanges()
+
+        '/ ISI Description 
+        linq_obj.SP_Delete_Tbl_ISIProcess_DetailMaster_Two(AddressId)
+        linq_obj.SubmitChanges()
+
+        For i As Integer = 0 To TblISIDesc.Rows.Count - 1
+            linq_obj.SP_Insert_Tbl_ISIProcess_DetailMaster_Two(AddressId,
+            Convert.ToDateTime(TblISIDesc.Rows(i)("Desc_Date").ToString()),
+            TblISIDesc.Rows(i)("Desc_Remark").ToString(),
+            TblISIDesc.Rows(i)("Desc_ByWhom").ToString())
+            linq_obj.SubmitChanges()
+        Next
+
+        MessageBox.Show("Information successfully changed...!!")
+    End Sub
+
+    Private Sub BtnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnDelete.Click
+        '/Order Entry 
+        linq_obj.SP_Delete_Tbl_OrderMaster_Two(AddressId)
+        linq_obj.SubmitChanges()
+
+        '/Project Info
+        linq_obj.SP_Delete_Tbl_ProjectInformationMaster_Two(AddressId)
+        linq_obj.SubmitChanges()
+
+        '/Letter Header
+        linq_obj.SP_Delete_Tbl_LetterMailComMaster_Two(AddressId)
+        linq_obj.SubmitChanges()
+
+        '/Letter Detail
+        linq_obj.SP_Delete_Tbl_LetterMailComMaster_Detail_Two(AddressId)
+        linq_obj.SubmitChanges()
+
+        '/Product Inst
+        linq_obj.SP_Delete_Tbl_ProductInstallationMaster_Two(AddressId)
+        linq_obj.SubmitChanges()
+
+        '/ISI Header
+        linq_obj.SP_Delete_Tbl_ISIProcessMaster_Two(AddressId)
+        linq_obj.SubmitChanges()
+
+        '/ISI Detail
+        linq_obj.SP_Delete_Tbl_ISIProcess_DetailMaster_Two(AddressId)
+        linq_obj.SubmitChanges()
+
+    End Sub
+
+    '/ DatGrid Row Delete
+    Private Sub BtnLetterDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnLetterDelete.Click
+        TblLetter.Rows(DataLetter.CurrentRow.Index).Delete()
+        DataLetter.DataSource = TblLetter
+
+    End Sub
+
+    '/ DataProInst Row Delete
+    Private Sub BtnProDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnProDelete.Click
+        TblProInst.Rows(DataProInst.CurrentRow.Index).Delete()
+        DataProInst.DataSource = TblProInst
+    End Sub
+
+    '/ DataISIGrid Row Delete
+    Private Sub BtnDescDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnDescDelete.Click
+        TblISIDesc.Rows(DataISIGrid.CurrentRow.Index).Delete()
+        DataISIGrid.DataSource = TblISIDesc
+    End Sub
+
+    Private Sub btnAddFolowup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddFolowup.Click
+
+    End Sub
+
+    Private Sub BtnAddLetter_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnAddLetter.Click
+
+    End Sub
+End Class

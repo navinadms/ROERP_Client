@@ -1,0 +1,81 @@
+  Private Sub btnpdf_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnpdf.Click
+
+        Dim str As String
+        Dim techinical12 As String
+        Dim QMaxId As Int32
+
+        Try
+            con1.Open()
+            If RblSingle.Checked = True Then
+                capacityType = RblSingle.Text
+                txtCapacity2.Text = "0"
+
+            ElseIf RblMultiple.Checked = True Then
+                capacityType = RblMultiple.Text
+            ElseIf RblOther.Checked = True Then
+
+                capacityType = RblOther.Text
+                txtCapacity2.Text = "0"
+            End If
+
+            str = ""
+
+            str = "insert into Quotation_Master (QType,Fk_EnqTypeID,Quot_No,Enq_No,Ref,Quot_Type,Name,Address,Capacity_Type,Capacity_Single,Capacity_Multiple,KindAtt,Subject,Buss_Excecutive,Buss_Name,Later_Description,Later_Date,Capacity_Word,UserName,DefaultImage) values('" + txtType.Text + "','" & ddlEnqType.SelectedValue & "'," & QuotationMaxId & ",'" + txtEnqNo.Text + "','" + txtRef.Text + "','" + txtQoutType.Text + "','" + txtName.Text + "','" + txtAddress.Text + "', '" + capacityType.ToString() + "','" + txtCapacity1.Text + "','" + txtCapacity2.Text + "','" + txtKind.Text + "','" + txtSub.Text + "','" + txtBussExecutive.Text + "','" + txtBuss_Name.Text + "','" + txtDescription.Text + "','" + txtLatterDate.Text + "','" + txtCapacityWord.Text + "','" + Class1.global.UserName.ToString() + "','0')"
+            cmd = New OleDbCommand(str, con1)
+            cmd.ExecuteNonQuery()
+            cmd.Dispose()
+
+            Dim mm As String
+            mm = "select Max(Pk_QuotationID) as QMax from Quotation_Master"
+            cmd = New OleDbCommand(mm, con1)
+            dr = cmd.ExecuteReader()
+            dr.Read()
+            QMaxId = dr("QMax").ToString()
+            cmd.Dispose()
+            dr.Dispose()
+            For i As Integer = 0 To GvTechnical.Rows.Count - 1
+
+                Dim RemoveStatus As Boolean = CBool(GvTechnical.Rows(i).Cells(0).Value)
+                If RemoveStatus Then
+
+                Else
+
+                    Dim status As String
+                    Dim selectStatus As Boolean = CBool(GvTechnical.Rows(i).Cells(1).Value)
+                    status = ""
+
+                    If selectStatus Then
+                        status = "Yes"
+                    Else
+                        status = "No"
+
+                    End If
+                    If RblSingle.Checked = True Then
+                        techinical12 = "insert into Technical_Data(Fk_QuotationID,SNo,TechnicalData,Price1,DocumentationImage) values(" & QMaxId & ",'" + GvTechnical.Rows(i).Cells(2).Value.ToString() + "','" + GvTechnical.Rows(i).Cells(3).Value.ToString() + "','" + GvTechnical.Rows(i).Cells(4).Value.ToString() + "','" + status + "')"
+                        cmd = New OleDbCommand(techinical12, con1)
+                        cmd.ExecuteNonQuery()
+                        cmd.Dispose()
+                    ElseIf RblOther.Checked = True Then
+                        techinical12 = "insert into Technical_Data(Fk_QuotationID,SNo,TechnicalData,Qty,Price1,Price2,DocumentationImage) values(" & QMaxId & ",'" + GvTechnical.Rows(i).Cells(2).Value.ToString() + "','" + GvTechnical.Rows(i).Cells(3).Value.ToString() + "','" + GvTechnical.Rows(i).Cells(4).Value.ToString() + "','" + GvTechnical.Rows(i).Cells(5).Value.ToString() + "','" + GvTechnical.Rows(i).Cells(6).Value.ToString() + "','" + status + "')"
+                        cmd = New OleDbCommand(techinical12, con1)
+                        cmd.ExecuteNonQuery()
+                        cmd.Dispose()
+                    ElseIf RblMultiple.Checked = True Then
+                        techinical12 = "insert into Technical_Data(Fk_QuotationID,SNo,TechnicalData,Price1,Price2,DocumentationImage) values(" & QMaxId & ",'" + GvTechnical.Rows(i).Cells(2).Value.ToString() + "','" + GvTechnical.Rows(i).Cells(3).Value.ToString() + "','" + GvTechnical.Rows(i).Cells(4).Value.ToString() + "','" + GvTechnical.Rows(i).Cells(5).Value.ToString() + "','" + status + "')"
+                        cmd = New OleDbCommand(techinical12, con1)
+                        cmd.ExecuteNonQuery()
+                        cmd.Dispose()
+                    End If
+                End If
+            Next
+
+            MessageBox.Show("Documentation Create Successfull")
+            con1.Close()
+            GvQuotationSearch_Bind()
+
+        Catch ex As Exception
+
+        End Try
+        '' Pdf_Creation()
+
+    End Sub

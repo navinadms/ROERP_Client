@@ -1,0 +1,185 @@
+﻿Public Class SecondAllotment
+
+    Dim linq_obj As New RoErpDataContext(System.Configuration.ConfigurationManager.AppSettings("constr").ToString())
+    Dim Address_ID As Integer
+    Dim UserId As Integer
+    Dim allotID As Integer
+
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+        AutoCompated_Text()
+        bindUser()
+    End Sub
+    Public Sub bindUser()
+        cmbUser.DataSource = Nothing
+        Dim dataUser = linq_obj.SP_Get_UserList().Where(Function(p) p.Designation.ToUpper().Trim() = "EXE. ASS. TO MD").ToList()
+        cmbUser.DataSource = dataUser
+        cmbUser.DisplayMember = "UserName"
+        cmbUser.ValueMember = "Pk_UserId"
+        cmbUser.AutoCompleteMode = AutoCompleteMode.Append
+        cmbUser.DropDownStyle = ComboBoxStyle.DropDownList
+        cmbUser.AutoCompleteSource = AutoCompleteSource.ListItems
+        Dim dataUserSearch = linq_obj.SP_Get_UserList().Where(Function(p) p.Designation.ToUpper().Trim() = "EXE. ASS. TO MD").ToList()
+        cmbSearchUser.DataSource = dataUserSearch
+        cmbSearchUser.DisplayMember = "UserName"
+        cmbSearchUser.ValueMember = "Pk_UserId"
+        cmbSearchUser.AutoCompleteMode = AutoCompleteMode.Append
+        cmbSearchUser.DropDownStyle = ComboBoxStyle.DropDownList
+        cmbSearchUser.AutoCompleteSource = AutoCompleteSource.ListItems
+    End Sub
+    Public Sub AutoCompated_Text()
+        txtCustName.AutoCompleteCustomSource.Clear()
+        txtEnqNo.AutoCompleteCustomSource.Clear()
+        Dim data = linq_obj.SP_Get_AddressListAutoComplete("Name").ToList()
+        For Each iteam As SP_Get_AddressListAutoCompleteResult In data
+            txtCustName.AutoCompleteCustomSource.Add(iteam.Result)
+        Next
+        Dim dataEnq = linq_obj.SP_Get_AddressListAutoComplete("EnqNo").ToList()
+        For Each iteam As SP_Get_AddressListAutoCompleteResult In dataEnq
+            txtEnqNo.AutoCompleteCustomSource.Add(iteam.Result)
+        Next
+    End Sub
+    Public Sub bindData()
+        Dim data = linq_obj.SP_Get_AddressListByEnqNo(txtEnqNo.Text.Trim()).ToList()
+        If (data.Count > 0) Then
+            txtCustName.Text = Convert.ToString(data(0).Name)
+            Address_ID = data(0).Pk_AddressID
+        End If
+    End Sub
+    Private Sub txtEnqNo_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtEnqNo.Leave
+        bindData()
+    End Sub
+
+    Private Sub TextBox_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Dim txt As New TextBox()
+        txt = DirectCast(sender, TextBox)
+        txt.BackColor = Color.LightYellow
+    End Sub
+    Private Sub TextBox_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Dim txt As New TextBox()
+        txt = DirectCast(sender, TextBox)
+        txt.BackColor = Color.White
+    End Sub
+
+    Private Sub SecondAllotment_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        For Each control As Control In Me.Controls
+            ' The textbox control.
+            Dim parentControl As New Control
+            If (control.GetType() Is GetType(GroupBox)) Then
+                Dim grpBox As GroupBox = TryCast(control, GroupBox)
+                parentControl = grpBox
+            ElseIf (control.GetType() Is GetType(TabControl)) Then
+                Dim TC As TabControl = TryCast(control, TabControl)
+                parentControl = TC
+            Else
+                Try
+                    parentControl = control
+                Catch ex As Exception
+
+                End Try
+
+            End If
+
+            For Each subcontrol As Control In parentControl.Controls
+                If (subcontrol.GetType() Is GetType(TextBox)) Then
+                    Dim textBox As TextBox = TryCast(subcontrol, TextBox)
+
+                    ' If not null, set the handler.
+                    If textBox IsNot Nothing Then
+                        AddHandler textBox.Enter, AddressOf TextBox_Enter
+                        AddHandler textBox.Leave, AddressOf TextBox_Leave
+                    End If
+                End If
+
+                ' Set the handler.
+            Next
+
+            ' Set the handler.
+        Next
+    End Sub
+
+    Public Sub bindGrid()
+        If (UserId > 0) Then
+            Dim userAllotedData = linq_obj.SP_Tbl_SecondAllotmentDetail_SelectByUser(UserId).ToList()
+            If (userAllotedData.Count) Then
+                GvAllotedData.DataSource = userAllotedData
+                GvAllotedData.Columns(GvAllotedData.Columns.Count - 1).Visible = False
+                GvAllotedData.Columns(GvAllotedData.Columns.Count - 2).Visible = False
+                GvAllotedData.Columns(0).Visible = False
+            Else
+                GvAllotedData.DataSource = Nothing
+
+            End If
+        Else
+            GvAllotedData.DataSource = Nothing
+        End If
+
+    End Sub
+
+    Private Sub btnAllot_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAllot.Click
+        Dim res As Integer
+        Try
+            If (cmbUser.SelectedIndex >= 0 AndAlso txtEnqNo.Text.Trim() <> "") Then
+                If (btnAllot.Text = "Update") Then
+                    res = linq_obj.SP_Tbl_SecondAllotmentDetail_Update(Address_ID, Convert.ToInt32(cmbUser.SelectedValue), allotID)
+                    If (res > 0) Then
+                        linq_obj.SubmitChanges()
+                        clear()
+                    Else
+                        MessageBox.Show("Already Alloted This Enquiry")
+                        txtEnqNo.Text = ""
+                        txtEnqNo.Focus()
+                        clear()
+                    End If
+
+                Else
+                    res = linq_obj.SP_Tbl_SecondAllotmentDetail_Insert(Address_ID, Convert.ToInt32(cmbUser.SelectedValue))
+                    If (res > 0) Then
+                        MessageBox.Show("Successfully Alloted To User : " + cmbUser.Text)
+                        txtCustName.Text = ""
+                        txtEnqNo.Text = ""
+                        txtEnqNo.Focus()
+                        clear()
+
+                    Else
+                        MessageBox.Show("Already Alloted This Enquiry")
+                        txtEnqNo.Text = ""
+                        txtEnqNo.Focus()
+                        clear()
+                    End If
+                End If
+
+            Else
+                MessageBox.Show("Select User For Allotment...")
+            End If
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+    End Sub
+    Public Sub clear()
+        txtEnqNo.Text = ""
+        txtCustName.Text = ""
+        cmbUser.SelectedIndex = 0
+        btnAllot.Text = "RE-ALLOT"
+    End Sub
+
+    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+        clear()
+    End Sub
+
+    Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+        UserId = cmbSearchUser.SelectedValue
+        bindGrid()
+    End Sub
+
+
+    Private Sub GvAllotedData_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GvAllotedData.DoubleClick
+        allotID = Convert.ToInt64(Me.GvAllotedData.SelectedCells(0).Value)
+        txtEnqNo.Text = Convert.ToString(Me.GvAllotedData.SelectedCells(2).Value)
+        bindData()
+        cmbUser.SelectedValue = Convert.ToInt32(Me.GvAllotedData.SelectedCells(3).Value)
+        btnAllot.Text = "Update"
+
+    End Sub
+End Class

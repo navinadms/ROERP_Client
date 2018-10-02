@@ -1,0 +1,322 @@
+﻿Public Class PartyInvoiceMaster
+    Dim linq_obj As New RoErpDataContext(System.Configuration.ConfigurationManager.AppSettings("constr").ToString())
+    Dim Address_ID As Integer
+    Dim PartyId As Integer
+    Dim Fk_PartyDebitId As Integer
+    Dim stringAddress As String
+    Dim tblInvoiceDetail As New DataTable
+
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+        AutoComplete_Text()
+        GvInEnq_Bind()
+        RavSoft.CueProvider.SetCue(txtbankDetail, "Bank Information")
+        RavSoft.CueProvider.SetCue(txtTransporter, "Transporter Name")
+        txtTotRI.Text = Convert.ToString(GDVInqDetail.Rows.Count)
+    End Sub
+    Public Sub GvInEnq_Bind()
+        Dim enq = linq_obj.SP_Get_AddressForOrder().ToList()
+        Dim dt As New DataTable
+        dt.Columns.Add("ID")
+        dt.Columns.Add("Name")
+        dt.Columns.Add("EnqNo")
+        For Each item As SP_Get_AddressForOrderResult In enq
+            dt.Rows.Add(item.Pk_AddressID, item.Name, item.EnqNo)
+        Next
+        GDVInqDetail.DataSource = dt
+        txtTotRI.Text = Convert.ToString(GDVInqDetail.Rows.Count)
+        'Me.gvAddressList.Columns(0).Visible = False
+
+    End Sub
+    Public Sub AutoComplete_Text()
+        Dim Getadd = linq_obj.SP_Get_AddressList().ToList()
+        For Each iteam As SP_Get_AddressListResult In Getadd
+            txtBuyerName.AutoCompleteCustomSource.Add(iteam.Name)
+            txtEntryNo.AutoCompleteCustomSource.Add(iteam.EnqNo)
+        Next
+    End Sub
+    Private Sub btnPOSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
+        Dim res As Integer
+        res = linq_obj.SP_Insert_Tbl_InvoiceMaster(Address_ID, Fk_PartyDebitId, PartyId, txtInvoiceNo.Text, txtTransporter.Text, txtRRLRNo.Text,
+                                                   Convert.ToDecimal(txtBasic.Text), Convert.ToDecimal(txtDiscount.Text), Convert.ToDecimal(txtTotal.Text),
+                                                   Convert.ToInt32(txtCstPerc.Text), Convert.ToDecimal(txtSubTotal.Text), Convert.ToDecimal(txtAdvance.Text),
+                                                   Convert.ToDecimal(txtNetAmount.Text), txtbankDetail.Text, dtInvoiceDate.Text)
+
+        If (res > 0) Then
+            linq_obj.SubmitChanges()
+            MessageBox.Show("Successfully Saved")
+        Else
+            MessageBox.Show("Found Invoice Detail")
+        End If
+        GvInEnq_Bind()
+
+
+    End Sub
+
+    Private Sub btnchangePO_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnchange.Click
+        Dim res As Integer
+        res = linq_obj.SP_Update_Tbl_InvoiceMaster(Address_ID, txtInvoiceNo.Text, txtTransporter.Text, txtRRLRNo.Text,
+                                                   Convert.ToDecimal(txtBasic.Text), Convert.ToDecimal(txtDiscount.Text), Convert.ToDecimal(txtTotal.Text),
+                                                   Convert.ToInt32(txtCstPerc.Text), Convert.ToDecimal(txtSubTotal.Text), Convert.ToDecimal(txtAdvance.Text),
+                                                   Convert.ToDecimal(txtNetAmount.Text), txtbankDetail.Text, dtInvoiceDate.Text)
+
+        If (res >= 0) Then
+            linq_obj.SubmitChanges()
+            MessageBox.Show("Successfully Updated")
+        Else
+            MessageBox.Show("Not Updated Invoice Detail")
+        End If
+        GvInEnq_Bind()
+
+    End Sub
+
+    Private Sub btnPOAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd.Click
+        ClearAll()
+    End Sub
+
+    Private Sub btnInvoicesearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnInvoicesearch.Click
+        Dim enq = linq_obj.SP_Get_AddressForOrder().ToList.Where(Function(t) t.EnqDate > Convert.ToDateTime(dtFrom.Value) And t.EnqDate < dtITo.Value)
+
+        Dim dt As New DataTable
+        dt.Columns.Add("ID")
+        dt.Columns.Add("Name")
+        dt.Columns.Add("EnqNo")
+        For Each item As SP_Get_AddressForOrderResult In enq
+            dt.Rows.Add(item.Pk_AddressID, item.Name, item.EnqNo)
+        Next
+        GDVInqDetail.DataSource = dt
+        txtTotRI.Text = Convert.ToString(GDVInqDetail.Rows.Count)
+    End Sub
+
+    Private Sub GDVInqDetail_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GDVInqDetail.DoubleClick
+        Address_ID = Me.GDVInqDetail.SelectedCells(0).Value()
+        bindAllData(Address_ID)
+        bindInvoiceData(Address_ID)
+    End Sub
+    Public Sub bindInvoiceData(ByVal Address_ID)
+        Try
+            Dim datainvoice = linq_obj.SP_Select_Tbl_InvoiceMaster(Convert.ToInt64(Address_ID)).ToList()
+
+            If (datainvoice.Count > 0) Then
+                btnSave.Enabled = False
+                bindAllData(Address_ID)
+                txtRRLRNo.Text = Convert.ToString(datainvoice(0).RRLRNo)
+
+                txtAdvance.Text = Convert.ToString(datainvoice(0).Advance)
+
+                txtCstPerc.Text = Convert.ToString(datainvoice(0).CSTPerc)
+
+                txtNetAmount.Text = Convert.ToString(datainvoice(0).NetAmount)
+
+                txtAdvance.Text = Convert.ToString(datainvoice(0).Advance)
+
+                txtInvoiceNo.Text = Convert.ToString(datainvoice(0).InvoiceNo)
+                txtTransporter.Text = Convert.ToString(datainvoice(0).Transporter)
+                txtbankDetail.Text = Convert.ToString(datainvoice(0).BankDetail)
+                dtInvoiceDate.Value = datainvoice(0).InvoiceDate.Value
+                txtCSTAmount.Text = Convert.ToString((Convert.ToDecimal(If(txtTotal.Text = "", 0, txtTotal.Text)) * Convert.ToDecimal(If(txtCstPerc.Text = "", 0, txtCstPerc.Text))) / 100)
+                txtSubTotal.Text = Convert.ToString((Convert.ToDecimal(If(txtTotal.Text = "", 0, txtTotal.Text)) + Convert.ToDecimal(If(txtCSTAmount.Text = "", 0, txtCSTAmount.Text))))
+                txtNetAmount.Text = Convert.ToString((Convert.ToDecimal(If(txtSubTotal.Text = "", 0, txtSubTotal.Text)) - Convert.ToDecimal(If(txtAdvance.Text = "", 0, txtAdvance.Text))))
+                txtRsWords.Text = RupeeConvert.changeToWords(If(txtNetAmount.Text = "", 0, txtNetAmount.Text), True)
+
+
+            Else
+                btnSave.Enabled = True
+
+            End If
+        Catch ex As Exception
+            btnSave.Enabled = True
+
+        End Try
+    End Sub
+    Public Sub bindAllData(ByVal address As Integer)
+        ClearAll()
+        Address_ID = Convert.ToInt32(address)
+        GetClientDetails_Bind()
+        bindPartyDetail()
+        txtCSTAmount.Text = Convert.ToString((Convert.ToDecimal(If(txtTotal.Text = "", 0, txtTotal.Text)) * Convert.ToDecimal(If(txtCstPerc.Text = "", 0, txtCstPerc.Text))) / 100)
+        txtSubTotal.Text = Convert.ToString((Convert.ToDecimal(If(txtTotal.Text = "", 0, txtTotal.Text)) + Convert.ToDecimal(If(txtCSTAmount.Text = "", 0, txtCSTAmount.Text))))
+        txtNetAmount.Text = Convert.ToString((Convert.ToDecimal(If(txtSubTotal.Text = "", 0, txtSubTotal.Text)) - Convert.ToDecimal(If(txtAdvance.Text = "", 0, txtAdvance.Text))))
+        txtRsWords.Text = RupeeConvert.changeToWords(If(txtNetAmount.Text = "", 0, txtNetAmount.Text), True)
+    End Sub
+    Public Sub bindPartyDetail()
+        Dim data = linq_obj.SP_Select_Party_Master_ByAddressId(Address_ID).ToList()
+        If (data.Count > 0) Then
+            txtPONo.Text = Convert.ToString(data(0).PONo)
+            dtPODate.Value = Convert.ToDateTime(data(0).OrderDate)
+
+            'BIND A DEBIT DETAIL
+            tblInvoiceDetail.Clear()
+            PartyId = Convert.ToInt64(data(0).Pk_PartyId)
+
+            Dim dataDetail = linq_obj.SP_Select_Party_DebitDetail_ByPartyId(data(0).Pk_PartyId).ToList()
+            If (dataDetail.Count > 0) Then
+                For Each item As SP_Select_Party_DebitDetail_ByPartyIdResult In dataDetail
+                    Dim dr As DataRow
+                    dr = tblInvoiceDetail.NewRow()
+                    dr("No") = Convert.ToString(item.DebitEntryNo)
+                    dr("Description") = Convert.ToString(item.PlantScheme)
+                    dr("Rate") = Convert.ToString(item.Amount)
+                    dr("Qty") = Convert.ToString(If(item.Qty Is Nothing, 1, item.Qty))
+                    dr("Total") = Convert.ToString(Convert.ToDecimal(item.Amount) * Convert.ToInt32(If(item.Qty Is Nothing, 1, item.Qty)))
+                    tblInvoiceDetail.Rows.Add(dr)
+
+                Next
+                dgInvoiceDetail.DataSource = tblInvoiceDetail
+                Fk_PartyDebitId = Convert.ToInt64(dataDetail(0).Fk_PartyDebitId)
+                txtBasic.Text = dataDetail(0).TotalDebit.Value.ToString()
+                txtDiscount.Text = dataDetail(0).Discount.Value.ToString()
+                txtTotal.Text = dataDetail(0).NetDebit.Value.ToString()
+
+            End If
+        End If
+        Dim dataOrder = linq_obj.SP_Select_Tbl_OrderParty_Master_ByAddressId(Address_ID).ToList()
+        If (dataOrder.Count > 0) Then
+            txtCSTNo.Text = Convert.ToString(dataOrder(0).CSTNo)
+            txtGSTNo.Text = Convert.ToString(dataOrder(0).VatNoTinNo)
+
+
+        End If
+
+    End Sub
+
+    Private Sub ClearAll()
+        Address_ID = 0
+        tblInvoiceDetail.Clear()
+        dgInvoiceDetail.DataSource = tblInvoiceDetail
+        txtAddress.Text = ""
+        txtAdvance.Text = 0
+        txtbankDetail.Text = ""
+        txtBasic.Text = ""
+        txtContactNo.Text = ""
+        txtBuyerName.Text = ""
+        txtContactPerson.Text = ""
+        txtCSTAmount.Text = ""
+        txtCstPerc.Text = 2
+        txtCSTNo.Text = ""
+        txtDiscount.Text = ""
+        txtEntryNo.Text = ""
+        txtGSTNo.Text = ""
+        txtInvoiceNo.Text = ""
+        txtNetAmount.Text = ""
+        txtPONo.Text = ""
+        txtRRLRNo.Text = ""
+        txtRsWords.Text = ""
+        txtSubTotal.Text = ""
+        txtTotal.Text = ""
+        txtTransporter.Text = ""
+        dtInvoiceDate.Value = DateTime.Now
+        dtPODate.Value = DateTime.Now
+
+    End Sub
+    Public Sub GetClientDetails_Bind()
+        Try
+            Dim Claient = linq_obj.SP_Get_AddressList().ToList().Where(Function(t) t.Pk_AddressID = Address_ID)
+            For Each item As SP_Get_AddressListResult In Claient
+                txtBuyerName.Text = item.Name
+                txtAddress.Text = item.DeliveryAddress + "," + item.DeliveryArea + "," + item.DeliveryDistrict + "," + item.DeliveryState + "-" + item.DeliveryPincode
+                txtAddress.Text += "Delivery Address -" + item.DeliveryAddress + "," + item.DeliveryArea + "," + item.DeliveryDistrict + "," + item.DeliveryCity + "," + item.DeliveryState + "," + item.DeliveryPincode
+                txtContactPerson.Text = item.ContactPerson
+                txtContactNo.Text = item.MobileNo
+                txtEntryNo.Text = item.EnqNo
+                'txtEntryNo.Text = item.EnqNo
+            Next
+            'Get Enquiry Client Master Details
+        Catch ex As Exception
+            MessageBox.Show("Error :" + ex.Message)
+        End Try
+    End Sub
+
+    Private Sub PartyInvoiceMaster_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        'add columns in debitdata
+        tblInvoiceDetail.Columns.Add("No")
+        tblInvoiceDetail.Columns.Add("Description")
+        tblInvoiceDetail.Columns.Add("Qty")
+        tblInvoiceDetail.Columns.Add("Rate")
+        tblInvoiceDetail.Columns.Add("Total")
+        dgInvoiceDetail.DataSource = tblInvoiceDetail
+    End Sub
+
+    Private Sub txtCstPerc_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCstPerc.Leave
+        txtCSTAmount.Text = Convert.ToString((Convert.ToDecimal(If(txtTotal.Text = "", 0, txtTotal.Text)) * Convert.ToDecimal(If(txtCstPerc.Text = "", 0, txtCstPerc.Text))) / 100)
+        txtSubTotal.Text = Convert.ToString((Convert.ToDecimal(If(txtTotal.Text = "", 0, txtTotal.Text)) + Convert.ToDecimal(If(txtCSTAmount.Text = "", 0, txtCSTAmount.Text))))
+
+        txtNetAmount.Text = Convert.ToString((Convert.ToDecimal(If(txtSubTotal.Text = "", 0, txtSubTotal.Text)) - Convert.ToDecimal(If(txtAdvance.Text = "", 0, txtAdvance.Text))))
+    End Sub
+
+    Private Sub txtTotal_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTotal.Leave
+        txtCSTAmount.Text = Convert.ToString((Convert.ToDecimal(If(txtTotal.Text = "", 0, txtTotal.Text)) * Convert.ToDecimal(If(txtCstPerc.Text = "", 0, txtCstPerc.Text))) / 100)
+        txtSubTotal.Text = Convert.ToString((Convert.ToDecimal(If(txtTotal.Text = "", 0, txtTotal.Text)) + Convert.ToDecimal(If(txtCSTAmount.Text = "", 0, txtCSTAmount.Text))))
+        txtNetAmount.Text = Convert.ToString((Convert.ToDecimal(If(txtSubTotal.Text = "", 0, txtSubTotal.Text)) - Convert.ToDecimal(If(txtAdvance.Text = "", 0, txtAdvance.Text))))
+        txtRsWords.Text = RupeeConvert.changeToWords(If(txtNetAmount.Text = "", 0, txtNetAmount.Text), True)
+    End Sub
+    Private Sub txtCstPerc_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtCstPerc.KeyPress
+        If Not IsNumeric(e.KeyChar) Then e.Handled = True
+    End Sub
+
+    Private Sub txtSubTotal_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSubTotal.KeyPress
+        If Not IsNumeric(e.KeyChar) Then e.Handled = True
+    End Sub
+
+    Private Sub txtEntryNo_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtEntryNo.Leave
+        ClearAll()
+        Dim data = linq_obj.SP_Get_AddressListByEnqNo(txtEntryNo.Text).ToList()
+        If (data.Count > 0) Then
+            Address_ID = data(0).Pk_AddressID
+            bindAllData(Address_ID)
+        End If
+    End Sub
+
+    Private Sub txtAdvance_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtAdvance.Leave
+        txtNetAmount.Text = Convert.ToString((Convert.ToDecimal(If(txtSubTotal.Text = "", 0, txtSubTotal.Text)) - Convert.ToDecimal(If(txtAdvance.Text = "", 0, txtAdvance.Text))))
+        txtRsWords.Text = RupeeConvert.changeToWords(If(txtNetAmount.Text = "", 0, txtNetAmount.Text), True)
+    End Sub
+
+    Private Sub txtAdvance_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtAdvance.KeyPress
+        If Not IsNumeric(e.KeyChar) Then e.Handled = True
+    End Sub
+
+    Private Sub btnViewAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnViewAll.Click
+        GvInEnq_Bind()
+
+    End Sub
+
+    Private Sub btnClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClose.Click
+        ClearAll()
+        Me.Close()
+    End Sub
+
+    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+        ClearAll()
+    End Sub
+
+    Private Sub btnDel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDel.Click
+        Dim result As DialogResult = MessageBox.Show("Are You Sure?", "Important Message", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)
+        If result = DialogResult.Yes Then
+
+            linq_obj.SP_Delete_Tbl_InvoiceMaster(Address_ID)
+            linq_obj.SubmitChanges()
+
+        End If
+
+    End Sub
+
+    Private Sub btnReportInvoice_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnReportInvoice.Click
+
+        If Address_ID > 0 Then
+            Dim frm As New ReportPerformaInvoice(Address_ID)
+            frm.MdiParent = MDIMainForm
+            frm.StartPosition = FormStartPosition.CenterScreen
+            frm.Show()
+        End If
+
+        '  MessageBox.Show("Display A Reports")
+    End Sub
+
+    Private Sub GDVInqDetail_PreviewKeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PreviewKeyDownEventArgs) Handles GDVInqDetail.PreviewKeyDown
+        Address_ID = Me.GDVInqDetail.SelectedCells(0).Value()
+        bindAllData(Address_ID)
+        bindInvoiceData(Address_ID)
+    End Sub
+End Class

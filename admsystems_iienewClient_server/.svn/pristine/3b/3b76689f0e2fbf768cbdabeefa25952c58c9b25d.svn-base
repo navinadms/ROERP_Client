@@ -1,0 +1,2067 @@
+﻿Imports System.IO
+Imports System.Data.SqlClient
+
+Public Class ServiceManager
+    Dim imgQualityReportSrc As String
+    Dim imgQualityReportPath As String
+    Dim imgDoc1Src As String
+    Dim imgDoc2Src As String
+    Dim imgDoc3Src As String
+    Dim imgDoc1Path As String
+    Dim imgDoc2Path As String
+    Dim imgDoc3Path As String
+    Dim AddressId As Integer
+    Dim ServiceId As Integer
+    Dim linq_obj As New RoErpDataContext(System.Configuration.ConfigurationManager.AppSettings("constr").ToString())
+    Dim Address_ID As Integer
+    Dim tblEngFollowup As New DataTable
+    Dim tblECDone As New DataTable
+    Dim tblTPR As New DataTable
+    Dim tblChkLog As New DataTable
+    Dim tblSpareDetail As New DataTable
+    Dim tblGenService As New DataTable
+    Dim tblContactDetail As New DataTable
+    'viraj
+    Dim imgDocErrectionSrc As String
+    Dim imgDocErrectionPath As String
+    Dim tblPrDetail As New DataTable
+    Dim tblQuality As New DataTable
+    Dim tblWaterDetails As New DataTable
+
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+        AutoComplete_Text()
+        GvInEnq_Bind()
+        bindCombo()
+        txtTotOrders.Text = Convert.ToString(DGVServiceDetails.Rows.Count - 1)
+
+        RavSoft.CueProvider.SetCue(txtEmail1, "Email 1")
+        RavSoft.CueProvider.SetCue(txtEmail2, "Email 2")
+    End Sub
+    Private Sub ServiceManager_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        'add Columns To all Tables
+        'EngFollowupTable
+        tblEngFollowup.Columns.Add("Date")
+        tblEngFollowup.Columns.Add("StartTime")
+        tblEngFollowup.Columns.Add("EndTime")
+        tblEngFollowup.Columns.Add("InstallationFor")
+        tblEngFollowup.Columns.Add("WorkDone")
+        tblEngFollowup.Columns.Add("isDelay")
+        tblEngFollowup.Columns.Add("DelayRemarks")
+
+        tblEngFollowup.Columns.Add("Remarks")
+
+        'Added Service ECDone
+        tblECDone.Columns.Add("InstallationType")
+        tblECDone.Columns.Add("isDone")
+        tblECDone.Columns.Add("DoneDate")
+
+        'Added Technical Performance Report
+
+        tblTPR.Columns.Add("EngineerName")
+        tblTPR.Columns.Add("ReportBy")
+        tblTPR.Columns.Add("PerformanceCategory")
+        tblTPR.Columns.Add("Remarks")
+
+
+
+
+
+        'Check Log Detail
+        tblChkLog.Columns.Add("Title")
+        tblChkLog.Columns.Add("isDone")
+        tblChkLog.Columns.Add("Date")
+        tblChkLog.Columns.Add("Remarks")
+
+
+        '/ Spares Details
+        tblSpareDetail.Columns.Add("ItemName")
+        tblSpareDetail.Columns.Add("Qty")
+        tblSpareDetail.Columns.Add("Price")
+        tblSpareDetail.Columns.Add("Amount")
+
+
+        'Added A Service FollowUp
+        tblGenService.Columns.Add("FollowUp")
+        tblGenService.Columns.Add("TentativeDate")
+        tblGenService.Columns.Add("Status")
+        tblGenService.Columns.Add("Remarks")
+
+
+        tblPrDetail.Columns.Add("HeaderName")
+        tblPrDetail.Columns.Add("Status")
+        tblPrDetail.Columns.Add("CompletionDate")
+        tblPrDetail.Columns.Add("Remarks")
+
+
+        tblQuality.Columns.Add("RawWater")
+        tblQuality.Columns.Add("Parameter")
+        tblQuality.Columns.Add("TreatedWater")
+
+        tblWaterDetails.Columns.Add("WaterType")
+        tblWaterDetails.Columns.Add("Status")
+        tblWaterDetails.Columns.Add("Remarks")
+
+        tblContactDetail.Columns.Add("Name")
+        tblContactDetail.Columns.Add("Post")
+        tblContactDetail.Columns.Add("Contact")
+        tblContactDetail.Columns.Add("Email")
+
+
+    End Sub
+    Public Sub bindCombo()
+
+    End Sub
+    Public Sub GvInEnq_Bind()
+
+        Dim enq = linq_obj.SP_Get_AddressForOrder().ToList().Distinct()
+        Dim dt As New DataTable
+        dt.Columns.Add("ID")
+        dt.Columns.Add("Name")
+        dt.Columns.Add("EnqNo")
+        For Each item As SP_Get_AddressForOrderResult In enq
+            dt.Rows.Add(item.Pk_AddressID, item.Name, item.EnqNo)
+        Next
+        DGVServiceDetails.DataSource = dt
+        Me.DGVServiceDetails.Columns(0).Visible = False
+
+    End Sub
+    Public Sub AutoComplete_Text()
+        Dim Getadd = linq_obj.SP_Get_AddressForOrder().ToList()
+        For Each iteam As SP_Get_AddressForOrderResult In Getadd
+            txtPartyName.AutoCompleteCustomSource.Add(iteam.Name)
+            txtEntryNo.AutoCompleteCustomSource.Add(iteam.EnqNo)
+            txtParty.AutoCompleteCustomSource.Add(iteam.Name)
+            txtcoPerson.AutoCompleteCustomSource.Add(iteam.ContactPerson)
+            txtStation.AutoCompleteCustomSource.Add(iteam.Area)
+            txtConatactno.AutoCompleteCustomSource.Add(iteam.MobileNo)
+            txtEmail.AutoCompleteCustomSource.Add(iteam.EmailID)
+
+            ' txtInqSearchParty.AutoCompleteCustomSource.Add(iteam.Name)
+            ' txtRef.AutoCompleteCustomSource.Add(iteam.Reference1)
+            ' txtRef2.AutoCompleteCustomSource.Add(iteam.Reference2)
+            ' txtenquiryfor.AutoCompleteCustomSource.Add(iteam.EnqFor)
+            ' txtPerHr.AutoCompleteCustomSource.Add(iteam.CapacityHour)
+
+        Next
+        Dim dataorderService = linq_obj.SP_Select_Tbl_OrderServiceFollowUpDetailByOrder(AddressId).ToList()
+        For Each item As SP_Select_Tbl_OrderServiceFollowUpDetailByOrderResult In dataorderService
+            txtSearchComplainNo.AutoCompleteCustomSource.Add(item.ComplainNo)
+        Next
+
+
+
+    End Sub
+    Public Sub GetClientDetails_Bind()
+        Try
+            Dim Claient = linq_obj.SP_Get_AddressList().ToList().Where(Function(t) t.Pk_AddressID = Address_ID)
+            For Each item As SP_Get_AddressListResult In Claient
+                txtPartyName.Text = item.Name
+                txtBillAdresss.Text = item.Address
+                txtCity.Text = item.City
+                txtState.Text = item.State
+                txtDistrict.Text = item.District
+                txtTaluka.Text = item.Taluka
+                txtPincode.Text = item.Pincode
+                txtArea.Text = item.Area
+                txtcontctName.Text = item.ContactPerson
+                txtContactNo.Text = item.MobileNo
+                txtOrdermastEmail.Text = item.EmailID
+                txtEntryNo.Text = item.EnqNo
+                txtDeladress.Text = item.DeliveryAddress
+                txtDelArea.Text = item.DeliveryArea
+                txtDelCity.Text = item.DeliveryCity
+                txtDelDistrict.Text = item.DeliveryDistrict
+                txtDelPincode.Text = item.DeliveryPincode
+                txtDelState.Text = item.DeliveryState
+                txtDelTaluka.Text = item.DeliveryTaluka
+                txtEmail1.Text = item.EmailID1
+                txtEmail2.Text = item.EmailID2
+
+                'dtEntryDate.Value = item.EnqDate
+            Next
+            'Get Enquiry Client Master Details
+            
+            Dim orderProjectDetail = linq_obj.SP_Select_Tbl_ProjectInformationMaster(Address_ID).ToList()
+            For Each item As SP_Select_Tbl_ProjectInformationMasterResult In orderProjectDetail
+                txtSPlanName.Text = Convert.ToString(item.PlantName)
+                txtSCapacity.Text = Convert.ToString(item.Capacity)
+                txtSModel.Text = Convert.ToString(item.Model)
+                txtSScheme.Text = Convert.ToString(item.TreatmentScheme)
+
+
+            Next
+
+
+
+        Catch ex As Exception
+            MessageBox.Show("Error :" + ex.Message)
+        End Try
+    End Sub
+    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+        Me.Close()
+    End Sub
+    Private Sub btnBrowseQuality_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Dim openFileDialog1 As New OpenFileDialog
+
+        openFileDialog1.ShowDialog()
+        imgQualityReportSrc = openFileDialog1.FileName.ToString()
+        imgQualityReportPath = (Path.GetDirectoryName(Application.ExecutablePath) & "\Images\") + openFileDialog1.SafeFileName
+
+    End Sub
+    Private Sub GroupBox16_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
+    End Sub
+    Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+        Dim criteria As String
+        criteria = " Where (ef.EnqType like 'OB' or ef.EnqType like 'Order Booked') and Address_Master.EnqStatus=1 and"
+        If txtParty.Text.Trim() <> "" Then
+            criteria = criteria + " Name like '%" + txtParty.Text + "%' and"
+        End If
+        If txtcoPerson.Text.Trim() <> "" Then
+            criteria = criteria + " ContactPerson like '%" + txtcoPerson.Text + "%' and"
+        End If
+        If txtStation.Text.Trim <> "" Then
+            criteria = criteria + " Area like '%" + txtStation.Text + "%' and"
+        End If
+        'If txtInqSearchLandLineNo.Text.Trim() <> "" Then
+        '    criteria = criteria + " LandlineNo like '%" + txtInqSearchLandLineNo.Text + "%' and"
+        'End If
+        If txtConatactno.Text.Trim() <> "" Then
+            criteria = criteria + " MobileNo like '%" + txtConatactno.Text + "%' and"
+        End If
+        'If txtSearchComplainNo.Text.Trim() <> "" Then
+        '    criteria = criteria + " f.Status like '%" + txtSearchComplainNo.Text + "%' and"
+        'End If
+        If txtEmail.Text.Trim() <> "" Then
+            criteria = criteria + " EmailID like '%" + txtEmail.Text + "%' and"
+        End If
+
+        If criteria = "  Where (ef.EnqType like 'OB' or ef.EnqType like 'Order Booked') and Address_Master.EnqStatus=1 and" Then
+            criteria = " Where (ef.EnqType like 'OB' or ef.EnqType like 'Order Booked') and Address_Master.EnqStatus=1 "
+        End If
+
+        If (criteria.Length > 0) Then
+            criteria = criteria.ToString().Substring(0, criteria.Length - 3)
+        End If
+
+        Dim cmd As New SqlCommand
+        cmd.CommandText = "SP_Search_Order"
+        cmd.Parameters.Add("@criteria", SqlDbType.VarChar).Value = criteria
+        Dim objclass As New Class1
+
+        Dim ds As DataSet
+        ds = objclass.GetSearchData(cmd)
+        If ds.Tables(1).Rows.Count < 1 Then
+            MessageBox.Show("Record Not Found", "No Records", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        End If
+        DGVServiceDetails.DataSource = ds.Tables(1)
+        Me.DGVServiceDetails.Columns(0).Visible = False
+        ds.Dispose()
+
+    End Sub
+    Public Sub BindAllGridData()
+        Try
+
+
+            clearAll()
+            Address_ID = Convert.ToInt32(Me.DGVServiceDetails.SelectedCells(0).Value)
+
+            GetClientDetails_Bind()
+            BindAllData()
+            cmbService.DataSource = Nothing
+
+            Dim dataService = linq_obj.SP_Get_ServiceList(Address_ID).ToList()
+            If (dataService.Count) Then
+                cmbService.DataSource = dataService
+                cmbService.DisplayMember = "ServiceType"
+                cmbService.ValueMember = "ServiceType"
+                cmbService.AutoCompleteMode = AutoCompleteMode.Append
+                cmbService.DropDownStyle = ComboBoxStyle.DropDownList
+                cmbService.AutoCompleteSource = AutoCompleteSource.ListItems
+                lblServiceType.Text = dataService(0).ServiceType
+            End If
+
+
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+
+    End Sub
+    Private Sub DGVServiceDetails_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DGVServiceDetails.DoubleClick
+        BindAllGridData()
+    End Sub
+    Public Sub SaveAllData()
+
+        Try
+            'Save All Data
+            If Address_ID > 0 Then
+                'save main Order Details.
+
+
+                'Update Contact Detail
+                Dim resContact As Integer
+                resContact = linq_obj.SP_UpdateAddressContactDetail(txtcontctName.Text, txtContactNo.Text, txtOrdermastEmail.Text, txtEmail1.Text, txtEmail2.Text, Address_ID)
+                linq_obj.SubmitChanges()
+
+                'bind Address Detail
+                Dim resAddress As Integer
+                resAddress = linq_obj.SP_UpdateAddress(txtPartyName.Text, txtBillAdresss.Text, txtArea.Text, txtCity.Text, txtPincode.Text, txtTaluka.Text, txtDistrict.Text, txtState.Text, txtDeladress.Text, txtDelArea.Text, txtDelCity.Text, txtDelPincode.Text, txtDelTaluka.Text, txtDelDistrict.Text, txtDelState.Text, Address_ID)
+                If resAddress >= 0 Then
+                    linq_obj.SubmitChanges()
+                End If
+              
+
+                'Save AddressDetail
+                'delete Old Data
+                Dim delConatctDetail = linq_obj.SP_Tbl_Service_ContactInfo_Delete(Address_ID)
+                linq_obj.SubmitChanges()
+
+                For i As Integer = 0 To tblContactDetail.Rows.Count - 1
+                    linq_obj.SP_Tbl_Service_ContactInfo_Insert(Address_ID,
+                    tblContactDetail.Rows(i)("Name").ToString(),
+                    tblContactDetail.Rows(i)("Post").ToString(),
+                    tblContactDetail.Rows(i)("Contact").ToString(),
+                   tblContactDetail.Rows(i)("Email").ToString())
+
+                    linq_obj.SubmitChanges()
+                Next
+
+
+                'Save Folloup Details
+
+                Dim resECEng As Integer
+                resECEng = linq_obj.SP_Tbl_Service_ECEngRepMaster_Insert(Address_ID, IIf(chkECDone.Checked, True, False), dtECDone.Value)
+                If (resECEng > 0) Then
+                    linq_obj.SubmitChanges()
+                    'delete Old Data
+                    Dim delfollowDetail = linq_obj.SP_Tbl_Service_ECEngineerReportDetail_Delete(Address_ID)
+                    linq_obj.SubmitChanges()
+
+                    For i As Integer = 0 To tblEngFollowup.Rows.Count - 1
+                        linq_obj.SP_Tbl_Service_ECEngineerReportDetail_Insert(Address_ID,
+                                                                    Convert.ToDateTime(tblEngFollowup.Rows(i)("Date").ToString()),
+                                                                    tblEngFollowup.Rows(i)("StartTime").ToString(), tblEngFollowup.Rows(i)("EndTime").ToString(),
+                                                                    tblEngFollowup.Rows(i)("WorkDone").ToString(),
+                                                                     Convert.ToBoolean(tblEngFollowup.Rows(i)("isDelay").ToString()),
+                         tblEngFollowup.Rows(i)("DelayRemarks").ToString(),
+                        tblEngFollowup.Rows(i)("InstallationFor").ToString(),
+                        tblEngFollowup.Rows(i)("Remarks").ToString())
+                        linq_obj.SubmitChanges()
+                    Next
+                End If
+
+
+
+
+                linq_obj.SP_Tbl_Service_ECDoneDetail_Delete(Address_ID)
+                linq_obj.SubmitChanges()
+
+                For i As Integer = 0 To tblECDone.Rows.Count - 1
+                    linq_obj.SP_Tbl_Service_ECDoneDetail_Insert(tblECDone.Rows(i)("InstallationType").ToString(),
+                                                                Convert.ToBoolean(tblECDone.Rows(i)("isDone").ToString()),
+                                                                Convert.ToDateTime(tblECDone.Rows(i)("DoneDate").ToString()), Address_ID)
+                Next
+                linq_obj.SubmitChanges()
+
+
+
+                'TPR
+                linq_obj.SP_Tbl_Service_TechPerformanceRepDetail_Delete(Address_ID)
+                linq_obj.SubmitChanges()
+
+
+                For i As Integer = 0 To tblTPR.Rows.Count - 1
+                    linq_obj.SP_Tbl_Service_TechPerformanceRepDetail_Insert(Address_ID, tblTPR.Rows(i)("EngineerName").ToString(),
+                                                                tblTPR.Rows(i)("ReportBy").ToString(),
+                                                               tblTPR.Rows(i)("PerformanceCategory").ToString(),
+                                                               tblTPR.Rows(i)("Remarks").ToString())
+                Next
+                linq_obj.SubmitChanges()
+
+
+                'save All service
+
+                Dim resservice As Integer
+                resservice = linq_obj.SP_Tbl_Service_ServiceDetail_Insert(Address_ID, dtServDelDate.Value, txtSerEngName.Text, txtSerRemarks.Text, txtITDS.Text, txtITH.Text, txtIPH.Text, txtIRemarks.Text, txtOTDS.Text, txtOTH.Text, txtOPH.Text, txtORemarks.Text, txtSerType.Text, IIf(chkServiceDone.Checked, True, False), dtServiceDoneDate.Value)
+                linq_obj.SubmitChanges()
+
+
+
+                If (cmbService.Text = "Service1") Then
+
+                    linq_obj.SP_Tbl_Service_CheckLogDetail_Delete(Address_ID)
+                    linq_obj.SubmitChanges()
+
+                    For i As Integer = 0 To tblChkLog.Rows.Count - 1
+                        linq_obj.SP_Tbl_Service_CheckLogDetail_Insert(Address_ID, tblChkLog.Rows(i)("Title").ToString(),
+                                                                    tblChkLog.Rows(i)("isDone").ToString(),
+                                                                   Convert.ToDateTime(tblChkLog.Rows(i)("Date").ToString()),
+                                                                   tblChkLog.Rows(i)("Remarks").ToString())
+                    Next
+                    linq_obj.SubmitChanges()
+                End If
+
+
+                'Spare Detail
+
+                linq_obj.SP_Tbl_Service_SpareMaster_Insert(Address_ID, dtSpareDate.Value, txtSpareRecBy.Text, txtDisVia.Text, txtSpareEngName.Text, txtSpareRemarks.Text)
+                linq_obj.SubmitChanges()
+
+                linq_obj.SP_Tbl_Service_SpareDetail_Delete(Address_ID)
+                linq_obj.SubmitChanges()
+
+                For i As Integer = 0 To tblSpareDetail.Rows.Count - 1
+                    linq_obj.SP_Tbl_Service_SpareDetail_Insert(Address_ID, tblSpareDetail.Rows(i)("ItemName").ToString(),
+                                                                Convert.ToInt32(tblSpareDetail.Rows(i)("Qty").ToString()),
+                      Convert.ToDecimal(tblSpareDetail.Rows(i)("Price").ToString()),
+                                                               Convert.ToDecimal(tblSpareDetail.Rows(i)("Amount").ToString()))
+                    linq_obj.SubmitChanges()
+                Next
+
+
+                'Save General service Detail
+
+                Dim resgenService As Integer
+                resgenService = linq_obj.SP_Tbl_Service_GeneralServiceMaster_Insert(dtGSDate.Value, txtSerType.Text, txtComplainNo.Text, dtAttendDate.Value, txtAtendedBy.Text, txtEnginer.Text, Address_ID)
+                linq_obj.SubmitChanges()
+
+                linq_obj.SP_Tbl_Service_GeneralServiceDetail_Delete(Address_ID)
+                linq_obj.SubmitChanges()
+
+                For i As Integer = 0 To tblGenService.Rows.Count - 1
+                    linq_obj.SP_Tbl_Service_GeneralServiceDetail_Insert(Address_ID, tblGenService.Rows(i)("FollowUp").ToString(),
+                                                                Convert.ToDateTime(tblGenService.Rows(i)("TentativeDate").ToString()),
+                                                                tblGenService.Rows(i)("Status").ToString(),
+                                                               tblGenService.Rows(i)("Remarks").ToString())
+                Next
+                linq_obj.SubmitChanges()
+
+
+
+                'viraj
+
+                'save main Order Details.
+                Dim resorder As Integer
+                resorder = linq_obj.SP_Tbl_Service_ProjectDetail_Insert(Address_ID, txtSMoc.Text, txtSType.Text, txtSInspectionBy.Text, dtpSInspectionDate.Value)
+
+                If (resorder > 0) Then
+                    linq_obj.SubmitChanges()
+                End If
+
+
+                Dim resProjectId As Integer
+                resProjectId = linq_obj.SP_Tbl_Service_PartyReadynessMaster_Insert(Address_ID, imgQualityReportPath)
+
+                If (resProjectId > 0) Then
+                    linq_obj.SubmitChanges()
+
+                    Dim delfollowDetail = linq_obj.SP_Tbl_Service_PartyReadynessDetail_Delete(Address_ID)
+                    linq_obj.SubmitChanges()
+
+                    For i As Integer = 0 To tblPrDetail.Rows.Count - 1
+                        With tblPrDetail
+                            linq_obj.SP_Tbl_Service_PartyReadynessDetail_Insert(Address_ID,
+                                                                    .Rows(i)("HeaderName").ToString(),
+                                                                    .Rows(i)("Status").ToString(),
+                                                                    Convert.ToDateTime(.Rows(i)("CompletionDate").ToString()),
+                                                                    .Rows(i)("Remarks").ToString()
+                                                                    )
+                            linq_obj.SubmitChanges()
+                        End With
+                    Next
+                End If
+
+
+                'Save All Erreaction Details
+
+                Dim Errectionid As Integer
+                Errectionid = linq_obj.SP_Tbl_Service_ErrectionCommMaster_Insert(Address_ID, t1.Text, n1.Text, t2.Text, n2.Text, t3.Text, n3.Text, t4.Text, n4.Text, t5.Text, n5.Text, imgDocErrectionPath, dtpErrectionDate.Value, txtECRemarks.Text)
+
+                If (Errectionid > 0) Then
+
+                    linq_obj.SubmitChanges()
+                    'delete Old Data
+                    Dim delfollowDetail = linq_obj.SP_Tbl_Service_ErrectionCommDetails_Delete(Address_ID)
+                    linq_obj.SubmitChanges()
+
+                    For i As Integer = 0 To tblQuality.Rows.Count - 1
+                        With tblQuality
+                            linq_obj.SP_Tbl_Service_ErrectionCommDetails_Insert(Address_ID,
+                                                .Rows(i)("RawWater").ToString(),
+                                                .Rows(i)("Parameter").ToString(),
+                                                .Rows(i)("TreatedWater").ToString())
+                            linq_obj.SubmitChanges()
+                        End With
+                    Next
+                End If
+
+
+                'Save Water Detail
+
+                Dim WaterID As Integer
+                WaterID = linq_obj.SP_Tbl_Service_PhysicalVerificationDayOneMaster_Insert(Address_ID, chkBottle1.Checked, txtBottle1.Text, chkBottle2.Checked, txtBottle2.Text,
+                chkBlow1.Checked, txtBlow1.Text, chkBlow2.Checked, txtBlow2.Text, chkLab1.Checked, txtLab1.Text, chkLab2.Checked, txtLab2.Text, chkOther1.Checked, txtOther1.Text, chkOther2.Checked, txtOther2.Text, txtpendingMaterials.Text)
+
+
+                If (WaterID > 0) Then
+                    linq_obj.SubmitChanges()
+
+                    Dim delfollowDetail = linq_obj.SP_Tbl_Service_Physical_WaterTreatment_Master_Delete(Address_ID)
+                    linq_obj.SubmitChanges()
+                    For i As Integer = 0 To tblWaterDetails.Rows.Count - 1
+
+                        linq_obj.SubmitChanges()
+                        'delete Old Data
+
+                        With tblWaterDetails
+                            linq_obj.SP_Tbl_Service_Physical_WaterTreatment_Master_Insert(Address_ID,
+                                                                    .Rows(i)("WaterType").ToString(),
+                                                                    .Rows(i)("Status").ToString(),
+                                                                    .Rows(i)("Remarks").ToString())
+                            linq_obj.SubmitChanges()
+                        End With
+                    Next
+                End If
+
+                Dim RemarkID As Integer
+                RemarkID = linq_obj.SP_Tbl_Service_PartyRemarksMaster_Insert(Address_ID, imgDoc1Path, imgDoc2Path, imgDoc3Path)
+                If (RemarkID > 0) Then
+                    linq_obj.SubmitChanges()
+                End If
+
+
+            Else
+                MessageBox.Show("No Address Informations Found")
+            End If
+
+        Catch ex As Exception
+            MessageBox.Show("Error :" + ex.Message)
+        End Try
+    End Sub
+    Private Sub txtFolowup3_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFolowup3.KeyPress
+        If Not IsNumeric(e.KeyChar) Then e.Handled = True
+    End Sub
+    Private Sub txtQty_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtQty.KeyPress
+        If Not IsNumeric(e.KeyChar) Then e.Handled = True
+    End Sub
+    Private Sub txtPrice_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPrice.Leave
+        txtAmount.Text = Convert.ToString(Convert.ToInt32(txtQty.Text) * Convert.ToDecimal(txtPrice.Text))
+    End Sub
+    Public Sub clearAll()
+        cmbService.DataSource = Nothing
+
+        tblEngFollowup.Clear()
+        tblECDone.Clear()
+        tblTPR.Clear()
+        tblChkLog.Clear()
+        tblSpareDetail.Clear()
+        tblGenService.Clear()
+        tblContactDetail.Clear()
+        tblPrDetail.Clear()
+
+        tblQuality.Clear()
+
+        tblWaterDetails.Clear()
+        dtGSDate.Text = DateTime.Now
+        txtSerType.Text = ""
+        txtComplainNo.Text = ""
+        dtAttendDate.Text = DateTime.Now
+        txtAtendedBy.Text = ""
+        txtEnginer.Text = ""
+
+        grpComplain.Visible = False
+
+        lblComplainDate.Text = ""
+        lblComplainDoneDate.Text = ""
+        lblComplainEngName.Text = ""
+        lblComplainStatus.Text = ""
+        lblComplainType.Text = ""
+
+        dtServDelDate.Text = DateTime.Now
+        txtSerEngName.Text = ""
+        txtSerRemarks.Text = ""
+        txtITDS.Text = ""
+        txtITH.Text = ""
+        txtIPH.Text = ""
+        txtIRemarks.Text = ""
+        txtOTDS.Text = ""
+        txtOTH.Text = ""
+        txtOPH.Text = ""
+        txtORemarks.Text = ""
+        txtSerType.Text = ""
+        chkServiceDone.Checked = False
+        dtServiceDoneDate.Text = DateTime.Now
+        chkECDone.Checked = False
+        dtECDone.Value = DateTime.Now
+
+        dtSpareDate.Text = DateTime.Now
+        txtSpareRecBy.Text = ""
+        txtDisVia.Text = ""
+        txtSpareEngName.Text = ""
+        txtSpareRemarks.Text = ""
+
+
+
+
+        txtPartyName.Text = ""
+        txtBillAdresss.Text = ""
+        txtCity.Text = ""
+        txtState.Text = ""
+        txtDistrict.Text = ""
+        txtTaluka.Text = ""
+        txtPincode.Text = ""
+        txtArea.Text = ""
+        txtcontctName.Text = ""
+        txtContactNo.Text = ""
+        txtOrdermastEmail.Text = ""
+        txtEntryNo.Text = ""
+        txtDeladress.Text = ""
+        txtDelArea.Text = ""
+        txtDelCity.Text = ""
+        txtDelDistrict.Text = ""
+        txtDelPincode.Text = ""
+        txtDelState.Text = ""
+        txtDelTaluka.Text = ""
+        txtSPlanName.Text = ""
+        txtSCapacity.Text = ""
+        txtSModel.Text = ""
+        txtSScheme.Text = ""
+
+        txtEFInstallationFor.Text = ""
+        txtEFRemarks.Text = ""
+        dtEFDate.Text = DateTime.Now
+        tmStartTime.Text = ""
+        tmEndTime.Text = ""
+        chkECDone.Checked = False
+        txtWorkDone.Text = ""
+        txtWorkDelayRemarks.Text = ""
+        txtEFRemarks.Text = ""
+        txtECInstallationFor.Text = ""
+        chkECDone.Checked = False
+        dtECDDate.Value = DateTime.Now
+        txtEnginer.Text = ""
+        txtReportBy.Text = ""
+        txtEPRemarks.Text = ""
+        rbBetter.Checked = False
+        rbGood.Checked = False
+        rbExcellent.Checked = False
+        rbNotGood.Checked = False
+        txtChkLogRemarks.Text = ""
+        txtChklogTitle.Text = ""
+        chkChkLogisDone.Checked = False
+        dtChklogDate.Value = DateTime.Now
+        txtItemName.Text = ""
+        txtQty.Text = ""
+        txtPrice.Text = ""
+        txtAmount.Text = ""
+        txtGenSerFollowup.Text = ""
+        txtGenSerRem.Text = ""
+        txtGenServiceStatus.Text = ""
+        txtFolowup3.Text = ""
+        dtTentativeAttendDate.Value = DateTime.Now
+        txtSMoc.Text = ""
+        txtSType.Text = ""
+        txtSInspectionBy.Text = ""
+        dtpSInspectionDate.Text = ""
+        imgQualityReportPath = ""
+        lblSuccess.Text = ""
+        n1.Text = ""
+        n2.Text = ""
+        imgDocErrectionPath = ""
+        lblSuccessEC.Text = ""
+        dtpErrectionDate.Text = ""
+        chkBottle1.Checked = False
+        txtBottle1.Text = ""
+        chkBottle2.Checked = False
+        txtBottle2.Text = ""
+        chkBlow1.Checked = False
+        txtBlow1.Text = ""
+        chkBlow2.Checked = False
+        txtBlow2.Text = ""
+        chkLab1.Checked = False
+        txtLab1.Text = ""
+        chkLab2.Checked = False
+        txtLab2.Text = ""
+        chkOther1.Checked = False
+        txtOther1.Text = ""
+        chkOther2.Checked = False
+        txtOther2.Text = ""
+        txtpendingMaterials.Text = ""
+        lblSuccessDoc1.Text = ""
+        lblSuccessDoc2.Text = ""
+        lblSuccessDoc3.Text = ""
+        txtSPlanName.Text = ""
+        txtSCapacity.Text = ""
+        txtSScheme.Text = ""
+        txtSModel.Text = ""
+
+
+        txtEmail1.Text = ""
+        txtEmail2.Text = ""
+        'DGPRDetail.Rows.Clear()
+        'dgvErrectionDetails.Rows.Clear()
+        'DGWaterDetail.Rows.Clear()
+
+    End Sub
+    Private Sub txtEntryNo_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtEntryNo.Leave
+        Dim data = linq_obj.SP_Get_AddressListByEnqNo(txtEntryNo.Text).ToList()
+        If (data.Count > 0) Then
+            clearAll()
+            Address_ID = data(0).Pk_AddressID
+            BindAllData()
+        End If
+    End Sub
+
+    Private Sub txtPartyName_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPartyName.Leave
+        If (txtPartyName.Text <> "") Then
+            clearAll()
+            Address_ID = linq_obj.SP_Get_AddressListByName(txtPartyName.Text).ToList().First().Pk_AddressID
+            BindAllData()
+        End If
+    End Sub
+
+    Private Sub btnECDADD_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnECDADD.Click
+        txtECInstallationFor.Text = ""
+        chkECDone.Checked = False
+        dtECDDate.Value = DateTime.Now
+
+    End Sub
+
+    Private Sub btnADDEF_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnADDEF.Click
+        txtEFInstallationFor.Text = ""
+        txtEFRemarks.Text = ""
+        dtEFDate.Text = DateTime.Now
+        tmStartTime.Text = ""
+        tmEndTime.Text = ""
+        chkECDone.Checked = False
+        txtWorkDone.Text = ""
+        txtWorkDelayRemarks.Text = ""
+        txtEFRemarks.Text = ""
+
+    End Sub
+
+    Private Sub btnTPRADD_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTPRADD.Click
+        txtEngName.Text = ""
+        txtReportBy.Text = ""
+        txtEPRemarks.Text = ""
+        rbBetter.Checked = False
+        rbGood.Checked = False
+        rbExcellent.Checked = False
+        rbNotGood.Checked = False
+
+    End Sub
+
+    Private Sub btnChkLogAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnChkLogAdd.Click
+        txtChkLogRemarks.Text = ""
+        txtChklogTitle.Text = ""
+        chkChkLogisDone.Checked = False
+        dtChklogDate.Value = DateTime.Now
+
+
+    End Sub
+
+    Private Sub btnClearItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearItem.Click
+        txtItemName.Text = ""
+        txtQty.Text = ""
+        txtPrice.Text = ""
+        txtAmount.Text = ""
+
+    End Sub
+
+    Private Sub btnAddFolowup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddFolowup.Click
+        txtGenSerFollowup.Text = ""
+        txtGenSerRem.Text = ""
+        txtGenServiceStatus.Text = ""
+        txtFolowup3.Text = ""
+        dtTentativeAttendDate.Value = DateTime.Now
+
+    End Sub
+
+    Private Sub txtFolowup3_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolowup3.Leave
+
+    End Sub
+
+    Private Sub txtFolowup3_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolowup3.TextChanged
+        If txtFolowup3.Text <> "" Then
+            dtTentativeAttendDate.Value = dtGSDate.Value.Date.AddDays(txtFolowup3.Text)
+        End If
+    End Sub
+
+    Private Sub btnSaveEF_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSaveEF.Click
+        ''add new row runtime and display into grid. it will save after click on save button
+        Try
+            Dim dr As DataRow
+            dr = tblEngFollowup.NewRow()
+            dr("Date") = dtEFDate.Text
+            dr("StartTime") = tmStartTime.Text
+            dr("EndTime") = tmEndTime.Text
+            dr("WorkDone") = txtWorkDone.Text
+            dr("isDelay") = IIf(chkECDone.Checked, True, False)
+            dr("DelayRemarks") = txtWorkDelayRemarks.Text
+            dr("InstallationFor") = txtEFInstallationFor.Text
+            dr("Remarks") = txtEFRemarks.Text
+
+            'insert into the service eng report
+            linq_obj.SP_Tbl_Service_ECEngineerReportDetail_Insert(Address_ID,
+                                                                 Convert.ToDateTime(dtEFDate.Text),
+                                                                  tmStartTime.Text.ToString(),
+                                                                 tmEndTime.Text.ToString(),
+                                                                 txtWorkDone.Text,
+                                                                 IIf(chkECDone.Checked, True, False),
+                                                                 txtWorkDelayRemarks.Text,
+                                                                 txtEFInstallationFor.Text,
+                                                                 txtEFRemarks.Text)
+            linq_obj.SubmitChanges()
+
+            tblEngFollowup.Rows.Add(dr)
+            DGEFDetails.DataSource = tblEngFollowup
+
+            txtEFInstallationFor.Text = ""
+            txtEFRemarks.Text = ""
+            dtEFDate.Text = DateTime.Now
+            tmStartTime.Text = ""
+            tmEndTime.Text = ""
+            chkECDone.Checked = False
+            txtWorkDone.Text = ""
+            txtWorkDelayRemarks.Text = ""
+
+
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub btnDelEF_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelEF.Click
+        tblEngFollowup.Rows(DGEFDetails.CurrentRow.Index).Delete()
+        DGEFDetails.DataSource = tblEngFollowup
+    End Sub
+
+    Private Sub btnECDSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnECDSave.Click
+
+        Dim dr As DataRow
+        dr = tblECDone.NewRow()
+        dr("InstallationType") = txtECInstallationFor.Text
+        dr("isDone") = IIf(chkECDone.Checked, True, False)
+        dr("DoneDate") = dtECDDate.Text
+
+        'insert into the service eng report
+        linq_obj.SP_Tbl_Service_ECDoneDetail_Insert(txtECInstallationFor.Text,
+                                                              IIf(chkECDone.Checked, True, False),
+                                                             dtECDDate.Text, Address_ID)
+        linq_obj.SubmitChanges()
+        tblECDone.Rows.Add(dr)
+        DGVECDoneDetail.DataSource = tblECDone
+
+        txtECInstallationFor.Text = ""
+        chkECDone.Checked = False
+        dtECDDate.Value = DateTime.Now
+    End Sub
+
+    Private Sub btnECDDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnECDDelete.Click
+        tblECDone.Rows(DGVECDoneDetail.CurrentRow.Index).Delete()
+        DGVECDoneDetail.DataSource = tblECDone
+    End Sub
+
+    Private Sub btnTPRSAVE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTPRSAVE.Click
+        Dim dr As DataRow
+        dr = tblTPR.NewRow()
+        Dim strpercat As String
+
+        dr("EngineerName") = txtEngName.Text
+        dr("ReportBy") = txtReportBy.Text
+        If (rbGood.Checked = True) Then
+            strpercat = "Good"
+            dr("PerformanceCategory") = "Good"
+
+        ElseIf (rbBetter.Checked = True) Then
+            strpercat = "Better"
+            dr("PerformanceCategory") = "Better"
+        ElseIf (rbExcellent.Checked = True) Then
+            strpercat = "Excellent"
+            dr("PerformanceCategory") = "Excellent"
+        ElseIf (rbNotGood.Checked = True) Then
+            strpercat = "Not Good"
+            dr("PerformanceCategory") = "Not Good"
+
+        Else
+            strpercat = ""
+        End If
+
+
+        dr("Remarks") = txtEPRemarks.Text
+        'insert into the service eng report
+        linq_obj.SP_Tbl_Service_TechPerformanceRepDetail_Insert(Address_ID, txtEngName.Text, txtReportBy.Text, strpercat, txtEPRemarks.Text)
+        linq_obj.SubmitChanges()
+
+        tblTPR.Rows.Add(dr)
+        DGEPFDetail.DataSource = tblTPR
+
+        txtEngName.Text = ""
+        txtReportBy.Text = ""
+        txtEPRemarks.Text = ""
+        rbBetter.Checked = False
+        rbGood.Checked = False
+        rbExcellent.Checked = False
+        rbNotGood.Checked = False
+
+    End Sub
+
+    Private Sub btnTPRDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTPRDelete.Click
+        tblTPR.Rows(DGEPFDetail.CurrentRow.Index).Delete()
+        DGEPFDetail.DataSource = tblTPR
+    End Sub
+
+    Private Sub btnChkLogSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnChkLogSave.Click
+
+        Dim dr As DataRow
+        dr = tblChkLog.NewRow()
+        dr("Title") = txtChklogTitle.Text
+        dr("isDone") = IIf(chkChkLogisDone.Checked, True, False)
+        dr("Date") = dtChklogDate.Text
+        dr("Remarks") = txtChkLogRemarks.Text
+
+        linq_obj.SP_Tbl_Service_CheckLogDetail_Insert(Address_ID, txtChklogTitle.Text, IIf(chkChkLogisDone.Checked, True, False), Convert.ToDateTime(dtChklogDate.Text), txtChkLogRemarks.Text)
+        linq_obj.SubmitChanges()
+
+        tblChkLog.Rows.Add(dr)
+        DGCheckLog.DataSource = tblChkLog
+        txtChkLogRemarks.Text = ""
+        txtChklogTitle.Text = ""
+        chkChkLogisDone.Checked = False
+        dtChklogDate.Value = DateTime.Now
+
+    End Sub
+
+    Private Sub btnChkLogDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnChkLogDelete.Click
+        tblChkLog.Rows(DGCheckLog.CurrentRow.Index).Delete()
+        DGCheckLog.DataSource = tblChkLog
+    End Sub
+
+    Private Sub btnAddItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddItem.Click
+
+        Dim dr As DataRow
+        dr = tblSpareDetail.NewRow()
+        dr("ItemName") = txtItemName.Text
+        dr("Qty") = txtQty.Text
+        dr("Price") = txtPrice.Text
+        dr("Amount") = txtAmount.Text
+
+        linq_obj.SP_Tbl_Service_SpareDetail_Insert(Address_ID, txtItemName.Text, Convert.ToInt32(txtQty.Text), Convert.ToDecimal(txtPrice.Text), Convert.ToDecimal(txtAmount.Text))
+        linq_obj.SubmitChanges()
+
+
+        tblSpareDetail.Rows.Add(dr)
+        DGVSpareDetails.DataSource = tblSpareDetail
+
+        txtItemName.Text = ""
+        txtQty.Text = ""
+        txtPrice.Text = ""
+        txtAmount.Text = ""
+    End Sub
+
+    Private Sub btnDelItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelItem.Click
+        Dim result As DialogResult = MessageBox.Show("Are You Sure Delete?", "Important Message", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)
+        If result = DialogResult.Yes Then
+            tblSpareDetail.Rows(DGVSpareDetails.CurrentRow.Index).Delete()
+            DGVSpareDetails.DataSource = tblSpareDetail
+        End If
+    End Sub
+
+    Private Sub btnsavefolwup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnsavefolwup.Click
+        Dim dr As DataRow
+
+        dr = tblGenService.NewRow()
+
+        dr("FollowUp") = txtGenSerFollowup.Text
+        dr("TentativeDate") = dtTentativeAttendDate.Text
+        dr("Status") = txtGenServiceStatus.Text
+        dr("Remarks") = txtGenSerRem.Text
+
+        linq_obj.SP_Tbl_Service_GeneralServiceDetail_Insert(Address_ID, txtGenSerFollowup.Text,
+                                                               dtTentativeAttendDate.Text,
+                                                               txtGenServiceStatus.Text,
+                                                               txtGenSerRem.Text
+                                                              )
+
+
+        tblGenService.Rows.Add(dr)
+        DGVGenService.DataSource = tblGenService
+
+        txtGenSerFollowup.Text = ""
+        txtGenSerRem.Text = ""
+        txtGenServiceStatus.Text = ""
+        txtFolowup3.Text = ""
+        dtTentativeAttendDate.Value = DateTime.Now
+
+    End Sub
+
+    Private Sub chkECDone_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkECDone.CheckedChanged
+        If (chkECDone.Checked = True) Then
+            dtECDone.Visible = True
+        Else
+            dtECDone.Visible = False
+
+        End If
+    End Sub
+
+    Private Sub chkDoneEC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDoneEC.CheckedChanged
+        If (chkDoneEC.Checked = True) Then
+            dtECDDate.Visible = True
+        Else
+            dtECDDate.Visible = False
+
+        End If
+    End Sub
+
+    Private Sub chkWorkDelay_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkWorkDelay.CheckedChanged
+        If (chkWorkDelay.Checked = True) Then
+            txtWorkDelayRemarks.Visible = True
+        Else
+            txtWorkDelayRemarks.Visible = False
+
+        End If
+    End Sub
+
+    Private Sub chkServiceDone_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkServiceDone.CheckedChanged
+
+
+
+        If (chkServiceDone.Checked = True) Then
+            Dim result As DialogResult = MessageBox.Show("Is Service Completed?", "Important Message", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)
+            If result = DialogResult.Yes Then
+
+
+                dtServiceDoneDate.Visible = True
+            End If
+
+
+        Else
+            dtServiceDoneDate.Visible = False
+
+        End If
+
+    End Sub
+
+    Private Sub chkChkLogisDone_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkChkLogisDone.CheckedChanged
+        If (chkChkLogisDone.Checked = True) Then
+            dtChklogDate.Visible = True
+        Else
+            dtChklogDate.Visible = False
+
+        End If
+    End Sub
+
+    Private Sub cmbService_SelectionChangeCommitted(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbService.SelectionChangeCommitted
+
+        Dim dataService = linq_obj.SP_Get_ServiceDate(Address_ID, lblServiceType.Text).ToList()
+        If (dataService.Count > 0) Then
+
+            dtApproxDate.Value = dataService(0).ServiceDate.Value
+            If (cmbService.SelectedText = "Service1") Then
+                grpCheckLog.Visible = True
+            Else
+                grpCheckLog.Visible = True
+            End If
+        End If
+
+
+
+    End Sub
+
+    Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
+        SaveAllData()
+        MessageBox.Show("Successfully Saved")
+        btnSave.Enabled = False
+
+    End Sub
+
+    Private Sub btnAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd.Click
+        clearAll()
+
+    End Sub
+
+    'viraj
+
+    Private Sub btnUp1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp1.Click
+        Dim openFileDialog1 As New OpenFileDialog
+
+        openFileDialog1.ShowDialog()
+        imgDoc1Src = openFileDialog1.FileName.ToString()
+        imgDoc1Path = (Path.GetDirectoryName(Application.ExecutablePath) & "\Images\") + openFileDialog1.SafeFileName
+        lblSuccessDoc1.Text = imgDoc1Path
+    End Sub
+
+    Private Sub btnUp2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp2.Click
+        Dim openFileDialog1 As New OpenFileDialog
+
+        openFileDialog1.ShowDialog()
+        imgDoc2Src = openFileDialog1.FileName.ToString()
+        imgDoc2Path = (Path.GetDirectoryName(Application.ExecutablePath) & "\Images\") + openFileDialog1.SafeFileName
+        lblSuccessDoc2.Text = imgDoc2Path
+    End Sub
+
+    Private Sub btnUp3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp3.Click
+        Dim openFileDialog1 As New OpenFileDialog
+
+        openFileDialog1.ShowDialog()
+        imgDoc3Src = openFileDialog1.FileName.ToString()
+        imgDoc3Path = (Path.GetDirectoryName(Application.ExecutablePath) & "\Images\") + openFileDialog1.SafeFileName
+        lblSuccessDoc3.Text = imgDoc3Path
+    End Sub
+
+
+
+
+
+    Private Sub btnPRAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPRAdd.Click
+        ''add new row runtime and display into grid. it will save after click on save button
+        Dim dr As DataRow
+        Dim strStatus As String
+
+
+        dr = tblPrDetail.NewRow()
+        dr("HeaderName") = txtTitleReady.Text
+        If rbYes.Checked = True Then
+            dr("Status") = rbYes.Text
+            strStatus = rbYes.Text
+        ElseIf rbNo.Checked = True Then
+            dr("Status") = rbNo.Text
+            strStatus = rbNo.Text
+        Else
+            dr("Status") = rbprocess.Text
+            strStatus = rbprocess.Text
+        End If
+        dr("CompletionDate") = dtpCompletionDate.Text
+        dr("Remarks") = txtRemarks.Text
+
+        'insert into the service eng report
+        linq_obj.SP_Tbl_Service_PartyReadynessDetail_Insert(Address_ID, txtTitleReady.Text, strStatus, dtpCompletionDate.Text, txtRemarks.Text)
+        linq_obj.SubmitChanges()
+
+        tblPrDetail.Rows.Add(dr)
+        DGPRDetail.DataSource = tblPrDetail
+
+        txtRemarks.Text = ""
+        txtTitleReady.Text = ""
+        dtpCompletionDate.Value = DateTime.Now
+        rbYes.Checked = True
+    End Sub
+
+    Private Sub btnErrectionAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnErrectionAdd.Click
+        Dim dr As DataRow
+        dr = tblQuality.NewRow()
+
+
+        dr("RawWater") = txtRawWaterValue.Text
+        dr("Parameter") = cmbParameters.Text
+        dr("TreatedWater") = txtTreatedWaterValue.Text
+
+        linq_obj.SP_Tbl_Service_ErrectionCommDetails_Insert(Address_ID, txtRawWaterValue.Text, cmbParameters.Text, txtTreatedWaterValue.Text)
+        linq_obj.SubmitChanges()
+
+
+
+        tblQuality.Rows.Add(dr)
+        dgvErrectionDetails.DataSource = tblQuality
+
+        txtRawWaterValue.Text = ""
+        cmbParameters.SelectedIndex = 0
+        txtTreatedWaterValue.Text = ""
+    End Sub
+
+    Private Sub btnAddPoint_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddPoint.Click
+        Dim dr As DataRow
+        dr = tblWaterDetails.NewRow()
+        dr("WaterType") = txtWaterPoint.Text
+        dr("Status") = IIf(chkWaterRemark.Checked, True, False)
+        dr("Remarks") = txtWaterRemark.Text
+
+
+        linq_obj.SP_Tbl_Service_Physical_WaterTreatment_Master_Insert(Address_ID, txtWaterPoint.Text, IIf(chkWaterRemark.Checked, True, False), txtWaterRemark.Text)
+        linq_obj.SubmitChanges()
+
+        tblWaterDetails.Rows.Add(dr)
+        DGWaterDetail.DataSource = tblWaterDetails
+
+        ' txtWaterPoint.Text = ""
+        chkWaterRemark.Checked = False
+        txtWaterRemark.Text = ""
+    End Sub
+
+
+
+    Private Sub btnBrowseEC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowseEC.Click
+        Dim openFileDialog1 As New OpenFileDialog
+
+        openFileDialog1.ShowDialog()
+        imgDocErrectionSrc = openFileDialog1.FileName.ToString()
+        imgDocErrectionPath = (Path.GetDirectoryName(Application.ExecutablePath) & "\Images\") + openFileDialog1.SafeFileName
+        lblSuccessEC.Text = imgDocErrectionPath
+    End Sub
+
+    Private Sub btnPRDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPRDelete.Click
+        tblPrDetail.Rows(DGPRDetail.CurrentRow.Index).Delete()
+        DGPRDetail.DataSource = tblPrDetail
+    End Sub
+
+
+    Private Sub btnErrectionDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnErrectionDelete.Click
+        tblQuality.Rows(dgvErrectionDetails.CurrentRow.Index).Delete()
+        dgvErrectionDetails.DataSource = tblQuality
+    End Sub
+
+    Private Sub btnDeletePoint_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDeletePoint.Click
+        tblWaterDetails.Rows(DGWaterDetail.CurrentRow.Index).Delete()
+        DGWaterDetail.DataSource = tblWaterDetails
+    End Sub
+
+    Private Sub btnChange_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnChange.Click
+        UpdateAll()
+        MessageBox.Show("Successfully Updated")
+    End Sub
+
+
+    Public Sub UpdateAll()
+        Try
+            'Save All Data
+            If Address_ID > 0 Then
+                'Update Contact Detail
+                Dim resContact As Integer
+                resContact = linq_obj.SP_UpdateAddressContactDetail(txtcontctName.Text, txtContactNo.Text, txtOrdermastEmail.Text, txtEmail1.Text, txtEmail2.Text, Address_ID)
+                linq_obj.SubmitChanges()
+
+                'bind Address Detail
+                Dim resAddress As Integer
+                resAddress = linq_obj.SP_UpdateAddress(txtPartyName.Text, txtBillAdresss.Text, txtArea.Text, txtCity.Text, txtPincode.Text, txtTaluka.Text, txtDistrict.Text, txtState.Text, txtDeladress.Text, txtDelArea.Text, txtDelCity.Text, txtDelPincode.Text, txtDelTaluka.Text, txtDelDistrict.Text, txtDelState.Text, Address_ID)
+                If resAddress >= 0 Then
+                    linq_obj.SubmitChanges()
+                End If
+              
+
+                'Save AddressDetail
+                'delete Old Data
+                Dim delConatctDetail = linq_obj.SP_Tbl_Service_ContactInfo_Delete(Address_ID)
+                linq_obj.SubmitChanges()
+
+                For i As Integer = 0 To tblContactDetail.Rows.Count - 1
+                    linq_obj.SP_Tbl_Service_ContactInfo_Insert(Address_ID,
+                    tblContactDetail.Rows(i)("Name").ToString(),
+                    tblContactDetail.Rows(i)("Post").ToString(),
+                    tblContactDetail.Rows(i)("Contact").ToString(),
+                   tblContactDetail.Rows(i)("Email").ToString())
+
+                    linq_obj.SubmitChanges()
+                Next
+
+
+                'Save Folloup Details
+
+                Dim resECEng As Integer
+                resECEng = linq_obj.SP_Tbl_Service_ECEngRepMaster_Update(Address_ID, IIf(chkECDone.Checked, True, False), dtECDone.Value)
+                If (resECEng > 0) Then
+                    linq_obj.SubmitChanges()
+                    'delete Old Data
+                    Dim delfollowDetail = linq_obj.SP_Tbl_Service_ECEngineerReportDetail_Delete(Address_ID)
+                    linq_obj.SubmitChanges()
+
+                    For i As Integer = 0 To tblEngFollowup.Rows.Count - 1
+                        linq_obj.SP_Tbl_Service_ECEngineerReportDetail_Insert(Address_ID,
+                                                                    Convert.ToDateTime(tblEngFollowup.Rows(i)("Date").ToString()),
+                                                                    tblEngFollowup.Rows(i)("StartTime").ToString(), tblEngFollowup.Rows(i)("EndTime").ToString(),
+                                                                    tblEngFollowup.Rows(i)("WorkDone").ToString(),
+                                                                     Convert.ToBoolean(tblEngFollowup.Rows(i)("isDelay").ToString()),
+                         tblEngFollowup.Rows(i)("DelayRemarks").ToString(),
+                        tblEngFollowup.Rows(i)("InstallationFor").ToString(),
+                        tblEngFollowup.Rows(i)("Remarks").ToString())
+                        linq_obj.SubmitChanges()
+                    Next
+                End If
+
+
+
+
+                linq_obj.SP_Tbl_Service_ECDoneDetail_Delete(Address_ID)
+                linq_obj.SubmitChanges()
+
+                For i As Integer = 0 To tblECDone.Rows.Count - 1
+                    linq_obj.SP_Tbl_Service_ECDoneDetail_Insert(tblECDone.Rows(i)("InstallationType").ToString(),
+                                                                Convert.ToBoolean(tblECDone.Rows(i)("isDone").ToString()),
+                                                                Convert.ToDateTime(tblECDone.Rows(i)("DoneDate").ToString()), Address_ID)
+                Next
+                linq_obj.SubmitChanges()
+
+
+
+                'TPR
+                linq_obj.SP_Tbl_Service_TechPerformanceRepDetail_Delete(Address_ID)
+                linq_obj.SubmitChanges()
+
+
+                For i As Integer = 0 To tblTPR.Rows.Count - 1
+                    linq_obj.SP_Tbl_Service_TechPerformanceRepDetail_Insert(Address_ID, tblTPR.Rows(i)("EngineerName").ToString(),
+                                                                tblTPR.Rows(i)("ReportBy").ToString(),
+                                                               tblTPR.Rows(i)("PerformanceCategory").ToString(),
+                                                               tblTPR.Rows(i)("Remarks").ToString())
+                Next
+                linq_obj.SubmitChanges()
+
+
+                'save All service
+
+                Dim resservice As Integer
+                resservice = linq_obj.SP_Tbl_Service_ServiceDetail_Update(Address_ID, dtServDelDate.Value, txtSerEngName.Text, txtSerRemarks.Text, txtITDS.Text, txtITH.Text, txtIPH.Text, txtIRemarks.Text, txtOTDS.Text, txtOTH.Text, txtOPH.Text, txtORemarks.Text, txtSerType.Text, IIf(chkServiceDone.Checked, True, False), dtServiceDoneDate.Value)
+                linq_obj.SubmitChanges()
+
+
+
+                If (cmbService.Text = "Service1") Then
+
+                    linq_obj.SP_Tbl_Service_CheckLogDetail_Delete(Address_ID)
+                    linq_obj.SubmitChanges()
+
+                    For i As Integer = 0 To tblChkLog.Rows.Count - 1
+                        linq_obj.SP_Tbl_Service_CheckLogDetail_Insert(Address_ID, tblChkLog.Rows(i)("Title").ToString(),
+                                                                    tblChkLog.Rows(i)("isDone").ToString(),
+                                                                   Convert.ToDateTime(tblChkLog.Rows(i)("Date").ToString()),
+                                                                   tblChkLog.Rows(i)("Remarks").ToString())
+                    Next
+                    linq_obj.SubmitChanges()
+                End If
+
+
+                'Spare Detail
+
+                linq_obj.SP_Tbl_Service_SpareMaster_Update(Address_ID, dtSpareDate.Value, txtSpareRecBy.Text, txtDisVia.Text, txtSpareEngName.Text, txtSpareRemarks.Text)
+                linq_obj.SubmitChanges()
+
+                linq_obj.SP_Tbl_Service_SpareDetail_Delete(Address_ID)
+                linq_obj.SubmitChanges()
+
+                For i As Integer = 0 To tblSpareDetail.Rows.Count - 1
+                    linq_obj.SP_Tbl_Service_SpareDetail_Insert(Address_ID, tblSpareDetail.Rows(i)("ItemName").ToString(),
+                                                                Convert.ToInt32(tblSpareDetail.Rows(i)("Qty").ToString()),
+                      Convert.ToDecimal(tblSpareDetail.Rows(i)("Price").ToString()),
+                                                               Convert.ToDecimal(tblSpareDetail.Rows(i)("Amount").ToString()))
+                    linq_obj.SubmitChanges()
+                Next
+
+
+                'Save General service Detail
+
+                Dim resgenService As Integer
+                resgenService = linq_obj.SP_Tbl_Service_GeneralServiceMaster_Update(dtGSDate.Value, txtSerType.Text, txtComplainNo.Text, dtAttendDate.Value, txtAtendedBy.Text, txtEnginer.Text, Address_ID)
+                linq_obj.SubmitChanges()
+
+                linq_obj.SP_Tbl_Service_GeneralServiceDetail_Delete(Address_ID)
+                linq_obj.SubmitChanges()
+
+                For i As Integer = 0 To tblGenService.Rows.Count - 1
+                    linq_obj.SP_Tbl_Service_GeneralServiceDetail_Insert(Address_ID, tblGenService.Rows(i)("FollowUp").ToString(),
+                                                                Convert.ToDateTime(tblGenService.Rows(i)("TentativeDate").ToString()),
+                                                                tblGenService.Rows(i)("Status").ToString(),
+                                                               tblGenService.Rows(i)("Remarks").ToString())
+                Next
+                linq_obj.SubmitChanges()
+
+
+
+
+
+
+
+
+
+
+                'viraj
+
+
+                'save main Order Details.
+                Dim resorder As Integer
+                resorder = linq_obj.SP_Tbl_Service_ProjectDetail_Update(Address_ID, txtSMoc.Text, txtSType.Text, txtSInspectionBy.Text, dtpSInspectionDate.Value)
+
+                If (resorder >= 0) Then
+                    linq_obj.SubmitChanges()
+                End If
+
+
+                Dim resProjectId As Integer
+                resProjectId = linq_obj.SP_Tbl_Service_PartyReadynessMaster_Update(Address_ID, imgQualityReportPath)
+
+                If (resProjectId >= 0) Then
+                    linq_obj.SubmitChanges()
+
+                    Dim delfollowDetail = linq_obj.SP_Tbl_Service_PartyReadynessDetail_Delete(Address_ID)
+                    linq_obj.SubmitChanges()
+
+                    For i As Integer = 0 To tblPrDetail.Rows.Count - 1
+                        With tblPrDetail
+                            linq_obj.SP_Tbl_Service_PartyReadynessDetail_Insert(Address_ID,
+                                                                    .Rows(i)("HeaderName").ToString(),
+                                                                    .Rows(i)("Status").ToString(),
+                                                                    Convert.ToDateTime(.Rows(i)("CompletionDate").ToString()),
+                                                                    .Rows(i)("Remarks").ToString()
+                                                                    )
+                            linq_obj.SubmitChanges()
+                        End With
+                    Next
+                End If
+
+
+                'Save All Erreaction Details
+
+                Dim Errectionid As Integer
+                Errectionid = linq_obj.SP_Tbl_Service_ErrectionCommMaster_Update(Address_ID, t1.Text, n1.Text, t2.Text, n2.Text, t3.Text, n3.Text, t4.Text, n4.Text, t5.Text, n5.Text, imgDocErrectionPath, dtpErrectionDate.Value, txtECRemarks.Text)
+
+                If (Errectionid >= 0) Then
+
+                    linq_obj.SubmitChanges()
+                    'delete Old Data
+                    'delete Old Data
+                    Dim delfollowDetail = linq_obj.SP_Tbl_Service_ErrectionCommDetails_Delete(Address_ID)
+                    linq_obj.SubmitChanges()
+
+                    For i As Integer = 0 To tblQuality.Rows.Count - 1
+                        With tblQuality
+
+                            linq_obj.SP_Tbl_Service_ErrectionCommDetails_Insert(Address_ID,
+                                                .Rows(i)("RawWater").ToString(),
+                                                .Rows(i)("Parameter").ToString(),
+                                                .Rows(i)("TreatedWater").ToString())
+                            linq_obj.SubmitChanges()
+                        End With
+                    Next
+                End If
+
+
+                'Save Water Detail
+
+                Dim WaterID As Integer
+                WaterID = linq_obj.SP_Tbl_Service_PhysicalVerificationDayOneMaster_Update(Address_ID, chkBottle1.Checked, txtBottle1.Text, chkBottle2.Checked, txtBottle2.Text,
+                chkBlow1.Checked, txtBlow1.Text, chkBlow2.Checked, txtBlow2.Text, chkLab1.Checked, txtLab1.Text, chkLab2.Checked, txtLab2.Text, chkOther1.Checked, txtOther1.Text, chkOther2.Checked, txtOther2.Text, txtpendingMaterials.Text)
+
+
+                If (WaterID >= 0) Then
+                    linq_obj.SubmitChanges()
+                    For i As Integer = 0 To tblWaterDetails.Rows.Count - 1
+
+                        linq_obj.SubmitChanges()
+                        'delete Old Data
+                        Dim delfollowDetail = linq_obj.SP_Tbl_Service_Physical_WaterTreatment_Master_Delete(Address_ID)
+                        linq_obj.SubmitChanges()
+                        With tblWaterDetails
+                            linq_obj.SP_Tbl_Service_Physical_WaterTreatment_Master_Insert(Address_ID,
+                                                                    .Rows(i)("WaterType").ToString(),
+                                                                    .Rows(i)("Status").ToString(),
+                                                                    .Rows(i)("Remarks").ToString())
+                            linq_obj.SubmitChanges()
+                        End With
+                    Next
+                End If
+
+                Dim RemarkID As Integer
+                RemarkID = linq_obj.SP_Tbl_Service_PartyRemarksMaster_Update(Address_ID, imgDoc1Path, imgDoc2Path, imgDoc3Path)
+                If (RemarkID >= 0) Then
+                    linq_obj.SubmitChanges()
+                End If
+            Else
+                MessageBox.Show("No Address Informations Found")
+            End If
+
+        Catch ex As Exception
+            MessageBox.Show("Error :" + ex.Message)
+        End Try
+    End Sub
+
+
+    Public Sub BindAllData()
+        Try
+
+
+            'bind Service details
+            Dim ProjectDetails = linq_obj.SP_Tbl_Service_ProjectDetail_Select(Address_ID).ToList()
+            If (ProjectDetails.Count > 0) Then
+                btnSave.Enabled = False
+                'bind Main Order Data
+
+                For Each item As SP_Tbl_Service_ProjectDetail_SelectResult In ProjectDetails
+                    With item
+                        txtSMoc.Text = .MOC
+                        txtSType.Text = .PlantType
+                        txtSInspectionBy.Text = .InspectionBy
+                        dtpSInspectionDate.Text = .InspectionDate
+                    End With
+                Next
+
+
+                'bind PartyRadyness Detail
+                Dim PartyReadyness = linq_obj.SP_Tbl_Service_PartyReadynessMaster_Select(Address_ID).ToList()
+                If (PartyReadyness.Count > 0) Then
+                    For Each item As SP_Tbl_Service_PartyReadynessMaster_SelectResult In PartyReadyness
+                        imgQualityReportPath = item.QualityReportPath
+                        lblSuccess.Text = item.QualityReportPath
+                    Next
+                End If
+
+
+                Dim RadynessDetails = linq_obj.SP_Tbl_Service_PartyReadynessDetail_Select(Address_ID).ToList()
+                If (RadynessDetails.Count > 0) Then
+
+                    tblPrDetail.Clear()
+
+                    For Each item As SP_Tbl_Service_PartyReadynessDetail_SelectResult In RadynessDetails
+                        Dim dr As DataRow
+                        dr = tblPrDetail.NewRow()
+
+                        dr("HeaderName") = item.HeaderName
+                        dr("Status") = item.Status
+                        dr("CompletionDate") = item.CompletionDate
+                        dr("Remarks") = item.Remarks
+
+                        tblPrDetail.Rows.Add(dr)
+                    Next
+                    DGPRDetail.DataSource = tblPrDetail
+                End If
+
+
+                'bind Errection Detail
+                Dim ErrectionMaster = linq_obj.SP_Tbl_Service_ErrectionCommMaster_Select(Address_ID).ToList()
+                If (ErrectionMaster.Count > 0) Then
+                    For Each item As SP_Tbl_Service_ErrectionCommMaster_SelectResult In ErrectionMaster
+                        With item
+                            n1.Text = .Engg_Name1
+                            n2.Text = .Engg_Name2
+                            n3.Text = .Engg_Name3
+                            n4.Text = .Engg_Name4
+                            n5.Text = .Engg_Name5
+
+                            imgDocErrectionPath = .Documentupload
+                            lblSuccessEC.Text = .Documentupload
+                            dtpErrectionDate.Text = .ECDate
+                        End With
+                    Next
+                End If
+
+
+                Dim ErrectionDetials = linq_obj.SP_Tbl_Service_ErrectionCommDetails_Select(Address_ID).ToList()
+                If (ErrectionDetials.Count > 0) Then
+
+                    tblQuality.Clear()
+
+                    For Each item As SP_Tbl_Service_ErrectionCommDetails_SelectResult In ErrectionDetials
+                        Dim dr As DataRow
+                        dr = tblQuality.NewRow()
+
+                        dr("RawWater") = item.RawWaterValue
+                        dr("Parameter") = item.Parameter
+                        dr("TreatedWater") = item.TreatedWaterValue
+
+                        tblQuality.Rows.Add(dr)
+                    Next
+                    dgvErrectionDetails.DataSource = tblQuality
+                End If
+
+
+                ''Water Details
+
+
+
+                Dim WaterMaster = linq_obj.SP_Tbl_Service_PhysicalVerificationDayOneMaster_Select(Address_ID).ToList()
+                If (ErrectionMaster.Count > 0) Then
+                    For Each item As SP_Tbl_Service_PhysicalVerificationDayOneMaster_SelectResult In WaterMaster
+
+                        With item
+                            chkBottle1.Checked = .BottleConvStatus
+                            txtBottle1.Text = .BottleConvRemarks
+                            chkBottle2.Checked = .BottleCompStatus
+                            txtBottle2.Text = .BottleCompRemarks
+                            chkBlow1.Checked = .BlowCompStatus
+                            txtBlow1.Text = .BlowCompRemarks
+                            chkBlow2.Checked = .BlowAirStatus
+                            txtBlow2.Text = .BlowAirRemarks
+                            chkLab1.Checked = .LabPack1Status
+                            txtLab1.Text = .LabPack1Remarks
+                            chkLab2.Checked = .LabPack2Status
+                            txtLab2.Text = .LabPack2Remarks
+                            chkOther1.Checked = .Other1Status
+                            txtOther1.Text = .Other1Remarks
+                            chkOther2.Checked = .Other2Status
+                            txtOther2.Text = .Other2Remarks
+                            txtpendingMaterials.Text = .PendingMaterials
+                        End With
+                    Next
+                End If
+
+
+                Dim WatterDetails = linq_obj.SP_Tbl_Service_Physical_WaterTreatment_Master_Select(Address_ID).ToList()
+                If (WatterDetails.Count > 0) Then
+
+                    tblWaterDetails.Clear()
+
+                    For Each item As SP_Tbl_Service_Physical_WaterTreatment_Master_SelectResult In WatterDetails
+                        Dim dr As DataRow
+                        dr = tblWaterDetails.NewRow()
+
+                        dr("WaterType") = item.WaterType
+                        dr("Status") = item.Status
+                        dr("Remarks") = item.Remarks
+
+                        tblWaterDetails.Rows.Add(dr)
+                    Next
+                    DGWaterDetail.DataSource = tblWaterDetails
+                End If
+
+                Dim PartyRemark = linq_obj.SP_Tbl_Service_PartyRemarksMaster_Select(Address_ID).ToList()
+                If (ErrectionMaster.Count > 0) Then
+                    For Each item As SP_Tbl_Service_PartyRemarksMaster_SelectResult In PartyRemark
+
+                        With item
+                            lblSuccessDoc1.Text = .Document1
+                            lblSuccessDoc2.Text = .Document2
+                            lblSuccessDoc3.Text = .Document3
+                        End With
+                    Next
+                End If
+
+                Dim ProjectDetails1 = linq_obj.SP_Select_Tbl_ProjectInformationMaster(Address_ID).ToList()
+                If (ProjectDetails1.Count > 0) Then
+                    For Each item As SP_Select_Tbl_ProjectInformationMasterResult In ProjectDetails1
+
+                        With item
+                            txtSPlanName.Text = .PlantName
+                            txtSModel.Text = .Model
+                            txtSCapacity.Text = .Capacity
+                            txtSScheme.Text = .TreatmentScheme
+                        End With
+                    Next
+                End If
+
+
+
+
+
+
+                'rajesh
+                Dim dataEcEng = linq_obj.SP_Tbl_Service_ECEngRepMaster_Select(Address_ID).ToList()
+                If (dataEcEng.Count > 0) Then
+                    For Each item As SP_Tbl_Service_ECEngRepMaster_SelectResult In dataEcEng
+
+                        With item
+                            If (item.IsDone.Value = True) Then
+                                chkECDone.Checked = True
+                                dtECDone.Value = item.ECDoneDate
+                            Else
+                                chkECDone.Checked = False
+                                dtECDone.Visible = False
+
+                            End If
+                        End With
+                    Next
+
+                End If
+
+                Dim dataECEngDetail = linq_obj.SP_Tbl_Service_ECEngineerReportDetail_Select(Address_ID).ToList()
+
+                If (dataECEngDetail.Count > 0) Then
+                    For Each item As SP_Tbl_Service_ECEngineerReportDetail_SelectResult In dataECEngDetail
+
+                        With item
+                            Dim dr As DataRow
+                            dr = tblEngFollowup.NewRow()
+                            dr("Date") = Convert.ToString(item.ECRepDate)
+                            dr("StartTime") = Convert.ToString(item.ECStartTime)
+                            dr("EndTime") = Convert.ToString(item.ECEndTime)
+                            dr("WorkDone") = Convert.ToString(item.ECWorkDone)
+                            dr("isDelay") = Convert.ToString(item.ECIsWorkDelay)
+                            dr("DelayRemarks") = Convert.ToString(item.ECWorkDelayRemarks)
+                            dr("InstallationFor") = Convert.ToString(item.ECInstallationFor)
+                            dr("Remarks") = Convert.ToString(item.ECRemarks)
+                            tblEngFollowup.Rows.Add(dr)
+                        End With
+                    Next
+                    DGEFDetails.DataSource = tblEngFollowup
+                End If
+
+
+
+                Dim dataECDone = linq_obj.SP_Tbl_Service_ECDoneDetail_Select(Address_ID).ToList()
+                If (dataECDone.Count > 0) Then
+                    For Each item As SP_Tbl_Service_ECDoneDetail_SelectResult In dataECDone
+
+                        With item
+
+
+                            Dim dr As DataRow
+                            dr = tblECDone.NewRow()
+                            dr("InstallationType") = Convert.ToString(item.ECInstallationType)
+                            dr("isDone") = Convert.ToString(item.isDone)
+                            dr("DoneDate") = Convert.ToString(item.ECDate)
+                            tblECDone.Rows.Add(dr)
+                        End With
+                    Next
+                    DGVECDoneDetail.DataSource = tblECDone
+
+                End If
+
+
+                Dim dataTPR = linq_obj.SP_Tbl_Service_TechPerformanceRepDetail_Select(Address_ID).ToList()
+                If (dataTPR.Count > 0) Then
+                    For Each item As SP_Tbl_Service_TechPerformanceRepDetail_SelectResult In dataTPR
+                        With item
+                            Dim dr As DataRow
+                            dr = tblTPR.NewRow()
+                            dr("EngineerName") = Convert.ToString(item.EngineerName)
+                            dr("ReportBy") = Convert.ToString(item.ReportBy)
+                            dr("PerformanceCategory") = Convert.ToString(item.PerformanceCategory)
+                            dr("Remarks") = Convert.ToString(item.Remarks)
+                            tblTPR.Rows.Add(dr)
+                        End With
+                    Next
+                    DGEPFDetail.DataSource = tblTPR
+                End If
+
+
+                Dim dataService = linq_obj.SP_Tbl_Service_ServiceDetail_Select(Address_ID).ToList()
+                If (dataService.Count > 0) Then
+                    For Each item As SP_Tbl_Service_ServiceDetail_SelectResult In dataService
+                        With item
+                            dtServDelDate.Value = item.DelServiceDate
+                            txtSerEngName.Text = item.EngineerName
+                            txtSerRemarks.Text = item.Remarks
+                            txtITDS.Text = Convert.ToString(item.I_TDS)
+                            txtITH.Text = Convert.ToString(item.I_TH)
+                            txtIPH.Text = Convert.ToString(item.I_PH)
+                            txtIRemarks.Text = item.I_Remarks
+                            txtOTDS.Text = Convert.ToString(item.O_TDS)
+                            txtOTH.Text = Convert.ToString(item.O_TH)
+                            txtOPH.Text = Convert.ToString(item.O_PH)
+                            txtORemarks.Text = Convert.ToString(item.O_Remarks)
+                            txtSerType.Text = Convert.ToString(item.ServiceType)
+                            If (item.isDone.Value = True) Then
+                                chkServiceDone.Checked = True
+                                dtServiceDoneDate.Value = item.DoneDate.Value
+                            Else
+                                chkServiceDone.Checked = False
+                                dtServiceDoneDate.Visible = False
+
+                            End If
+                        End With
+                    Next
+                End If
+
+                Dim datachkLog = linq_obj.SP_Tbl_Service_CheckLogDetail_Select(Address_ID).ToList()
+                If (datachkLog.Count > 0) Then
+                    For Each item As SP_Tbl_Service_CheckLogDetail_SelectResult In datachkLog
+                        With item
+                            Dim dr As DataRow
+                            dr = tblChkLog.NewRow()
+                            dr("Title") = Convert.ToString(item.ChkLogTitle)
+                            dr("isDone") = Convert.ToString(IIf(item.isDone.Value, True, False))
+                            dr("Date") = Convert.ToString(item.LogDate)
+                            dr("Remarks") = Convert.ToString(item.Remarks)
+                            tblChkLog.Rows.Add(dr)
+                        End With
+                    Next
+                    DGCheckLog.DataSource = tblChkLog
+                End If
+
+                Dim dataSparemaster = linq_obj.SP_Tbl_Service_SpareMaster_Select(Address_ID).ToList()
+                If (dataSparemaster.Count > 0) Then
+                    For Each item As SP_Tbl_Service_SpareMaster_SelectResult In dataSparemaster
+                        With item
+
+                            txtSpareEngName.Text = item.DispatchBy
+                            txtSpareRecBy.Text = item.RecieveBy
+                            txtSpareRemarks.Text = item.Remarks
+                            txtDisVia.Text = item.DispatchVia
+                            dtSpareDate.Value = item.SpareOrderDate.Value
+                        End With
+                    Next
+                End If
+
+                Dim dataSpareDetail = linq_obj.SP_Tbl_Service_SpareDetail_Select(Address_ID).ToList()
+                If (dataSpareDetail.Count > 0) Then
+                    For Each item As SP_Tbl_Service_SpareDetail_SelectResult In dataSpareDetail
+                        With item
+                            Dim dr As DataRow
+                            dr = tblSpareDetail.NewRow()
+                            dr("ItemName") = Convert.ToString(item.ItemName)
+                            dr("Qty") = Convert.ToString(item.Qty)
+                            dr("Price") = Convert.ToString(item.Price)
+                            dr("Amount") = Convert.ToString(item.Amount)
+                            tblSpareDetail.Rows.Add(dr)
+                        End With
+                    Next
+                    DGVSpareDetails.DataSource = tblSpareDetail
+                End If
+
+                Dim dataGenservice = linq_obj.SP_Tbl_Service_GeneralServiceMaster_Select(Address_ID).ToList()
+                If (dataGenservice.Count > 0) Then
+                    For Each item As SP_Tbl_Service_GeneralServiceMaster_SelectResult In dataGenservice
+                        With item
+
+                            dtGSDate.Value = item.GSDate.Value
+                            txtSerType.Text = item.ServiceType
+                            txtComplainNo.Text = item.ComplainNo
+                            txtAtendedBy.Text = item.AttendBy
+                            txtEnginer.Text = item.Engineer
+                            dtAttendDate.Value = item.AttendDate.Value
+
+                        End With
+                    Next
+                End If
+
+
+
+                Dim dataGenServiceDetail = linq_obj.SP_Tbl_Service_GeneralServiceDetail_Select(Address_ID).ToList()
+                If (dataGenServiceDetail.Count > 0) Then
+                    For Each item As SP_Tbl_Service_GeneralServiceDetail_SelectResult In dataGenServiceDetail
+                        With item
+                            Dim dr As DataRow
+                            dr = tblGenService.NewRow()
+                            dr("FollowUp") = Convert.ToString(item.FollowUp)
+                            dr("TentativeDate") = Convert.ToString(item.TentativeADate)
+                            dr("Status") = Convert.ToString(item.Status)
+                            dr("Remarks") = Convert.ToString(item.Remarks)
+                            tblGenService.Rows.Add(dr)
+                        End With
+                    Next
+                    DGVGenService.DataSource = tblGenService
+                End If
+
+
+
+                Dim dataClientDetail = linq_obj.SP_Tbl_Service_ContactInfo_Select(Address_ID).ToList()
+                If (dataClientDetail.Count > 0) Then
+                    For Each item As SP_Tbl_Service_ContactInfo_SelectResult In dataClientDetail
+                        With item
+                            Dim dr As DataRow
+                            dr = tblContactDetail.NewRow()
+                            dr("Name") = Convert.ToString(item.Name)
+                            dr("Post") = Convert.ToString(item.Post)
+                            dr("Contact") = Convert.ToString(item.ContactNo)
+                            dr("Email") = Convert.ToString(item.EmailId)
+                            tblContactDetail.Rows.Add(dr)
+                        End With
+                    Next
+                    DGClientDetail.DataSource = tblContactDetail
+                End If
+
+
+            Else
+                btnSave.Enabled = True
+            End If
+
+        Catch ex As Exception
+
+        End Try
+
+
+
+    End Sub
+
+    Private Sub btnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete.Click
+        Dim result As DialogResult = MessageBox.Show("Are You Sure?", "Important Message", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)
+        If result = DialogResult.Yes Then
+
+            '/Letter Header
+            linq_obj.SP_Tbl_Service_ProjectDetail_Delete(Address_ID)
+            linq_obj.SubmitChanges()
+
+            '/Letter Detail
+            linq_obj.SP_Tbl_Service_PartyReadynessMaster_Delete(Address_ID)
+            linq_obj.SubmitChanges()
+
+            '/Product Inst
+            linq_obj.SP_Tbl_Service_PartyReadynessDetail_Delete(Address_ID)
+            linq_obj.SubmitChanges()
+            '/ISI Header
+            linq_obj.SP_Tbl_Service_ErrectionCommMaster_Delete(Address_ID)
+            linq_obj.SubmitChanges()
+            '/ISI Header
+            linq_obj.SP_Tbl_Service_ErrectionCommDetails_Delete(Address_ID)
+            linq_obj.SubmitChanges()
+
+
+            '/ISI Header
+            linq_obj.SP_Tbl_Service_PhysicalVerificationDayOneMaster_Delete(Address_ID)
+            linq_obj.SubmitChanges()
+
+
+            '/ISI Header
+            linq_obj.SP_Tbl_Service_Physical_WaterTreatment_Master_Delete(Address_ID)
+            linq_obj.SubmitChanges()
+
+            '/ISI Detail
+            linq_obj.SP_Tbl_Service_PartyRemarksMaster_Delete(Address_ID)
+            linq_obj.SubmitChanges()
+
+            btnAdd_Click(Nothing, Nothing)
+            MessageBox.Show("Successfully Deleted")
+        End If
+
+    End Sub
+
+    Private Sub btnAddAddress_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddAddress.Click
+        Dim dr As DataRow
+        dr = tblContactDetail.NewRow()
+
+        dr("Name") = txtName.Text
+        dr("Post") = txtPost.Text
+        dr("Contact") = txtClientContactNo.Text
+        dr("Email") = txtClientEmail.Text
+
+        'insert into the service eng report
+        linq_obj.SP_Tbl_Service_ContactInfo_Insert(Address_ID, txtName.Text, txtPost.Text, txtClientContactNo.Text, txtClientEmail.Text)
+
+        linq_obj.SubmitChanges()
+
+        tblContactDetail.Rows.Add(dr)
+        DGClientDetail.DataSource = tblContactDetail
+
+        txtName.Text = ""
+        txtPost.Text = ""
+        txtClientContactNo.Text = ""
+        txtClientEmail.Text = ""
+
+    End Sub
+
+    Private Sub btnclientAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnclientAdd.Click
+        txtName.Text = ""
+        txtPost.Text = ""
+        txtClientContactNo.Text = ""
+        txtClientEmail.Text = ""
+    End Sub
+
+    Private Sub btnDelClient_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelClient.Click
+        tblContactDetail.Rows(DGEPFDetail.CurrentRow.Index).Delete()
+        DGEPFDetail.DataSource = tblContactDetail
+    End Sub
+
+    Private Sub txtpendingMaterials_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtpendingMaterials.TextChanged
+
+    End Sub
+
+    Private Sub Label43_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label43.Click
+
+    End Sub
+
+    Private Sub TCorderMast_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TCorderMast.SelectedIndexChanged
+
+    End Sub
+
+    Private Sub txtAddQuality_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtAddQuality.Click
+        txtRawWaterValue.Text = ""
+
+        cmbParameters.SelectedIndex = 0
+        txtTreatedWaterValue.Text = ""
+
+    End Sub
+
+    Private Sub btnAddWater_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddWater.Click
+        txtWaterPoint.SelectedIndex = 0
+        chkWaterRemark.Checked = False
+        txtWaterRemark.Text = ""
+
+
+    End Sub
+
+    Private Sub btnAddPartyReady_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddPartyReady.Click
+        txtRemarks.Text = ""
+        txtTitleReady.Text = ""
+        dtpCompletionDate.Value = DateTime.Now
+        rbYes.Checked = True
+    End Sub
+
+
+    Private Sub txtGSComplainNo_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtGSComplainNo.Leave
+        Try
+
+            If (txtGSComplainNo.Text <> "") Then
+
+
+                Dim cmd As New SqlCommand
+                cmd.CommandText = "SP_Get_ComplainDetails"
+                cmd.Parameters.Add("@ComplainNo", SqlDbType.VarChar).Value = txtGSComplainNo.Text
+                ' cmd.Parametds.Tables(1)ers.Add("@AddressID", SqlDbType.BigInt).Value = Address_ID
+
+                Dim objclass As New Class1
+
+                Dim ds As DataSet
+                ds = objclass.GetSearchData(cmd)
+                If ds.Tables(1).Rows.Count < 1 Then
+                    grpComplain.Visible = False
+
+                    MessageBox.Show("Record Not Found", "No Records", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                Else
+
+                    grpComplain.Visible = True
+                    lblComplainDate.Text = Convert.ToString(ds.Tables(1).Rows(0)(0))
+                    lblComplainDoneDate.Text = Convert.ToString(ds.Tables(1).Rows(0)("DoneDate"))
+                    lblComplainEngName.Text = Convert.ToString(ds.Tables(1).Rows(0)("Engineer"))
+                    lblComplainStatus.Text = Convert.ToString(ds.Tables(1).Rows(0)("ComlainStatus"))
+                    lblComplainType.Text = Convert.ToString(ds.Tables(1).Rows(0)("ServiceType"))
+
+                End If
+                ds.Dispose()
+            Else
+                MessageBox.Show("Enter Complain Number")
+            End If
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+
+    End Sub
+
+
+    Private Sub btnECDone_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnECDone.Click
+        If (chkECDone.Checked = True) Then
+            Dim result As DialogResult = MessageBox.Show("Is Errection Commissioning Done?", "Important Message", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)
+            If result = DialogResult.Yes Then
+
+                For index = 1 To 5
+                    If (index = 1) Then
+                        linq_obj.SP_Tbl_Service_ServiceLogMaster_Insert(Address_ID, "Service" + index.ToString(), dtServiceDoneDate.Value.AddMonths(1), "Pending", DateTime.Now)
+                    ElseIf (index = 2) Then
+                        linq_obj.SP_Tbl_Service_ServiceLogMaster_Insert(Address_ID, "Service" + index.ToString(), dtServiceDoneDate.Value.AddMonths(3), "Pending", DateTime.Now)
+                    ElseIf (index = 3) Then
+                        linq_obj.SP_Tbl_Service_ServiceLogMaster_Insert(Address_ID, "Service" + index.ToString(), dtServiceDoneDate.Value.AddMonths(6), "Pending", DateTime.Now)
+                    ElseIf (index = 4) Then
+                        linq_obj.SP_Tbl_Service_ServiceLogMaster_Insert(Address_ID, "Service" + index.ToString(), dtServiceDoneDate.Value.AddMonths(9), "Pending", DateTime.Now)
+                    ElseIf (index = 5) Then
+                        linq_obj.SP_Tbl_Service_ServiceLogMaster_Insert(Address_ID, "Service" + index.ToString(), dtServiceDoneDate.Value.AddMonths(12), "Pending", DateTime.Now)
+                    End If
+                Next
+
+
+                Dim dataService = linq_obj.SP_Get_ServiceList(Address_ID).ToList()
+                If (dataService.Count) Then
+                    cmbService.DataSource = dataService
+                    cmbService.DisplayMember = "ServiceType"
+                    cmbService.ValueMember = "ServiceType"
+                    cmbService.AutoCompleteMode = AutoCompleteMode.Append
+                    cmbService.DropDownStyle = ComboBoxStyle.DropDownList
+                    cmbService.AutoCompleteSource = AutoCompleteSource.ListItems
+                    lblServiceType.Text = dataService(0).ServiceType
+                End If
+            End If
+        Else
+            MessageBox.Show("Select Errection Commission Done")
+
+        End If
+
+
+
+
+    End Sub
+
+
+    Private Sub DGVServiceDetails_PreviewKeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PreviewKeyDownEventArgs) Handles DGVServiceDetails.PreviewKeyDown
+        BindAllGridData()
+    End Sub
+
+    Private Sub btnDelfolwup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelfolwup.Click
+
+    End Sub
+End Class

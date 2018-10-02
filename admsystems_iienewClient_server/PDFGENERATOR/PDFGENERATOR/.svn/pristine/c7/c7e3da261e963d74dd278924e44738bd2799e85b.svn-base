@@ -1,0 +1,69 @@
+﻿Imports CrystalDecisions.CrystalReports.Engine
+
+Public Class ViewCourierReports
+    Dim linq_obj As New RoErpDataContext(System.Configuration.ConfigurationManager.AppSettings("constr").ToString())
+
+    Dim Type As String
+    Dim fromDate As DateTime
+    Dim toDate As DateTime
+    Dim ReportName As String
+    Dim Criteria As String
+    Public Sub New(ByVal Name As String, Optional ByVal FromD As DateTime = Nothing, Optional ByVal DateTo As DateTime = Nothing, Optional ByVal TypeList As String = "", Optional ByVal strCriteria As String = "")
+
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        fromDate = FromD
+        toDate = DateTo
+        Type = TypeList
+        ReportName = Name
+        Criteria = strCriteria
+    End Sub
+
+    Private Sub ViewCourierReports_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Dim rpt As New ReportDocument
+        Dim ss As String
+
+        Try
+            ss = Application.LocalUserAppDataPath()
+
+            If ReportName = "CourierPrint12" Then
+                rpt.Load(Application.StartupPath & "\Reports\CourierPrint12.rpt")
+                rpt.SetParameterValue("@start", fromDate)
+                rpt.SetParameterValue("@end", toDate)
+                rpt.SetParameterValue("@type", Type)
+                'rpt.SetParameterValue("@criteria", Criteria)
+            ElseIf ReportName = "CourierPrint21" Then
+                rpt.Load(Application.StartupPath & "\Reports\CourierPrint21.rpt")
+                rpt.SetParameterValue("@start", fromDate)
+                rpt.SetParameterValue("@end", toDate)
+                rpt.SetParameterValue("@type", Type)
+                'rpt.SetParameterValue("@criteria", Criteria)
+            ElseIf ReportName = "Rpt_CourierList" Then
+                rpt.Load(Application.StartupPath & "\Reports\Rpt_CourierList.rpt")
+                rpt.SetParameterValue("@start", fromDate)
+                rpt.SetParameterValue("@end", toDate)
+                rpt.SetParameterValue("@type", Type)
+                'rpt.SetParameterValue("@criteria", "")
+            ElseIf ReportName = "AddressPrint12" Then
+                rpt.Load(Application.StartupPath & "\Reports\AddressPrint12.rpt")
+                rpt.SetParameterValue("@start", fromDate)
+                rpt.SetParameterValue("@end", toDate)
+                'rpt.SetParameterValue("@criteria", Criteria)
+            ElseIf ReportName = "AddressPrint21" Then
+                rpt.Load(Application.StartupPath & "\Reports\AddressPrint21.rpt")
+                rpt.SetParameterValue("@start", fromDate)
+                rpt.SetParameterValue("@end", toDate)
+                'rpt.SetParameterValue("@criteria", Criteria)
+            End If
+            CrystalReportViewer1.ReportSource = rpt
+            CrystalReportViewer1.Show()
+            CrystalReportViewer1.Dock = DockStyle.Fill
+
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+
+    End Sub
+End Class

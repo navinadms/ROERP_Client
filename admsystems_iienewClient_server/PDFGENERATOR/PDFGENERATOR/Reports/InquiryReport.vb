@@ -1,0 +1,135 @@
+﻿Imports System.Data.SqlClient
+
+Public Class InquiryReport
+    '
+
+    Dim strCriteria As String
+
+    Dim linq_obj As New RoErpDataContext(System.Configuration.ConfigurationManager.AppSettings("constr").ToString())
+
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+        AutoCompated_Text()
+        ddlEnqType_Bind()
+
+
+        If (Class1.global.RptUserType = True) Then
+            bindUser()
+            lblUser.Visible = True
+            cmbUser.Visible = True
+
+        Else
+            lblUser.Visible = False
+            cmbUser.Visible = False
+        End If
+    End Sub
+    Public Sub bindUser()
+        cmbUser.DataSource = Nothing
+
+
+        Dim datatable As New DataTable
+        datatable.Columns.Add("Pk_UserId")
+        datatable.Columns.Add("UserName")
+
+
+        Dim datauser = linq_obj.SP_Get_UserList().ToList()
+        For Each item As SP_Get_UserListResult In datauser
+            datatable.Rows.Add(item.Pk_UserId, item.UserName)
+        Next
+        Dim newRow As DataRow = datatable.NewRow()
+
+        newRow(0) = "0"
+        newRow(1) = "Select"
+        datatable.Rows.InsertAt(newRow, 0)
+        cmbUser.DataSource = datatable
+        cmbUser.DisplayMember = "UserName"
+        cmbUser.ValueMember = "Pk_UserId"
+        cmbUser.AutoCompleteMode = AutoCompleteMode.Append
+        cmbUser.DropDownStyle = ComboBoxStyle.DropDownList
+        cmbUser.AutoCompleteSource = AutoCompleteSource.ListItems
+    End Sub
+    Private Sub InquiryReport_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        'ddlEnqType.Items.Add("Select")
+
+    End Sub
+
+    Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+        Dim criteria As String
+        criteria = " and "
+
+        If txtCity.Text.Trim() <> "" Then
+            criteria = criteria + " City like '" + txtCity.Text + "%' and"
+
+
+            If ddlEnqType.SelectedValue <> 0 Then
+                criteria = criteria + " ty.EnqType like '" + ddlEnqType.Text + "' and" 
+            End If
+        Else
+
+            If ddlEnqType.SelectedValue <> 0 Then
+                criteria = criteria + " ty.EnqType like '" + ddlEnqType.Text + "' and" 
+            End If
+        End If
+         
+        If criteria = " and " Then
+            criteria = ""
+        End If
+
+        If (criteria.Length > 0) Then
+            criteria = criteria.ToString().Substring(0, criteria.Length - 3)
+        End If
+        'MessageBox.Show(criteria)
+
+        Dim cmd As New SqlCommand
+        cmd.CommandText = "SP_Search_InquiryReportByUser"
+        cmd.Parameters.Add("@end", SqlDbType.DateTime).Value = dtEndDate.Value
+        cmd.Parameters.Add("@start", SqlDbType.DateTime).Value = dtStartDate.Value
+        cmd.Parameters.Add("@user", SqlDbType.BigInt).Value = If(Class1.global.RptUserType = True, Convert.ToInt32(cmbUser.SelectedValue), Convert.ToInt32(Class1.global.UserID))
+
+        Dim str As String
+
+        str = dtStartDate.Value.ToShortDateString
+        cmd.Parameters.Add("@criteria", SqlDbType.VarChar).Value = criteria
+
+
+
+        Dim objclass As New Class1
+
+        Dim ds As New DataSet
+        ds = objclass.GetEnqReportData(cmd)
+        If ds.Tables(1).Rows.Count < 1 Then
+            MessageBox.Show("Record Not Found", "No Records", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        End If
+        Dim rpt As New rpt_inquiryReport
+
+        rpt.SetDataSource(ds.Tables(1))
+
+        CrystalReportViewer1.ReportSource = rpt
+        rpt.Refresh()
+
+    End Sub
+
+    Public Sub AutoCompated_Text()
+        Dim data = linq_obj.SP_Get_AddressListAutoComplete("City").ToList()
+        For Each iteam As SP_Get_AddressListAutoCompleteResult In data
+            txtCity.AutoCompleteCustomSource.Add(iteam.Result)
+        Next
+
+    End Sub
+    Public Sub ddlEnqType_Bind()
+        ddlEnqType.Items.Clear()
+        Dim Enq = linq_obj.SP_Get_EnqTypeList().ToList()
+        ddlEnqType.DataSource = Enq
+        ddlEnqType.DisplayMember = "EnqType"
+        ddlEnqType.ValueMember = "Pk_EnqTypeID"
+
+
+        ddlEnqType.AutoCompleteMode = AutoCompleteMode.Append
+        ddlEnqType.DropDownStyle = ComboBoxStyle.DropDownList
+
+        ddlEnqType.AutoCompleteSource = AutoCompleteSource.ListItems
+    End Sub
+
+  
+End Class

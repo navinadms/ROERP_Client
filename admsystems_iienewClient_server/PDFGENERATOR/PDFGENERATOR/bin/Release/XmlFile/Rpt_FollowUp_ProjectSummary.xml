@@ -1,0 +1,52 @@
+<?xml version="1.0" standalone="yes"?>
+<xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="Rpt_FollowUp_ProjectSummary" msdata:UseCurrentLocale="true">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="Rpt_FollowUp_ProjectSummary">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="EnqNo" type="xs:string" minOccurs="0" />
+              <xs:element name="DeliveryArea" type="xs:string" minOccurs="0" />
+              <xs:element name="DeliveryAddress" type="xs:string" minOccurs="0" />
+              <xs:element name="DeliveryCity" type="xs:string" minOccurs="0" />
+              <xs:element name="DeliveryState" type="xs:string" minOccurs="0" />
+              <xs:element name="DeliveryDistrict" type="xs:string" minOccurs="0" />
+              <xs:element name="DeliveryPincode" type="xs:string" minOccurs="0" />
+              <xs:element name="DeliveryCity1" type="xs:string" minOccurs="0" />
+              <xs:element name="ContactPerson" type="xs:string" minOccurs="0" />
+              <xs:element name="EmailID" type="xs:string" minOccurs="0" />
+              <xs:element name="Address" type="xs:string" minOccurs="0" />
+              <xs:element name="Area" type="xs:string" minOccurs="0" />
+              <xs:element name="City" type="xs:string" minOccurs="0" />
+              <xs:element name="ContactPerson1" type="xs:string" minOccurs="0" />
+              <xs:element name="MobileNo1" type="xs:string" minOccurs="0" />
+              <xs:element name="Name" type="xs:string" minOccurs="0" />
+              <xs:element name="State" type="xs:string" minOccurs="0" />
+              <xs:element name="Pk_OrderProjectId" type="xs:long" minOccurs="0" />
+              <xs:element name="PlantName" type="xs:string" minOccurs="0" />
+              <xs:element name="Model" type="xs:string" minOccurs="0" />
+              <xs:element name="ProjectName" type="xs:string" minOccurs="0" />
+              <xs:element name="Capacity" type="xs:string" minOccurs="0" />
+              <xs:element name="PowerAvailable" type="xs:string" minOccurs="0" />
+              <xs:element name="PlantShape" type="xs:string" minOccurs="0" />
+              <xs:element name="LandArea" type="xs:string" minOccurs="0" />
+              <xs:element name="DType" type="xs:string" minOccurs="0" />
+              <xs:element name="TreatmentScheme" type="xs:string" minOccurs="0" />
+              <xs:element name="JarDis" type="xs:string" minOccurs="0" />
+              <xs:element name="BMouldDis" type="xs:string" minOccurs="0" />
+              <xs:element name="TentativeDispatch" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="Fk_AddressId" type="xs:long" minOccurs="0" />
+              <xs:element name="Pk_ProjctDetailId" type="xs:long" minOccurs="0" />
+              <xs:element name="Fk_AddressId1" type="xs:long" minOccurs="0" />
+              <xs:element name="SrNo" type="xs:int" minOccurs="0" />
+              <xs:element name="PlantScheme" type="xs:string" minOccurs="0" />
+              <xs:element name="VendorName" type="xs:string" minOccurs="0" />
+              <xs:element name="DispatchDate" type="xs:dateTime" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

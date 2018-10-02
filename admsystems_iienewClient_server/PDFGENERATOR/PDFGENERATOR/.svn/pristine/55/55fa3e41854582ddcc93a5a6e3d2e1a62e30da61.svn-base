@@ -1,0 +1,18 @@
+﻿Public Class Rpt_StockMainReport
+    Dim linq_obj As New RoErpDataContext(System.Configuration.ConfigurationManager.AppSettings("constr").ToString())
+
+    Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+        Dim dataStock = linq_obj.Sp_Rpt_FullStockDetail(dtStartDate.Value, dtEndDate.Value).ToList()
+
+        If (dataStock.Count > 0) Then
+            gvStockDetail.DataSource = dataStock
+        Else
+            gvStockDetail.DataSource = Nothing
+        End If
+
+    End Sub
+
+    Private Sub btnExportExcel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExportExcel.Click
+
+    End Sub
+End Class

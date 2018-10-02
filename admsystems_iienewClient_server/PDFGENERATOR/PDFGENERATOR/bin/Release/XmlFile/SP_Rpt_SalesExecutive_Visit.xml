@@ -1,0 +1,80 @@
+<?xml version="1.0" standalone="yes"?>
+<xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="SP_Rpt_SalesExecutive_Visit" msdata:UseCurrentLocale="true">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="SP_Rpt_SalesExecutive_Visit">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Pk_AddressID" type="xs:long" minOccurs="0" />
+              <xs:element name="FK_EnqTypeID" type="xs:int" minOccurs="0" />
+              <xs:element name="EnqNo" type="xs:string" minOccurs="0" />
+              <xs:element name="FK_CategoryID" type="xs:int" minOccurs="0" />
+              <xs:element name="FK_SubCategoryID" type="xs:int" minOccurs="0" />
+              <xs:element name="Name" type="xs:string" minOccurs="0" />
+              <xs:element name="Address" type="xs:string" minOccurs="0" />
+              <xs:element name="Area" type="xs:string" minOccurs="0" />
+              <xs:element name="City" type="xs:string" minOccurs="0" />
+              <xs:element name="Pincode" type="xs:string" minOccurs="0" />
+              <xs:element name="Taluka" type="xs:string" minOccurs="0" />
+              <xs:element name="District" type="xs:string" minOccurs="0" />
+              <xs:element name="State" type="xs:string" minOccurs="0" />
+              <xs:element name="DeliveryAddress" type="xs:string" minOccurs="0" />
+              <xs:element name="DeliveryArea" type="xs:string" minOccurs="0" />
+              <xs:element name="DeliveryCity" type="xs:string" minOccurs="0" />
+              <xs:element name="DeliveryPincode" type="xs:string" minOccurs="0" />
+              <xs:element name="DeliveryTaluka" type="xs:string" minOccurs="0" />
+              <xs:element name="DeliveryDistrict" type="xs:string" minOccurs="0" />
+              <xs:element name="DeliveryState" type="xs:string" minOccurs="0" />
+              <xs:element name="ContactPerson" type="xs:string" minOccurs="0" />
+              <xs:element name="LandlineNo" type="xs:string" minOccurs="0" />
+              <xs:element name="MobileNo" type="xs:string" minOccurs="0" />
+              <xs:element name="EmailID" type="xs:string" minOccurs="0" />
+              <xs:element name="EmailID1" type="xs:string" minOccurs="0" />
+              <xs:element name="EmailID2" type="xs:string" minOccurs="0" />
+              <xs:element name="Remark" type="xs:string" minOccurs="0" />
+              <xs:element name="EnqDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="CreateDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="EnqStatus" type="xs:string" minOccurs="0" />
+              <xs:element name="Reference1" type="xs:string" minOccurs="0" />
+              <xs:element name="Reference2" type="xs:string" minOccurs="0" />
+              <xs:element name="TypeOfEnq" type="xs:string" minOccurs="0" />
+              <xs:element name="EnqAttendBy" type="xs:string" minOccurs="0" />
+              <xs:element name="EnqFor" type="xs:string" minOccurs="0" />
+              <xs:element name="CapacityHour" type="xs:string" minOccurs="0" />
+              <xs:element name="Pk_VisitID" type="xs:long" minOccurs="0" />
+              <xs:element name="EnqNo1" type="xs:string" minOccurs="0" />
+              <xs:element name="Fk_Address_ID" type="xs:long" minOccurs="0" />
+              <xs:element name="Fk_From_UserID" type="xs:int" minOccurs="0" />
+              <xs:element name="Fk_To_UserID" type="xs:int" minOccurs="0" />
+              <xs:element name="Vtype" type="xs:string" minOccurs="0" />
+              <xs:element name="Plant" type="xs:string" minOccurs="0" />
+              <xs:element name="Values1" type="xs:string" minOccurs="0" />
+              <xs:element name="Land" type="xs:string" minOccurs="0" />
+              <xs:element name="Const" type="xs:string" minOccurs="0" />
+              <xs:element name="Bank" type="xs:string" minOccurs="0" />
+              <xs:element name="TravelBy" type="xs:string" minOccurs="0" />
+              <xs:element name="Pickup" type="xs:string" minOccurs="0" />
+              <xs:element name="Hotel" type="xs:string" minOccurs="0" />
+              <xs:element name="Hardcopy" type="xs:string" minOccurs="0" />
+              <xs:element name="Qtnvalue" type="xs:string" minOccurs="0" />
+              <xs:element name="VisitTime" type="xs:string" minOccurs="0" />
+              <xs:element name="Description" type="xs:string" minOccurs="0" />
+              <xs:element name="Remark1" type="xs:string" minOccurs="0" />
+              <xs:element name="Status" type="xs:string" minOccurs="0" />
+              <xs:element name="VisitDate" type="xs:string" minOccurs="0" />
+              <xs:element name="Priority" type="xs:string" minOccurs="0" />
+              <xs:element name="Through" type="xs:string" minOccurs="0" />
+              <xs:element name="QtnType" type="xs:string" minOccurs="0" />
+              <xs:element name="VisitDoneDate" type="xs:string" minOccurs="0" />
+              <xs:element name="CreateDate1" type="xs:string" minOccurs="0" />
+              <xs:element name="FirstName" type="xs:string" minOccurs="0" />
+              <xs:element name="LastName" type="xs:string" minOccurs="0" />
+              <xs:element name="VRemark" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

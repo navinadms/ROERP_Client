@@ -1,0 +1,60 @@
+﻿Imports CrystalDecisions.CrystalReports.Engine
+Imports System.Data.SqlClient
+Public Class ReportPerformaInvoice
+
+
+    Public Sub New(ByVal ParaAddressID As Integer)
+
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        Address_ID = ParaAddressID
+    End Sub
+    Dim linq_obj As New RoErpDataContext(System.Configuration.ConfigurationManager.AppSettings("constr").ToString())
+
+    Dim Address_ID As Integer
+    Private Sub ReportPartyOutstanding_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Dim ds As New PerformaReport
+        Dim dataParty = linq_obj.SP_Select_OrderParty_Detail(Address_ID).ToList()
+        Dim ToWords As String
+
+
+        For Each item As SP_Select_OrderParty_DetailResult In dataParty
+            ToWords = "" & RupeeConvert.changeToWords(Convert.ToString(item.NetAmount), True)
+
+            ds.Tables("PartyMaster").Rows.Add(item.Name, item.Address, item.District, item.State, item.ContactPerson, item.MobileNo, "", "", item.InvoiceNo, item.InvoiceDate, item.Transporter,
+                                              item.PONo, item.CreateDate, item.RRLRNo, item.BasicAmount, item.SubTotal, item.Discount, item.Advance, item.Total, item.NetAmount, item.CSTPerc, item.BankDetail,
+                                             ToWords)
+        Next
+        Dim debitData = linq_obj.SP_Select_Party_DebitDetail_ByPartyId(dataParty(0).Pk_PartyId).ToList()
+        For Each item As SP_Select_Party_DebitDetail_ByPartyIdResult In debitData
+            ds.Tables("PartyDebit").Rows.Add(item.DebitEntryNo, item.PlantScheme, item.Amount, If(item.Qty Is Nothing, 1, item.Qty), Convert.ToDecimal(item.Amount) * Convert.ToInt32(If(item.Qty Is Nothing, 1, item.Qty)), item.TotalDebit, item.NetDebit)
+        Next
+
+        ', Convert.ToString(item.Amount), Convert.ToString(item.Qty), Double.Parse(item.Amount) * Double.Parse(item.Qty), item.TotalDebit, item.NetDebit
+
+        'Dim creditData = linq_obj.SP_Select_Party_CreditDetail_ByPartyId(dataParty(0).Pk_PartyId).ToList()
+        'For Each item As SP_Select_Party_CreditDetail_ByPartyIdResult In creditData
+        '    ds.Tables("PartyCredit").Rows.Add(Convert.ToString(item.EntryNo), Convert.ToString(item.PType), Convert.ToString(Convert.ToDateTime(item.PDate).ToShortDateString()), Convert.ToString(item.Amount))
+        'Next
+
+
+        Dim rpt As New Rpt_ProformaInvoice
+
+
+        ' cryRpt.Load("D:\\ROERP\\PDFGENERATOR\\PDFGENERATOR\\Reports\\Rpt_PartyOutstanding.rpt")
+
+        'cryRpt.SetDataSource(ds)
+
+        rpt.Database.Tables("PartyMaster").SetDataSource(ds.Tables("PartyMaster"))
+        rpt.Database.Tables("PartyDebit").SetDataSource(ds.Tables("PartyDebit"))
+        'rpt.Database.Tables("PartyCredit").SetDataSource(ds.Tables("PartyCredit"))
+
+        CrystalReportViewer1.ReportSource = rpt
+        CrystalReportViewer1.RefreshReport()
+        ds.Dispose()
+        rpt.Refresh()
+        ds.Tables("PartyMaster").Dispose()
+    End Sub
+End Class

@@ -1,0 +1,487 @@
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+Partial Class InqiurySearchByCriteria
+    Inherits System.Windows.Forms.Form
+
+    'Form overrides dispose to clean up the component list.
+    <System.Diagnostics.DebuggerNonUserCode()> _
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Try
+            If disposing AndAlso components IsNot Nothing Then
+                components.Dispose()
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
+    End Sub
+
+    'Required by the Windows Form Designer
+    Private components As System.ComponentModel.IContainer
+
+    'NOTE: The following procedure is required by the Windows Form Designer
+    'It can be modified using the Windows Form Designer.  
+    'Do not modify it using the code editor.
+    <System.Diagnostics.DebuggerStepThrough()> _
+    Private Sub InitializeComponent()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.btnSearchAll = New System.Windows.Forms.Button()
+        Me.Panel3 = New System.Windows.Forms.Panel()
+        Me.Panel6 = New System.Windows.Forms.Panel()
+        Me.txtAllCity = New System.Windows.Forms.TextBox()
+        Me.btnAddCity = New System.Windows.Forms.Button()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.txtCity = New System.Windows.Forms.TextBox()
+        Me.Panel7 = New System.Windows.Forms.Panel()
+        Me.txtAllPlant = New System.Windows.Forms.TextBox()
+        Me.btnAddPlant = New System.Windows.Forms.Button()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.txtPlant = New System.Windows.Forms.TextBox()
+        Me.Panel5 = New System.Windows.Forms.Panel()
+        Me.txtAllState = New System.Windows.Forms.TextBox()
+        Me.btnAddState = New System.Windows.Forms.Button()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.txtState = New System.Windows.Forms.TextBox()
+        Me.Panel4 = New System.Windows.Forms.Panel()
+        Me.txtAllEnq = New System.Windows.Forms.TextBox()
+        Me.btnAddEnqType = New System.Windows.Forms.Button()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.ddlEnqType = New System.Windows.Forms.ComboBox()
+        Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.txtRefrence = New System.Windows.Forms.TextBox()
+        Me.txtAllReference = New System.Windows.Forms.TextBox()
+        Me.btnAddRef = New System.Windows.Forms.Button()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.dtStartDate = New System.Windows.Forms.DateTimePicker()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.dtEndDate = New System.Windows.Forms.DateTimePicker()
+        Me.Panel8 = New System.Windows.Forms.Panel()
+        Me.btnExportPDF = New System.Windows.Forms.Button()
+        Me.btnExportExcel = New System.Windows.Forms.Button()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.DataGridView1 = New System.Windows.Forms.DataGridView()
+        Me.Panel1.SuspendLayout()
+        Me.Panel3.SuspendLayout()
+        Me.Panel6.SuspendLayout()
+        Me.Panel7.SuspendLayout()
+        Me.Panel5.SuspendLayout()
+        Me.Panel4.SuspendLayout()
+        Me.Panel2.SuspendLayout()
+        Me.Panel8.SuspendLayout()
+        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.SuspendLayout()
+        '
+        'Panel1
+        '
+        Me.Panel1.Controls.Add(Me.btnSearchAll)
+        Me.Panel1.Controls.Add(Me.Panel3)
+        Me.Panel1.Controls.Add(Me.Panel2)
+        Me.Panel1.Location = New System.Drawing.Point(12, 12)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(1288, 188)
+        Me.Panel1.TabIndex = 2
+        '
+        'btnSearchAll
+        '
+        Me.btnSearchAll.Location = New System.Drawing.Point(436, 163)
+        Me.btnSearchAll.Name = "btnSearchAll"
+        Me.btnSearchAll.Size = New System.Drawing.Size(180, 23)
+        Me.btnSearchAll.TabIndex = 8
+        Me.btnSearchAll.Text = "Search"
+        Me.btnSearchAll.UseVisualStyleBackColor = True
+        '
+        'Panel3
+        '
+        Me.Panel3.Controls.Add(Me.Panel6)
+        Me.Panel3.Controls.Add(Me.Panel7)
+        Me.Panel3.Controls.Add(Me.Panel5)
+        Me.Panel3.Controls.Add(Me.Panel4)
+        Me.Panel3.Location = New System.Drawing.Point(303, 6)
+        Me.Panel3.Name = "Panel3"
+        Me.Panel3.Size = New System.Drawing.Size(708, 154)
+        Me.Panel3.TabIndex = 12
+        '
+        'Panel6
+        '
+        Me.Panel6.Controls.Add(Me.txtAllCity)
+        Me.Panel6.Controls.Add(Me.btnAddCity)
+        Me.Panel6.Controls.Add(Me.Label6)
+        Me.Panel6.Controls.Add(Me.txtCity)
+        Me.Panel6.Location = New System.Drawing.Point(342, 3)
+        Me.Panel6.Name = "Panel6"
+        Me.Panel6.Size = New System.Drawing.Size(176, 148)
+        Me.Panel6.TabIndex = 3
+        '
+        'txtAllCity
+        '
+        Me.txtAllCity.Location = New System.Drawing.Point(10, 103)
+        Me.txtAllCity.Multiline = True
+        Me.txtAllCity.Name = "txtAllCity"
+        Me.txtAllCity.Size = New System.Drawing.Size(148, 39)
+        Me.txtAllCity.TabIndex = 15
+        '
+        'btnAddCity
+        '
+        Me.btnAddCity.Location = New System.Drawing.Point(66, 70)
+        Me.btnAddCity.Name = "btnAddCity"
+        Me.btnAddCity.Size = New System.Drawing.Size(44, 23)
+        Me.btnAddCity.TabIndex = 12
+        Me.btnAddCity.Text = "Add"
+        Me.btnAddCity.UseVisualStyleBackColor = True
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label6.Location = New System.Drawing.Point(56, 8)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(35, 17)
+        Me.Label6.TabIndex = 11
+        Me.Label6.Text = "City"
+        '
+        'txtCity
+        '
+        Me.txtCity.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
+        Me.txtCity.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource
+        Me.txtCity.Location = New System.Drawing.Point(37, 43)
+        Me.txtCity.Name = "txtCity"
+        Me.txtCity.Size = New System.Drawing.Size(121, 20)
+        Me.txtCity.TabIndex = 10
+        '
+        'Panel7
+        '
+        Me.Panel7.Controls.Add(Me.txtAllPlant)
+        Me.Panel7.Controls.Add(Me.btnAddPlant)
+        Me.Panel7.Controls.Add(Me.Label7)
+        Me.Panel7.Controls.Add(Me.txtPlant)
+        Me.Panel7.Location = New System.Drawing.Point(524, 3)
+        Me.Panel7.Name = "Panel7"
+        Me.Panel7.Size = New System.Drawing.Size(181, 148)
+        Me.Panel7.TabIndex = 4
+        '
+        'txtAllPlant
+        '
+        Me.txtAllPlant.Location = New System.Drawing.Point(11, 103)
+        Me.txtAllPlant.Multiline = True
+        Me.txtAllPlant.Name = "txtAllPlant"
+        Me.txtAllPlant.Size = New System.Drawing.Size(148, 39)
+        Me.txtAllPlant.TabIndex = 18
+        '
+        'btnAddPlant
+        '
+        Me.btnAddPlant.Location = New System.Drawing.Point(59, 70)
+        Me.btnAddPlant.Name = "btnAddPlant"
+        Me.btnAddPlant.Size = New System.Drawing.Size(44, 23)
+        Me.btnAddPlant.TabIndex = 15
+        Me.btnAddPlant.Text = "Add"
+        Me.btnAddPlant.UseVisualStyleBackColor = True
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label7.Location = New System.Drawing.Point(53, 8)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(45, 17)
+        Me.Label7.TabIndex = 12
+        Me.Label7.Text = "Plant"
+        '
+        'txtPlant
+        '
+        Me.txtPlant.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
+        Me.txtPlant.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource
+        Me.txtPlant.Location = New System.Drawing.Point(22, 43)
+        Me.txtPlant.Name = "txtPlant"
+        Me.txtPlant.Size = New System.Drawing.Size(121, 20)
+        Me.txtPlant.TabIndex = 14
+        '
+        'Panel5
+        '
+        Me.Panel5.Controls.Add(Me.txtAllState)
+        Me.Panel5.Controls.Add(Me.btnAddState)
+        Me.Panel5.Controls.Add(Me.Label4)
+        Me.Panel5.Controls.Add(Me.txtState)
+        Me.Panel5.Location = New System.Drawing.Point(165, 3)
+        Me.Panel5.Name = "Panel5"
+        Me.Panel5.Size = New System.Drawing.Size(171, 148)
+        Me.Panel5.TabIndex = 16
+        '
+        'txtAllState
+        '
+        Me.txtAllState.Location = New System.Drawing.Point(11, 103)
+        Me.txtAllState.Multiline = True
+        Me.txtAllState.Name = "txtAllState"
+        Me.txtAllState.Size = New System.Drawing.Size(148, 39)
+        Me.txtAllState.TabIndex = 17
+        '
+        'btnAddState
+        '
+        Me.btnAddState.Location = New System.Drawing.Point(48, 70)
+        Me.btnAddState.Name = "btnAddState"
+        Me.btnAddState.Size = New System.Drawing.Size(44, 23)
+        Me.btnAddState.TabIndex = 14
+        Me.btnAddState.Text = "Add"
+        Me.btnAddState.UseVisualStyleBackColor = True
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.Location = New System.Drawing.Point(53, 6)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(46, 17)
+        Me.Label4.TabIndex = 6
+        Me.Label4.Text = "State"
+        '
+        'txtState
+        '
+        Me.txtState.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
+        Me.txtState.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource
+        Me.txtState.Location = New System.Drawing.Point(27, 44)
+        Me.txtState.Name = "txtState"
+        Me.txtState.Size = New System.Drawing.Size(121, 20)
+        Me.txtState.TabIndex = 13
+        '
+        'Panel4
+        '
+        Me.Panel4.Controls.Add(Me.txtAllEnq)
+        Me.Panel4.Controls.Add(Me.btnAddEnqType)
+        Me.Panel4.Controls.Add(Me.Label3)
+        Me.Panel4.Controls.Add(Me.ddlEnqType)
+        Me.Panel4.Location = New System.Drawing.Point(3, 3)
+        Me.Panel4.Name = "Panel4"
+        Me.Panel4.Size = New System.Drawing.Size(156, 151)
+        Me.Panel4.TabIndex = 15
+        '
+        'txtAllEnq
+        '
+        Me.txtAllEnq.Location = New System.Drawing.Point(4, 103)
+        Me.txtAllEnq.Multiline = True
+        Me.txtAllEnq.Name = "txtAllEnq"
+        Me.txtAllEnq.Size = New System.Drawing.Size(148, 39)
+        Me.txtAllEnq.TabIndex = 11
+        '
+        'btnAddEnqType
+        '
+        Me.btnAddEnqType.Location = New System.Drawing.Point(40, 71)
+        Me.btnAddEnqType.Name = "btnAddEnqType"
+        Me.btnAddEnqType.Size = New System.Drawing.Size(44, 23)
+        Me.btnAddEnqType.TabIndex = 8
+        Me.btnAddEnqType.Text = "Add"
+        Me.btnAddEnqType.UseVisualStyleBackColor = True
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Location = New System.Drawing.Point(24, 8)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(104, 17)
+        Me.Label3.TabIndex = 4
+        Me.Label3.Text = "Enquiry Type"
+        '
+        'ddlEnqType
+        '
+        Me.ddlEnqType.FormattingEnabled = True
+        Me.ddlEnqType.Location = New System.Drawing.Point(23, 43)
+        Me.ddlEnqType.Name = "ddlEnqType"
+        Me.ddlEnqType.Size = New System.Drawing.Size(105, 21)
+        Me.ddlEnqType.TabIndex = 7
+        '
+        'Panel2
+        '
+        Me.Panel2.Controls.Add(Me.txtRefrence)
+        Me.Panel2.Controls.Add(Me.txtAllReference)
+        Me.Panel2.Controls.Add(Me.btnAddRef)
+        Me.Panel2.Controls.Add(Me.Label5)
+        Me.Panel2.Controls.Add(Me.dtStartDate)
+        Me.Panel2.Controls.Add(Me.Label1)
+        Me.Panel2.Controls.Add(Me.Label2)
+        Me.Panel2.Controls.Add(Me.dtEndDate)
+        Me.Panel2.Location = New System.Drawing.Point(3, 6)
+        Me.Panel2.Name = "Panel2"
+        Me.Panel2.Size = New System.Drawing.Size(297, 154)
+        Me.Panel2.TabIndex = 11
+        '
+        'txtRefrence
+        '
+        Me.txtRefrence.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
+        Me.txtRefrence.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource
+        Me.txtRefrence.Location = New System.Drawing.Point(3, 45)
+        Me.txtRefrence.Name = "txtRefrence"
+        Me.txtRefrence.Size = New System.Drawing.Size(121, 20)
+        Me.txtRefrence.TabIndex = 11
+        '
+        'txtAllReference
+        '
+        Me.txtAllReference.Location = New System.Drawing.Point(4, 108)
+        Me.txtAllReference.Multiline = True
+        Me.txtAllReference.Name = "txtAllReference"
+        Me.txtAllReference.Size = New System.Drawing.Size(289, 39)
+        Me.txtAllReference.TabIndex = 9
+        '
+        'btnAddRef
+        '
+        Me.btnAddRef.Location = New System.Drawing.Point(3, 73)
+        Me.btnAddRef.Name = "btnAddRef"
+        Me.btnAddRef.Size = New System.Drawing.Size(118, 23)
+        Me.btnAddRef.TabIndex = 6
+        Me.btnAddRef.Text = "Add Reference"
+        Me.btnAddRef.UseVisualStyleBackColor = True
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.Location = New System.Drawing.Point(16, 13)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(83, 17)
+        Me.Label5.TabIndex = 4
+        Me.Label5.Text = "Reference"
+        '
+        'dtStartDate
+        '
+        Me.dtStartDate.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.dtStartDate.Location = New System.Drawing.Point(172, 13)
+        Me.dtStartDate.Name = "dtStartDate"
+        Me.dtStartDate.Size = New System.Drawing.Size(121, 20)
+        Me.dtStartDate.TabIndex = 1
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Location = New System.Drawing.Point(124, 13)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(42, 13)
+        Me.Label1.TabIndex = 0
+        Me.Label1.Text = "From :"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Location = New System.Drawing.Point(124, 49)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(30, 13)
+        Me.Label2.TabIndex = 2
+        Me.Label2.Text = "To :"
+        '
+        'dtEndDate
+        '
+        Me.dtEndDate.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.dtEndDate.Location = New System.Drawing.Point(172, 49)
+        Me.dtEndDate.Name = "dtEndDate"
+        Me.dtEndDate.Size = New System.Drawing.Size(121, 20)
+        Me.dtEndDate.TabIndex = 3
+        '
+        'Panel8
+        '
+        Me.Panel8.Controls.Add(Me.btnExportPDF)
+        Me.Panel8.Controls.Add(Me.btnExportExcel)
+        Me.Panel8.Controls.Add(Me.Button1)
+        Me.Panel8.Controls.Add(Me.DataGridView1)
+        Me.Panel8.Location = New System.Drawing.Point(12, 206)
+        Me.Panel8.Name = "Panel8"
+        Me.Panel8.Size = New System.Drawing.Size(1288, 390)
+        Me.Panel8.TabIndex = 3
+        '
+        'btnExportPDF
+        '
+        Me.btnExportPDF.Location = New System.Drawing.Point(1049, 5)
+        Me.btnExportPDF.Name = "btnExportPDF"
+        Me.btnExportPDF.Size = New System.Drawing.Size(75, 23)
+        Me.btnExportPDF.TabIndex = 15
+        Me.btnExportPDF.Text = "Export PDF"
+        Me.btnExportPDF.UseVisualStyleBackColor = True
+        '
+        'btnExportExcel
+        '
+        Me.btnExportExcel.Location = New System.Drawing.Point(1130, 5)
+        Me.btnExportExcel.Name = "btnExportExcel"
+        Me.btnExportExcel.Size = New System.Drawing.Size(75, 23)
+        Me.btnExportExcel.TabIndex = 14
+        Me.btnExportExcel.Text = "Export Excel"
+        Me.btnExportExcel.UseVisualStyleBackColor = True
+        '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(1211, 5)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(68, 23)
+        Me.Button1.TabIndex = 13
+        Me.Button1.Text = "Print"
+        Me.Button1.UseVisualStyleBackColor = True
+        Me.Button1.Visible = False
+        '
+        'DataGridView1
+        '
+        Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.DataGridView1.Location = New System.Drawing.Point(7, 34)
+        Me.DataGridView1.Name = "DataGridView1"
+        Me.DataGridView1.Size = New System.Drawing.Size(1272, 356)
+        Me.DataGridView1.TabIndex = 0
+        '
+        'InqiurySearchByCriteria
+        '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.ClientSize = New System.Drawing.Size(1303, 608)
+        Me.Controls.Add(Me.Panel8)
+        Me.Controls.Add(Me.Panel1)
+        Me.Name = "InqiurySearchByCriteria"
+        Me.Text = "InqiurySearchByCriteria"
+        Me.Panel1.ResumeLayout(False)
+        Me.Panel3.ResumeLayout(False)
+        Me.Panel6.ResumeLayout(False)
+        Me.Panel6.PerformLayout()
+        Me.Panel7.ResumeLayout(False)
+        Me.Panel7.PerformLayout()
+        Me.Panel5.ResumeLayout(False)
+        Me.Panel5.PerformLayout()
+        Me.Panel4.ResumeLayout(False)
+        Me.Panel4.PerformLayout()
+        Me.Panel2.ResumeLayout(False)
+        Me.Panel2.PerformLayout()
+        Me.Panel8.ResumeLayout(False)
+        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.ResumeLayout(False)
+
+    End Sub
+    Friend WithEvents Panel1 As System.Windows.Forms.Panel
+    Friend WithEvents txtCity As System.Windows.Forms.TextBox
+    Friend WithEvents btnSearchAll As System.Windows.Forms.Button
+    Friend WithEvents ddlEnqType As System.Windows.Forms.ComboBox
+    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents dtEndDate As System.Windows.Forms.DateTimePicker
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents dtStartDate As System.Windows.Forms.DateTimePicker
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents Panel2 As System.Windows.Forms.Panel
+    Friend WithEvents btnAddRef As System.Windows.Forms.Button
+    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents Panel3 As System.Windows.Forms.Panel
+    Friend WithEvents txtState As System.Windows.Forms.TextBox
+    Friend WithEvents Label7 As System.Windows.Forms.Label
+    Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents txtAllReference As System.Windows.Forms.TextBox
+    Friend WithEvents Panel6 As System.Windows.Forms.Panel
+    Friend WithEvents Panel7 As System.Windows.Forms.Panel
+    Friend WithEvents txtPlant As System.Windows.Forms.TextBox
+    Friend WithEvents Panel5 As System.Windows.Forms.Panel
+    Friend WithEvents Panel4 As System.Windows.Forms.Panel
+    Friend WithEvents btnAddEnqType As System.Windows.Forms.Button
+    Friend WithEvents txtAllCity As System.Windows.Forms.TextBox
+    Friend WithEvents btnAddCity As System.Windows.Forms.Button
+    Friend WithEvents txtAllPlant As System.Windows.Forms.TextBox
+    Friend WithEvents btnAddPlant As System.Windows.Forms.Button
+    Friend WithEvents txtAllState As System.Windows.Forms.TextBox
+    Friend WithEvents btnAddState As System.Windows.Forms.Button
+    Friend WithEvents txtAllEnq As System.Windows.Forms.TextBox
+    Friend WithEvents Panel8 As System.Windows.Forms.Panel
+    Friend WithEvents txtRefrence As System.Windows.Forms.TextBox
+    Friend WithEvents DataGridView1 As System.Windows.Forms.DataGridView
+    Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents btnExportExcel As System.Windows.Forms.Button
+    Friend WithEvents btnExportPDF As System.Windows.Forms.Button
+End Class

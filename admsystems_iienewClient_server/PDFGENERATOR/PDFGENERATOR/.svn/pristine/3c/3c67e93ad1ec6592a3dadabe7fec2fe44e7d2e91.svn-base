@@ -1,0 +1,22 @@
+﻿Imports CrystalDecisions.CrystalReports.Engine
+Public Class PaymentReceive
+    Dim rpt As New ReportDocument
+
+    Dim ss As String
+
+    Private Sub btnView_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnView.Click
+
+        ss = Application.LocalUserAppDataPath()
+
+
+        rpt.Load(Application.StartupPath & "\Reports\Rpt_PaymentTypePaymentRecieve.rpt")
+        rpt.SetParameterValue("@From", dtFrom.Text)
+        rpt.SetParameterValue("@To", dtTo.Text)
+        rpt.SetParameterValue("@PType", txtPaymentType.Text)
+        CrystalReportViewer1.ReportSource = rpt
+        CrystalReportViewer1.Show()
+        CrystalReportViewer1.Dock = DockStyle.Fill
+
+    
+    End Sub
+End Class

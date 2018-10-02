@@ -1,0 +1,32 @@
+﻿Imports System.Data.SqlClient
+Imports CrystalDecisions.CrystalReports.Engine
+
+Public Class Rpt_DailyAllotment
+    Dim linq_obj As New RoErpDataContext(System.Configuration.ConfigurationManager.AppSettings("constr").ToString())
+
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+
+    End Sub
+   
+    Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+        Dim rpt As New ReportDocument
+        Dim ss As String
+        Try
+            ss = Application.LocalUserAppDataPath()
+            rpt.Load(Application.StartupPath & "\Reports\Rpt_allotmentReport.rpt")
+            rpt.SetParameterValue("@Start", dtStartDate.Value)
+            rpt.SetParameterValue("@End", dtEndDate.Value)
+            rpt.SetParameterValue("@byUser", Convert.ToInt32(Class1.global.UserID))
+            CrystalReportViewer1.ReportSource = rpt
+            CrystalReportViewer1.Show()
+            CrystalReportViewer1.Dock = DockStyle.Fill
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+      
+
+    End Sub
+
+End Class

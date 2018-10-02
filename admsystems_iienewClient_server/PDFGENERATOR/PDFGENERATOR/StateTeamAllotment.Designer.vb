@@ -1,0 +1,179 @@
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+Partial Class StateTeamAllotment
+    Inherits System.Windows.Forms.Form
+
+    'Form overrides dispose to clean up the component list.
+    <System.Diagnostics.DebuggerNonUserCode()> _
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Try
+            If disposing AndAlso components IsNot Nothing Then
+                components.Dispose()
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
+    End Sub
+
+    'Required by the Windows Form Designer
+    Private components As System.ComponentModel.IContainer
+
+    'NOTE: The following procedure is required by the Windows Form Designer
+    'It can be modified using the Windows Form Designer.  
+    'Do not modify it using the code editor.
+    <System.Diagnostics.DebuggerStepThrough()> _
+    Private Sub InitializeComponent()
+        Me.cmbTeam = New System.Windows.Forms.ComboBox()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.btnAllot = New System.Windows.Forms.Button()
+        Me.txtStateName = New System.Windows.Forms.TextBox()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.DGDetail = New System.Windows.Forms.DataGridView()
+        Me.btnCancel = New System.Windows.Forms.Button()
+        Me.btnDelete = New System.Windows.Forms.Button()
+        Me.cmbUser = New System.Windows.Forms.ComboBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.GroupBox1.SuspendLayout()
+        CType(Me.DGDetail, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.SuspendLayout()
+        '
+        'cmbTeam
+        '
+        Me.cmbTeam.FormattingEnabled = True
+        Me.cmbTeam.Location = New System.Drawing.Point(89, 52)
+        Me.cmbTeam.Name = "cmbTeam"
+        Me.cmbTeam.Size = New System.Drawing.Size(155, 21)
+        Me.cmbTeam.TabIndex = 1
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(12, 52)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(34, 13)
+        Me.Label5.TabIndex = 14
+        Me.Label5.Text = "Team"
+        '
+        'btnAllot
+        '
+        Me.btnAllot.Location = New System.Drawing.Point(80, 132)
+        Me.btnAllot.Name = "btnAllot"
+        Me.btnAllot.Size = New System.Drawing.Size(79, 31)
+        Me.btnAllot.TabIndex = 3
+        Me.btnAllot.Text = "ALLOT"
+        Me.btnAllot.UseVisualStyleBackColor = True
+        '
+        'txtStateName
+        '
+        Me.txtStateName.Location = New System.Drawing.Point(89, 17)
+        Me.txtStateName.Name = "txtStateName"
+        Me.txtStateName.Size = New System.Drawing.Size(155, 20)
+        Me.txtStateName.TabIndex = 0
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(12, 24)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(32, 13)
+        Me.Label2.TabIndex = 17
+        Me.Label2.Text = "State"
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.DGDetail)
+        Me.GroupBox1.Location = New System.Drawing.Point(12, 169)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(473, 284)
+        Me.GroupBox1.TabIndex = 30
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "View"
+        '
+        'DGDetail
+        '
+        Me.DGDetail.AllowDrop = True
+        Me.DGDetail.AllowUserToAddRows = False
+        Me.DGDetail.AllowUserToDeleteRows = False
+        Me.DGDetail.AllowUserToOrderColumns = True
+        Me.DGDetail.AllowUserToResizeColumns = False
+        Me.DGDetail.AllowUserToResizeRows = False
+        Me.DGDetail.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.DGDetail.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.DGDetail.Location = New System.Drawing.Point(6, 19)
+        Me.DGDetail.Name = "DGDetail"
+        Me.DGDetail.ReadOnly = True
+        Me.DGDetail.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.DGDetail.Size = New System.Drawing.Size(461, 259)
+        Me.DGDetail.TabIndex = 0
+        '
+        'btnCancel
+        '
+        Me.btnCancel.Location = New System.Drawing.Point(165, 132)
+        Me.btnCancel.Name = "btnCancel"
+        Me.btnCancel.Size = New System.Drawing.Size(79, 31)
+        Me.btnCancel.TabIndex = 4
+        Me.btnCancel.Text = "CANCEL"
+        Me.btnCancel.UseVisualStyleBackColor = True
+        '
+        'btnDelete
+        '
+        Me.btnDelete.Location = New System.Drawing.Point(250, 132)
+        Me.btnDelete.Name = "btnDelete"
+        Me.btnDelete.Size = New System.Drawing.Size(75, 31)
+        Me.btnDelete.TabIndex = 5
+        Me.btnDelete.Text = "DELETE"
+        Me.btnDelete.UseVisualStyleBackColor = True
+        '
+        'cmbUser
+        '
+        Me.cmbUser.FormattingEnabled = True
+        Me.cmbUser.Location = New System.Drawing.Point(89, 93)
+        Me.cmbUser.Name = "cmbUser"
+        Me.cmbUser.Size = New System.Drawing.Size(155, 21)
+        Me.cmbUser.TabIndex = 2
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(12, 93)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(29, 13)
+        Me.Label1.TabIndex = 31
+        Me.Label1.Text = "User"
+        '
+        'StateTeamAllotment
+        '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.ClientSize = New System.Drawing.Size(491, 463)
+        Me.Controls.Add(Me.cmbUser)
+        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.btnDelete)
+        Me.Controls.Add(Me.btnCancel)
+        Me.Controls.Add(Me.GroupBox1)
+        Me.Controls.Add(Me.txtStateName)
+        Me.Controls.Add(Me.Label2)
+        Me.Controls.Add(Me.cmbTeam)
+        Me.Controls.Add(Me.Label5)
+        Me.Controls.Add(Me.btnAllot)
+        Me.Name = "StateTeamAllotment"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+        Me.Text = "StateTeamAllotment"
+        Me.GroupBox1.ResumeLayout(False)
+        CType(Me.DGDetail, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.ResumeLayout(False)
+        Me.PerformLayout()
+
+    End Sub
+    Friend WithEvents cmbTeam As System.Windows.Forms.ComboBox
+    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents btnAllot As System.Windows.Forms.Button
+    Friend WithEvents txtStateName As System.Windows.Forms.TextBox
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents DGDetail As System.Windows.Forms.DataGridView
+    Friend WithEvents btnCancel As System.Windows.Forms.Button
+    Friend WithEvents btnDelete As System.Windows.Forms.Button
+    Friend WithEvents cmbUser As System.Windows.Forms.ComboBox
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+End Class

@@ -1,0 +1,109 @@
+﻿Public Class ProductRegisterMaster
+
+    Dim linq_obj As New RoErpDataContext(System.Configuration.ConfigurationManager.AppSettings("constr").ToString())
+    Dim PRID As Long
+
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+        bindGrid()
+        PRID = 0
+
+    End Sub
+    Private Sub btnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete.Click
+        Dim table As DataTable
+        Dim tmpId As Long
+        tmpId = 0
+        tmpId = Convert.ToInt64(Me.DGVcategory.SelectedCells(0).Value)
+        If tmpId <> 0 Then
+            linq_obj.SP_Delete_ProductRegisterMaster(tmpId)
+            linq_obj.SubmitChanges()
+            lblError.Text = "Successfully Deleted"
+            bindGrid()
+            txtTotRecords.Text = getTotalEntry().ToString()
+        Else
+            MessageBox.Show("No Row Selected For Delete")
+        End If
+
+
+    End Sub
+
+    Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
+
+
+        If txtCategoryName.Text <> "" Then
+            If btnSave.Text = "Save" Then
+
+
+                PRID = linq_obj.SP_Insert_ProductRegisterMaster(txtCategoryName.Text.Trim(), True)
+                If (PRID > 0) Then
+                    lblError.Text = "Successfully Inserted"
+                    bindGrid()
+                    txtCategoryName.Text = ""
+                Else
+                    lblError.Text = "Error In Insertion"
+                End If
+            Else
+                Dim tmp As Integer
+                tmp = linq_obj.SP_Update_ProductRegisterMaster(txtCategoryName.Text, True, PRID)
+
+                If tmp >= 0 Then
+                    linq_obj.SubmitChanges()
+                    bindGrid()
+                    lblError.Text = "Successfully Updated"
+                    txtCategoryName.Text = ""
+                    btnSave.Text = "Save"
+                Else
+                    lblError.Text = "Error In Updation"
+                End If
+
+
+
+
+            End If
+
+        End If
+        txtTotRecords.Text = getTotalEntry().ToString()
+    End Sub
+
+
+    Public Sub bindGrid()
+        Dim prData = linq_obj.SP_Select_All_ProductRegisterMaster().ToList()
+        Dim dt As New DataTable
+        dt.Columns.Add("ID")
+        dt.Columns.Add("Category")
+        For Each item As SP_Select_All_ProductRegisterMasterResult In prData
+            dt.Rows.Add(item.Pk_ProductRegisterId, item.CategoryName)
+        Next
+        DGVcategory.DataSource = dt
+
+    End Sub
+    Public Function getTotalEntry() As Long
+        Return DGVcategory.Rows.Count
+    End Function
+
+    Public Sub clean()
+        txtCategoryName.Text = ""
+        lblError.Text = ""
+        btnSave.Text = "Save"
+    End Sub
+
+    Private Sub DGVcategory_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DGVcategory.DoubleClick
+        PRID = Convert.ToInt64(Me.DGVcategory.SelectedCells(0).Value)
+        txtCategoryName.Text = Me.DGVcategory.SelectedCells(1).Value
+        btnSave.Text = "Update"
+
+    End Sub
+
+    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+        clean()
+    End Sub
+
+    Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+        txtTotRecords.Text = getTotalEntry().ToString()
+    End Sub
+
+    Private Sub btnRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRefresh.Click
+        txtTotRecords.Text = getTotalEntry().ToString()
+    End Sub
+End Class

@@ -1,0 +1,30 @@
+﻿Imports CrystalDecisions.CrystalReports.Engine
+
+Public Class PartyOutstandingAfterDispatch
+    Dim rpt As New ReportDocument
+
+    Dim ss As String
+
+    Private Sub btnView_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnView.Click
+      
+        ss = Application.LocalUserAppDataPath()
+      
+        If (cmbRpt.Text.Trim() = "By Executive") Then
+            rpt.Load(Application.StartupPath & "\Reports\Rpt_PartyOutstandingAfterDispatch.rpt")
+            rpt.SetParameterValue("@From", dtFrom.Text)
+            rpt.SetParameterValue("@To", dtTo.Text)
+            CrystalReportViewer1.ReportSource = rpt
+            CrystalReportViewer1.Show()
+            CrystalReportViewer1.Dock = DockStyle.Fill
+
+        Else
+            rpt.Load(Application.StartupPath & "\Reports\Rpt_PartyOutstandingbyExecutive.rpt")
+            rpt.SetParameterValue("@From", dtFrom.Text)
+            rpt.SetParameterValue("@To", dtTo.Text)
+            CrystalReportViewer1.ReportSource = rpt
+            CrystalReportViewer1.Show()
+            CrystalReportViewer1.Dock = DockStyle.Fill
+        End If
+
+    End Sub
+End Class

@@ -1,0 +1,466 @@
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+Partial Class RptVisitorDetail
+    Inherits System.Windows.Forms.Form
+
+    'Form overrides dispose to clean up the component list.
+    <System.Diagnostics.DebuggerNonUserCode()> _
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Try
+            If disposing AndAlso components IsNot Nothing Then
+                components.Dispose()
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
+    End Sub
+
+    'Required by the Windows Form Designer
+    Private components As System.ComponentModel.IContainer
+
+    'NOTE: The following procedure is required by the Windows Form Designer
+    'It can be modified using the Windows Form Designer.  
+    'Do not modify it using the code editor.
+    <System.Diagnostics.DebuggerStepThrough()> _
+    Private Sub InitializeComponent()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.btnCancel = New System.Windows.Forms.Button()
+        Me.pnlFollowby = New System.Windows.Forms.Panel()
+        Me.txtMainFollowBy = New System.Windows.Forms.TextBox()
+        Me.txtFollowBy = New System.Windows.Forms.TextBox()
+        Me.btnAddFollowby = New System.Windows.Forms.Button()
+        Me.Label59 = New System.Windows.Forms.Label()
+        Me.Panel3 = New System.Windows.Forms.Panel()
+        Me.txtMainExec = New System.Windows.Forms.TextBox()
+        Me.btnAddExecutive = New System.Windows.Forms.Button()
+        Me.Label57 = New System.Windows.Forms.Label()
+        Me.txtExec = New System.Windows.Forms.TextBox()
+        Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.txtstatus = New System.Windows.Forms.ComboBox()
+        Me.txtMainStatus = New System.Windows.Forms.TextBox()
+        Me.btnADDStatus = New System.Windows.Forms.Button()
+        Me.Label56 = New System.Windows.Forms.Label()
+        Me.Panel4 = New System.Windows.Forms.Panel()
+        Me.txtEnqType = New System.Windows.Forms.TextBox()
+        Me.txtMainEnq = New System.Windows.Forms.TextBox()
+        Me.btnAddEnqType = New System.Windows.Forms.Button()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.dtEndDate = New System.Windows.Forms.DateTimePicker()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.btnExportPDF = New System.Windows.Forms.Button()
+        Me.btnExportExcel = New System.Windows.Forms.Button()
+        Me.btnPrint = New System.Windows.Forms.Button()
+        Me.btnSearch = New System.Windows.Forms.Button()
+        Me.dtStartDate = New System.Windows.Forms.DateTimePicker()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.dgVisitorCount = New System.Windows.Forms.DataGridView()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.dgVisitorDetail = New System.Windows.Forms.DataGridView()
+        Me.Panel1.SuspendLayout()
+        Me.pnlFollowby.SuspendLayout()
+        Me.Panel3.SuspendLayout()
+        Me.Panel2.SuspendLayout()
+        Me.Panel4.SuspendLayout()
+        CType(Me.dgVisitorCount, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dgVisitorDetail, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.SuspendLayout()
+        '
+        'Panel1
+        '
+        Me.Panel1.Controls.Add(Me.btnCancel)
+        Me.Panel1.Controls.Add(Me.pnlFollowby)
+        Me.Panel1.Controls.Add(Me.Panel3)
+        Me.Panel1.Controls.Add(Me.Panel2)
+        Me.Panel1.Controls.Add(Me.Panel4)
+        Me.Panel1.Controls.Add(Me.dtEndDate)
+        Me.Panel1.Controls.Add(Me.Label2)
+        Me.Panel1.Controls.Add(Me.btnExportPDF)
+        Me.Panel1.Controls.Add(Me.btnExportExcel)
+        Me.Panel1.Controls.Add(Me.btnPrint)
+        Me.Panel1.Controls.Add(Me.btnSearch)
+        Me.Panel1.Controls.Add(Me.dtStartDate)
+        Me.Panel1.Controls.Add(Me.Label1)
+        Me.Panel1.Location = New System.Drawing.Point(11, 7)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(952, 175)
+        Me.Panel1.TabIndex = 8
+        '
+        'btnCancel
+        '
+        Me.btnCancel.Location = New System.Drawing.Point(371, 148)
+        Me.btnCancel.Name = "btnCancel"
+        Me.btnCancel.Size = New System.Drawing.Size(121, 21)
+        Me.btnCancel.TabIndex = 3
+        Me.btnCancel.Text = "CANCEL"
+        Me.btnCancel.UseVisualStyleBackColor = True
+        '
+        'pnlFollowby
+        '
+        Me.pnlFollowby.Controls.Add(Me.txtMainFollowBy)
+        Me.pnlFollowby.Controls.Add(Me.txtFollowBy)
+        Me.pnlFollowby.Controls.Add(Me.btnAddFollowby)
+        Me.pnlFollowby.Controls.Add(Me.Label59)
+        Me.pnlFollowby.Location = New System.Drawing.Point(747, 5)
+        Me.pnlFollowby.Name = "pnlFollowby"
+        Me.pnlFollowby.Size = New System.Drawing.Size(174, 137)
+        Me.pnlFollowby.TabIndex = 23
+        '
+        'txtMainFollowBy
+        '
+        Me.txtMainFollowBy.Location = New System.Drawing.Point(4, 91)
+        Me.txtMainFollowBy.Multiline = True
+        Me.txtMainFollowBy.Name = "txtMainFollowBy"
+        Me.txtMainFollowBy.Size = New System.Drawing.Size(167, 39)
+        Me.txtMainFollowBy.TabIndex = 2
+        '
+        'txtFollowBy
+        '
+        Me.txtFollowBy.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
+        Me.txtFollowBy.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource
+        Me.txtFollowBy.Location = New System.Drawing.Point(29, 25)
+        Me.txtFollowBy.Name = "txtFollowBy"
+        Me.txtFollowBy.Size = New System.Drawing.Size(105, 20)
+        Me.txtFollowBy.TabIndex = 0
+        '
+        'btnAddFollowby
+        '
+        Me.btnAddFollowby.Location = New System.Drawing.Point(63, 50)
+        Me.btnAddFollowby.Name = "btnAddFollowby"
+        Me.btnAddFollowby.Size = New System.Drawing.Size(44, 23)
+        Me.btnAddFollowby.TabIndex = 1
+        Me.btnAddFollowby.Text = "Add"
+        Me.btnAddFollowby.UseVisualStyleBackColor = True
+        '
+        'Label59
+        '
+        Me.Label59.AutoSize = True
+        Me.Label59.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label59.Location = New System.Drawing.Point(44, 6)
+        Me.Label59.Name = "Label59"
+        Me.Label59.Size = New System.Drawing.Size(68, 15)
+        Me.Label59.TabIndex = 21
+        Me.Label59.Text = "Follow By"
+        '
+        'Panel3
+        '
+        Me.Panel3.Controls.Add(Me.txtMainExec)
+        Me.Panel3.Controls.Add(Me.btnAddExecutive)
+        Me.Panel3.Controls.Add(Me.Label57)
+        Me.Panel3.Controls.Add(Me.txtExec)
+        Me.Panel3.Location = New System.Drawing.Point(372, 5)
+        Me.Panel3.Name = "Panel3"
+        Me.Panel3.Size = New System.Drawing.Size(181, 137)
+        Me.Panel3.TabIndex = 24
+        '
+        'txtMainExec
+        '
+        Me.txtMainExec.Location = New System.Drawing.Point(8, 91)
+        Me.txtMainExec.Multiline = True
+        Me.txtMainExec.Name = "txtMainExec"
+        Me.txtMainExec.Size = New System.Drawing.Size(164, 39)
+        Me.txtMainExec.TabIndex = 2
+        '
+        'btnAddExecutive
+        '
+        Me.btnAddExecutive.Location = New System.Drawing.Point(65, 50)
+        Me.btnAddExecutive.Name = "btnAddExecutive"
+        Me.btnAddExecutive.Size = New System.Drawing.Size(44, 23)
+        Me.btnAddExecutive.TabIndex = 1
+        Me.btnAddExecutive.Text = "Add"
+        Me.btnAddExecutive.UseVisualStyleBackColor = True
+        '
+        'Label57
+        '
+        Me.Label57.AutoSize = True
+        Me.Label57.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label57.Location = New System.Drawing.Point(18, 10)
+        Me.Label57.Name = "Label57"
+        Me.Label57.Size = New System.Drawing.Size(108, 15)
+        Me.Label57.TabIndex = 20
+        Me.Label57.Text = "Sales Executive"
+        '
+        'txtExec
+        '
+        Me.txtExec.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
+        Me.txtExec.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource
+        Me.txtExec.Location = New System.Drawing.Point(8, 29)
+        Me.txtExec.Name = "txtExec"
+        Me.txtExec.Size = New System.Drawing.Size(142, 20)
+        Me.txtExec.TabIndex = 0
+        '
+        'Panel2
+        '
+        Me.Panel2.Controls.Add(Me.txtstatus)
+        Me.Panel2.Controls.Add(Me.txtMainStatus)
+        Me.Panel2.Controls.Add(Me.btnADDStatus)
+        Me.Panel2.Controls.Add(Me.Label56)
+        Me.Panel2.Location = New System.Drawing.Point(169, 5)
+        Me.Panel2.Name = "Panel2"
+        Me.Panel2.Size = New System.Drawing.Size(182, 137)
+        Me.Panel2.TabIndex = 23
+        '
+        'txtstatus
+        '
+        Me.txtstatus.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest
+        Me.txtstatus.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
+        Me.txtstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.txtstatus.FormattingEnabled = True
+        Me.txtstatus.Items.AddRange(New Object() {"IN", "OUT", "AN TIME", "EOD TIME"})
+        Me.txtstatus.Location = New System.Drawing.Point(28, 29)
+        Me.txtstatus.Name = "txtstatus"
+        Me.txtstatus.Size = New System.Drawing.Size(104, 21)
+        Me.txtstatus.TabIndex = 77
+        '
+        'txtMainStatus
+        '
+        Me.txtMainStatus.Location = New System.Drawing.Point(8, 91)
+        Me.txtMainStatus.Multiline = True
+        Me.txtMainStatus.Name = "txtMainStatus"
+        Me.txtMainStatus.Size = New System.Drawing.Size(159, 39)
+        Me.txtMainStatus.TabIndex = 2
+        '
+        'btnADDStatus
+        '
+        Me.btnADDStatus.Location = New System.Drawing.Point(62, 57)
+        Me.btnADDStatus.Name = "btnADDStatus"
+        Me.btnADDStatus.Size = New System.Drawing.Size(44, 23)
+        Me.btnADDStatus.TabIndex = 1
+        Me.btnADDStatus.Text = "Add"
+        Me.btnADDStatus.UseVisualStyleBackColor = True
+        '
+        'Label56
+        '
+        Me.Label56.AutoSize = True
+        Me.Label56.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label56.Location = New System.Drawing.Point(59, 10)
+        Me.Label56.Name = "Label56"
+        Me.Label56.Size = New System.Drawing.Size(47, 15)
+        Me.Label56.TabIndex = 18
+        Me.Label56.Text = "Status"
+        '
+        'Panel4
+        '
+        Me.Panel4.Controls.Add(Me.txtEnqType)
+        Me.Panel4.Controls.Add(Me.txtMainEnq)
+        Me.Panel4.Controls.Add(Me.btnAddEnqType)
+        Me.Panel4.Controls.Add(Me.Label3)
+        Me.Panel4.Location = New System.Drawing.Point(559, 5)
+        Me.Panel4.Name = "Panel4"
+        Me.Panel4.Size = New System.Drawing.Size(175, 137)
+        Me.Panel4.TabIndex = 2
+        '
+        'txtEnqType
+        '
+        Me.txtEnqType.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
+        Me.txtEnqType.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource
+        Me.txtEnqType.Location = New System.Drawing.Point(27, 29)
+        Me.txtEnqType.Name = "txtEnqType"
+        Me.txtEnqType.Size = New System.Drawing.Size(118, 20)
+        Me.txtEnqType.TabIndex = 0
+        '
+        'txtMainEnq
+        '
+        Me.txtMainEnq.Location = New System.Drawing.Point(5, 91)
+        Me.txtMainEnq.Multiline = True
+        Me.txtMainEnq.Name = "txtMainEnq"
+        Me.txtMainEnq.Size = New System.Drawing.Size(159, 39)
+        Me.txtMainEnq.TabIndex = 2
+        '
+        'btnAddEnqType
+        '
+        Me.btnAddEnqType.Location = New System.Drawing.Point(56, 53)
+        Me.btnAddEnqType.Name = "btnAddEnqType"
+        Me.btnAddEnqType.Size = New System.Drawing.Size(44, 23)
+        Me.btnAddEnqType.TabIndex = 1
+        Me.btnAddEnqType.Text = "Add"
+        Me.btnAddEnqType.UseVisualStyleBackColor = True
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Location = New System.Drawing.Point(38, 8)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(89, 15)
+        Me.Label3.TabIndex = 4
+        Me.Label3.Text = "Enquiry Type"
+        '
+        'dtEndDate
+        '
+        Me.dtEndDate.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.dtEndDate.Location = New System.Drawing.Point(32, 79)
+        Me.dtEndDate.Name = "dtEndDate"
+        Me.dtEndDate.Size = New System.Drawing.Size(93, 20)
+        Me.dtEndDate.TabIndex = 1
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Location = New System.Drawing.Point(63, 63)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(31, 15)
+        Me.Label2.TabIndex = 14
+        Me.Label2.Text = "To :"
+        '
+        'btnExportPDF
+        '
+        Me.btnExportPDF.Location = New System.Drawing.Point(515, 148)
+        Me.btnExportPDF.Name = "btnExportPDF"
+        Me.btnExportPDF.Size = New System.Drawing.Size(75, 23)
+        Me.btnExportPDF.TabIndex = 13
+        Me.btnExportPDF.Text = "Export PDF"
+        Me.btnExportPDF.UseVisualStyleBackColor = True
+        Me.btnExportPDF.Visible = False
+        '
+        'btnExportExcel
+        '
+        Me.btnExportExcel.Location = New System.Drawing.Point(596, 148)
+        Me.btnExportExcel.Name = "btnExportExcel"
+        Me.btnExportExcel.Size = New System.Drawing.Size(75, 23)
+        Me.btnExportExcel.TabIndex = 4
+        Me.btnExportExcel.Text = "Export Excel"
+        Me.btnExportExcel.UseVisualStyleBackColor = True
+        '
+        'btnPrint
+        '
+        Me.btnPrint.Location = New System.Drawing.Point(687, 148)
+        Me.btnPrint.Name = "btnPrint"
+        Me.btnPrint.Size = New System.Drawing.Size(75, 23)
+        Me.btnPrint.TabIndex = 5
+        Me.btnPrint.Text = "Print"
+        Me.btnPrint.UseVisualStyleBackColor = True
+        Me.btnPrint.Visible = False
+        '
+        'btnSearch
+        '
+        Me.btnSearch.Location = New System.Drawing.Point(243, 148)
+        Me.btnSearch.Name = "btnSearch"
+        Me.btnSearch.Size = New System.Drawing.Size(121, 21)
+        Me.btnSearch.TabIndex = 2
+        Me.btnSearch.Text = "SEARCH"
+        Me.btnSearch.UseVisualStyleBackColor = True
+        '
+        'dtStartDate
+        '
+        Me.dtStartDate.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.dtStartDate.Location = New System.Drawing.Point(32, 27)
+        Me.dtStartDate.Name = "dtStartDate"
+        Me.dtStartDate.Size = New System.Drawing.Size(93, 20)
+        Me.dtStartDate.TabIndex = 0
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Location = New System.Drawing.Point(51, 11)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(48, 15)
+        Me.Label1.TabIndex = 0
+        Me.Label1.Text = "From :"
+        '
+        'dgVisitorCount
+        '
+        Me.dgVisitorCount.AllowDrop = True
+        Me.dgVisitorCount.AllowUserToAddRows = False
+        Me.dgVisitorCount.AllowUserToDeleteRows = False
+        Me.dgVisitorCount.AllowUserToOrderColumns = True
+        Me.dgVisitorCount.AllowUserToResizeRows = False
+        Me.dgVisitorCount.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.dgVisitorCount.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgVisitorCount.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically
+        Me.dgVisitorCount.Location = New System.Drawing.Point(84, 464)
+        Me.dgVisitorCount.Name = "dgVisitorCount"
+        Me.dgVisitorCount.RowHeadersVisible = False
+        Me.dgVisitorCount.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.dgVisitorCount.Size = New System.Drawing.Size(240, 147)
+        Me.dgVisitorCount.TabIndex = 11
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.Location = New System.Drawing.Point(27, 461)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(51, 13)
+        Me.Label5.TabIndex = 10
+        Me.Label5.Text = "Counter"
+        '
+        'dgVisitorDetail
+        '
+        Me.dgVisitorDetail.AllowDrop = True
+        Me.dgVisitorDetail.AllowUserToAddRows = False
+        Me.dgVisitorDetail.AllowUserToDeleteRows = False
+        Me.dgVisitorDetail.AllowUserToOrderColumns = True
+        Me.dgVisitorDetail.AllowUserToResizeColumns = False
+        Me.dgVisitorDetail.AllowUserToResizeRows = False
+        Me.dgVisitorDetail.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.dgVisitorDetail.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgVisitorDetail.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically
+        Me.dgVisitorDetail.Location = New System.Drawing.Point(11, 188)
+        Me.dgVisitorDetail.Name = "dgVisitorDetail"
+        Me.dgVisitorDetail.RowHeadersVisible = False
+        Me.dgVisitorDetail.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.dgVisitorDetail.Size = New System.Drawing.Size(952, 270)
+        Me.dgVisitorDetail.TabIndex = 0
+        '
+        'RptVisitorDetail
+        '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.ClientSize = New System.Drawing.Size(973, 619)
+        Me.Controls.Add(Me.Panel1)
+        Me.Controls.Add(Me.dgVisitorCount)
+        Me.Controls.Add(Me.Label5)
+        Me.Controls.Add(Me.dgVisitorDetail)
+        Me.Name = "RptVisitorDetail"
+        Me.Text = "RptVisitorDetail"
+        Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
+        Me.pnlFollowby.ResumeLayout(False)
+        Me.pnlFollowby.PerformLayout()
+        Me.Panel3.ResumeLayout(False)
+        Me.Panel3.PerformLayout()
+        Me.Panel2.ResumeLayout(False)
+        Me.Panel2.PerformLayout()
+        Me.Panel4.ResumeLayout(False)
+        Me.Panel4.PerformLayout()
+        CType(Me.dgVisitorCount, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dgVisitorDetail, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.ResumeLayout(False)
+        Me.PerformLayout()
+
+    End Sub
+    Friend WithEvents Panel1 As System.Windows.Forms.Panel
+    Friend WithEvents dtEndDate As System.Windows.Forms.DateTimePicker
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents btnExportPDF As System.Windows.Forms.Button
+    Friend WithEvents btnExportExcel As System.Windows.Forms.Button
+    Friend WithEvents btnPrint As System.Windows.Forms.Button
+    Friend WithEvents btnSearch As System.Windows.Forms.Button
+    Friend WithEvents dtStartDate As System.Windows.Forms.DateTimePicker
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents dgVisitorCount As System.Windows.Forms.DataGridView
+    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents dgVisitorDetail As System.Windows.Forms.DataGridView
+    Friend WithEvents txtFollowBy As System.Windows.Forms.TextBox
+    Friend WithEvents Label59 As System.Windows.Forms.Label
+    Friend WithEvents txtExec As System.Windows.Forms.TextBox
+    Friend WithEvents Label57 As System.Windows.Forms.Label
+    Friend WithEvents Label56 As System.Windows.Forms.Label
+    Friend WithEvents btnCancel As System.Windows.Forms.Button
+    Friend WithEvents pnlFollowby As System.Windows.Forms.Panel
+    Friend WithEvents txtMainFollowBy As System.Windows.Forms.TextBox
+    Friend WithEvents btnAddFollowby As System.Windows.Forms.Button
+    Friend WithEvents Panel3 As System.Windows.Forms.Panel
+    Friend WithEvents txtMainExec As System.Windows.Forms.TextBox
+    Friend WithEvents btnAddExecutive As System.Windows.Forms.Button
+    Friend WithEvents Panel2 As System.Windows.Forms.Panel
+    Friend WithEvents txtMainStatus As System.Windows.Forms.TextBox
+    Friend WithEvents btnADDStatus As System.Windows.Forms.Button
+    Friend WithEvents Panel4 As System.Windows.Forms.Panel
+    Friend WithEvents txtMainEnq As System.Windows.Forms.TextBox
+    Friend WithEvents btnAddEnqType As System.Windows.Forms.Button
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents txtEnqType As System.Windows.Forms.TextBox
+    Friend WithEvents txtstatus As System.Windows.Forms.ComboBox
+End Class

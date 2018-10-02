@@ -1,0 +1,40 @@
+﻿Imports CrystalDecisions.CrystalReports.Engine
+Imports System.Data.SqlClient
+
+Public Class DocumentLogDetails
+
+    Dim linq_obj As New RoErpDataContext(System.Configuration.ConfigurationManager.AppSettings("constr").ToString())
+
+    Dim Address_ID As Integer
+    Dim DocLog As DocumentLog
+
+    Public Sub New(ByVal ParaAddressID As Integer, ByVal Ds As DocumentLog)
+
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        Address_ID = ParaAddressID
+        DocLog = Ds
+    End Sub
+
+    Private Sub DocumentLogDetails_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+
+
+        Dim rpt As New Rpt_Document_Log
+
+
+        ' cryRpt.Load("D:\\ROERP\\PDFGENERATOR\\PDFGENERATOR\\Reports\\Rpt_PartyOutstanding.rpt")
+
+        'cryRpt.SetDataSource(ds)
+
+        rpt.Database.Tables("Document").SetDataSource(DocLog.Tables("Document"))
+        
+
+        CrystalReportViewer1.ReportSource = rpt
+        CrystalReportViewer1.RefreshReport()
+        DocLog.Dispose()
+        rpt.Refresh()
+        DocLog.Tables("Document").Dispose()
+    End Sub
+End Class

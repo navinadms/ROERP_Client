@@ -1,0 +1,55 @@
+<?xml version="1.0" standalone="yes"?>
+<xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="SP_Rpt_FollowUp_ProjectISIProcess" msdata:UseCurrentLocale="true">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="SP_Rpt_FollowUp_ProjectISIProcess">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="EnqNo" type="xs:string" minOccurs="0" />
+              <xs:element name="DeliveryArea" type="xs:string" minOccurs="0" />
+              <xs:element name="DeliveryAddress" type="xs:string" minOccurs="0" />
+              <xs:element name="DeliveryCity" type="xs:string" minOccurs="0" />
+              <xs:element name="DeliveryState" type="xs:string" minOccurs="0" />
+              <xs:element name="DeliveryDistrict" type="xs:string" minOccurs="0" />
+              <xs:element name="DeliveryPincode" type="xs:string" minOccurs="0" />
+              <xs:element name="ContactPerson" type="xs:string" minOccurs="0" />
+              <xs:element name="EmailID" type="xs:string" minOccurs="0" />
+              <xs:element name="Address" type="xs:string" minOccurs="0" />
+              <xs:element name="Area" type="xs:string" minOccurs="0" />
+              <xs:element name="City" type="xs:string" minOccurs="0" />
+              <xs:element name="ContactPerson1" type="xs:string" minOccurs="0" />
+              <xs:element name="MobileNo" type="xs:string" minOccurs="0" />
+              <xs:element name="Name" type="xs:string" minOccurs="0" />
+              <xs:element name="State" type="xs:string" minOccurs="0" />
+              <xs:element name="PK_ISIProcessID" type="xs:long" minOccurs="0" />
+              <xs:element name="Fk_AddressId" type="xs:long" minOccurs="0" />
+              <xs:element name="Scheme_Name" type="xs:string" minOccurs="0" />
+              <xs:element name="D_Rec_Date" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="P_Doc_F_Date" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="P_Doc_R_Date" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="F_Ok_S_Tc_P" type="xs:string" minOccurs="0" />
+              <xs:element name="F_Submit_P" type="xs:string" minOccurs="0" />
+              <xs:element name="File_Reg_Date" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="BIS_Insp_Date" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="Licence_Date" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="Vender" type="xs:string" minOccurs="0" />
+              <xs:element name="ISIRemark" type="xs:string" minOccurs="0" />
+              <xs:element name="Vendor_Date" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="Receive_Date" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="PK_ISIDescID" type="xs:long" minOccurs="0" />
+              <xs:element name="Fk_AddressId1" type="xs:long" minOccurs="0" />
+              <xs:element name="FDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="FollowUp" type="xs:string" minOccurs="0" />
+              <xs:element name="NFDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="Status" type="xs:string" minOccurs="0" />
+              <xs:element name="ByWhom" type="xs:string" minOccurs="0" />
+              <xs:element name="ProjectType" type="xs:string" minOccurs="0" />
+              <xs:element name="Remarks" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

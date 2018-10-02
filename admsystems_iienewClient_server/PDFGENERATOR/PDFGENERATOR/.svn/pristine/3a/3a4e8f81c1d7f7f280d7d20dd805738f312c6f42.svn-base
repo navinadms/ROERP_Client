@@ -1,0 +1,758 @@
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+Partial Class Re_Invard_Register
+    Inherits System.Windows.Forms.Form
+
+    'Form overrides dispose to clean up the component list.
+    <System.Diagnostics.DebuggerNonUserCode()> _
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Try
+            If disposing AndAlso components IsNot Nothing Then
+                components.Dispose()
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
+    End Sub
+
+    'Required by the Windows Form Designer
+    Private components As System.ComponentModel.IContainer
+
+    'NOTE: The following procedure is required by the Windows Form Designer
+    'It can be modified using the Windows Form Designer.  
+    'Do not modify it using the code editor.
+    <System.Diagnostics.DebuggerStepThrough()> _
+    Private Sub InitializeComponent()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.DGVOutward = New System.Windows.Forms.DataGridView()
+        Me.txtRIRemks = New System.Windows.Forms.TextBox()
+        Me.Label23 = New System.Windows.Forms.Label()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.txtRIAdres = New System.Windows.Forms.TextBox()
+        Me.Label22 = New System.Windows.Forms.Label()
+        Me.txtRICust1 = New System.Windows.Forms.TextBox()
+        Me.Label21 = New System.Windows.Forms.Label()
+        Me.btnRIcancelTrans = New System.Windows.Forms.Button()
+        Me.btnRITransEfect = New System.Windows.Forms.Button()
+        Me.btnCancelRI = New System.Windows.Forms.Button()
+        Me.btnSubDelRI = New System.Windows.Forms.Button()
+        Me.btnDelRI = New System.Windows.Forms.Button()
+        Me.btnchangeRI = New System.Windows.Forms.Button()
+        Me.btnsaveRI = New System.Windows.Forms.Button()
+        Me.btnAddRI = New System.Windows.Forms.Button()
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.DGVInwardItems = New System.Windows.Forms.DataGridView()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.btnRISave = New System.Windows.Forms.Button()
+        Me.btnRIAdd = New System.Windows.Forms.Button()
+        Me.txtRIContact = New System.Windows.Forms.TextBox()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.txtRICust2 = New System.Windows.Forms.TextBox()
+        Me.txtRIdt = New System.Windows.Forms.TextBox()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.txtRIEng = New System.Windows.Forms.TextBox()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.txtInvdDt = New System.Windows.Forms.TextBox()
+        Me.txtOutvrdNo = New System.Windows.Forms.TextBox()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.txtInvrdNo = New System.Windows.Forms.TextBox()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.btnRefRI = New System.Windows.Forms.Button()
+        Me.txtTotRI = New System.Windows.Forms.TextBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.GDVRInwardDetail = New System.Windows.Forms.DataGridView()
+        Me.btnRIsearch = New System.Windows.Forms.Button()
+        Me.dtpRITo = New System.Windows.Forms.DateTimePicker()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.dtpRTFrom = New System.Windows.Forms.DateTimePicker()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.Label15 = New System.Windows.Forms.Label()
+        Me.txtRemarks = New System.Windows.Forms.TextBox()
+        Me.cmbRowMaterial = New System.Windows.Forms.ComboBox()
+        Me.cmbCategory = New System.Windows.Forms.ComboBox()
+        Me.txtUnit = New System.Windows.Forms.TextBox()
+        Me.txtQty = New System.Windows.Forms.TextBox()
+        Me.txtNo = New System.Windows.Forms.TextBox()
+        Me.GroupBox2.SuspendLayout()
+        Me.Panel2.SuspendLayout()
+        CType(Me.DGVOutward, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox3.SuspendLayout()
+        CType(Me.DGVInwardItems, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox1.SuspendLayout()
+        Me.Panel1.SuspendLayout()
+        CType(Me.GDVRInwardDetail, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.SuspendLayout()
+        '
+        'GroupBox2
+        '
+        Me.GroupBox2.Controls.Add(Me.Panel2)
+        Me.GroupBox2.Controls.Add(Me.txtRIRemks)
+        Me.GroupBox2.Controls.Add(Me.Label23)
+        Me.GroupBox2.Controls.Add(Me.Label8)
+        Me.GroupBox2.Controls.Add(Me.txtRIAdres)
+        Me.GroupBox2.Controls.Add(Me.Label22)
+        Me.GroupBox2.Controls.Add(Me.txtRICust1)
+        Me.GroupBox2.Controls.Add(Me.Label21)
+        Me.GroupBox2.Controls.Add(Me.btnRIcancelTrans)
+        Me.GroupBox2.Controls.Add(Me.btnRITransEfect)
+        Me.GroupBox2.Controls.Add(Me.btnCancelRI)
+        Me.GroupBox2.Controls.Add(Me.btnSubDelRI)
+        Me.GroupBox2.Controls.Add(Me.btnDelRI)
+        Me.GroupBox2.Controls.Add(Me.btnchangeRI)
+        Me.GroupBox2.Controls.Add(Me.btnsaveRI)
+        Me.GroupBox2.Controls.Add(Me.btnAddRI)
+        Me.GroupBox2.Controls.Add(Me.GroupBox3)
+        Me.GroupBox2.Controls.Add(Me.txtRIContact)
+        Me.GroupBox2.Controls.Add(Me.Label9)
+        Me.GroupBox2.Controls.Add(Me.txtRICust2)
+        Me.GroupBox2.Controls.Add(Me.txtRIdt)
+        Me.GroupBox2.Controls.Add(Me.Label7)
+        Me.GroupBox2.Controls.Add(Me.txtRIEng)
+        Me.GroupBox2.Controls.Add(Me.Label6)
+        Me.GroupBox2.Controls.Add(Me.txtInvdDt)
+        Me.GroupBox2.Controls.Add(Me.txtOutvrdNo)
+        Me.GroupBox2.Controls.Add(Me.Label5)
+        Me.GroupBox2.Controls.Add(Me.txtInvrdNo)
+        Me.GroupBox2.Controls.Add(Me.Label4)
+        Me.GroupBox2.Location = New System.Drawing.Point(261, 2)
+        Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Size = New System.Drawing.Size(664, 573)
+        Me.GroupBox2.TabIndex = 4
+        Me.GroupBox2.TabStop = False
+        '
+        'Panel2
+        '
+        Me.Panel2.Controls.Add(Me.DGVOutward)
+        Me.Panel2.Location = New System.Drawing.Point(8, 131)
+        Me.Panel2.Name = "Panel2"
+        Me.Panel2.Size = New System.Drawing.Size(645, 144)
+        Me.Panel2.TabIndex = 39
+        '
+        'DGVOutward
+        '
+        Me.DGVOutward.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.DGVOutward.Location = New System.Drawing.Point(5, 3)
+        Me.DGVOutward.Name = "DGVOutward"
+        Me.DGVOutward.Size = New System.Drawing.Size(628, 138)
+        Me.DGVOutward.TabIndex = 0
+        '
+        'txtRIRemks
+        '
+        Me.txtRIRemks.Location = New System.Drawing.Point(275, 106)
+        Me.txtRIRemks.Name = "txtRIRemks"
+        Me.txtRIRemks.Size = New System.Drawing.Size(301, 20)
+        Me.txtRIRemks.TabIndex = 38
+        '
+        'Label23
+        '
+        Me.Label23.AutoSize = True
+        Me.Label23.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label23.ForeColor = System.Drawing.Color.Maroon
+        Me.Label23.Location = New System.Drawing.Point(213, 109)
+        Me.Label23.Name = "Label23"
+        Me.Label23.Size = New System.Drawing.Size(56, 13)
+        Me.Label23.TabIndex = 37
+        Me.Label23.Text = "Remarks"
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label8.ForeColor = System.Drawing.Color.Maroon
+        Me.Label8.Location = New System.Drawing.Point(3, 113)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(71, 13)
+        Me.Label8.TabIndex = 36
+        Me.Label8.Text = "Contact No"
+        '
+        'txtRIAdres
+        '
+        Me.txtRIAdres.Location = New System.Drawing.Point(78, 82)
+        Me.txtRIAdres.Name = "txtRIAdres"
+        Me.txtRIAdres.Size = New System.Drawing.Size(498, 20)
+        Me.txtRIAdres.TabIndex = 35
+        '
+        'Label22
+        '
+        Me.Label22.AutoSize = True
+        Me.Label22.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label22.ForeColor = System.Drawing.Color.Maroon
+        Me.Label22.Location = New System.Drawing.Point(14, 83)
+        Me.Label22.Name = "Label22"
+        Me.Label22.Size = New System.Drawing.Size(52, 13)
+        Me.Label22.TabIndex = 34
+        Me.Label22.Text = "Address"
+        '
+        'txtRICust1
+        '
+        Me.txtRICust1.Location = New System.Drawing.Point(77, 59)
+        Me.txtRICust1.Name = "txtRICust1"
+        Me.txtRICust1.Size = New System.Drawing.Size(312, 20)
+        Me.txtRICust1.TabIndex = 33
+        '
+        'Label21
+        '
+        Me.Label21.AutoSize = True
+        Me.Label21.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label21.ForeColor = System.Drawing.Color.Maroon
+        Me.Label21.Location = New System.Drawing.Point(11, 61)
+        Me.Label21.Name = "Label21"
+        Me.Label21.Size = New System.Drawing.Size(59, 13)
+        Me.Label21.TabIndex = 32
+        Me.Label21.Text = "Customer"
+        '
+        'btnRIcancelTrans
+        '
+        Me.btnRIcancelTrans.BackColor = System.Drawing.Color.SteelBlue
+        Me.btnRIcancelTrans.ForeColor = System.Drawing.Color.White
+        Me.btnRIcancelTrans.Location = New System.Drawing.Point(494, 537)
+        Me.btnRIcancelTrans.Name = "btnRIcancelTrans"
+        Me.btnRIcancelTrans.Size = New System.Drawing.Size(115, 23)
+        Me.btnRIcancelTrans.TabIndex = 24
+        Me.btnRIcancelTrans.Text = "Cancel Transaction"
+        Me.btnRIcancelTrans.UseVisualStyleBackColor = False
+        '
+        'btnRITransEfect
+        '
+        Me.btnRITransEfect.BackColor = System.Drawing.Color.Green
+        Me.btnRITransEfect.ForeColor = System.Drawing.Color.White
+        Me.btnRITransEfect.Location = New System.Drawing.Point(494, 508)
+        Me.btnRITransEfect.Name = "btnRITransEfect"
+        Me.btnRITransEfect.Size = New System.Drawing.Size(115, 23)
+        Me.btnRITransEfect.TabIndex = 23
+        Me.btnRITransEfect.Text = "Transaction Effect"
+        Me.btnRITransEfect.UseVisualStyleBackColor = False
+        '
+        'btnCancelRI
+        '
+        Me.btnCancelRI.Location = New System.Drawing.Point(417, 509)
+        Me.btnCancelRI.Name = "btnCancelRI"
+        Me.btnCancelRI.Size = New System.Drawing.Size(71, 46)
+        Me.btnCancelRI.TabIndex = 21
+        Me.btnCancelRI.Text = "BACK"
+        Me.btnCancelRI.UseVisualStyleBackColor = True
+        '
+        'btnSubDelRI
+        '
+        Me.btnSubDelRI.Location = New System.Drawing.Point(340, 509)
+        Me.btnSubDelRI.Name = "btnSubDelRI"
+        Me.btnSubDelRI.Size = New System.Drawing.Size(71, 46)
+        Me.btnSubDelRI.TabIndex = 20
+        Me.btnSubDelRI.Text = "CANCEL"
+        Me.btnSubDelRI.UseVisualStyleBackColor = True
+        '
+        'btnDelRI
+        '
+        Me.btnDelRI.Location = New System.Drawing.Point(263, 509)
+        Me.btnDelRI.Name = "btnDelRI"
+        Me.btnDelRI.Size = New System.Drawing.Size(71, 46)
+        Me.btnDelRI.TabIndex = 19
+        Me.btnDelRI.Text = "DELETE"
+        Me.btnDelRI.UseVisualStyleBackColor = True
+        '
+        'btnchangeRI
+        '
+        Me.btnchangeRI.Location = New System.Drawing.Point(186, 509)
+        Me.btnchangeRI.Name = "btnchangeRI"
+        Me.btnchangeRI.Size = New System.Drawing.Size(71, 46)
+        Me.btnchangeRI.TabIndex = 18
+        Me.btnchangeRI.Text = "CHANGE"
+        Me.btnchangeRI.UseVisualStyleBackColor = True
+        '
+        'btnsaveRI
+        '
+        Me.btnsaveRI.Location = New System.Drawing.Point(110, 509)
+        Me.btnsaveRI.Name = "btnsaveRI"
+        Me.btnsaveRI.Size = New System.Drawing.Size(71, 46)
+        Me.btnsaveRI.TabIndex = 17
+        Me.btnsaveRI.Text = "SAVE"
+        Me.btnsaveRI.UseVisualStyleBackColor = True
+        '
+        'btnAddRI
+        '
+        Me.btnAddRI.Location = New System.Drawing.Point(33, 509)
+        Me.btnAddRI.Name = "btnAddRI"
+        Me.btnAddRI.Size = New System.Drawing.Size(71, 46)
+        Me.btnAddRI.TabIndex = 16
+        Me.btnAddRI.Text = "ADD"
+        Me.btnAddRI.UseVisualStyleBackColor = True
+        '
+        'GroupBox3
+        '
+        Me.GroupBox3.Controls.Add(Me.txtRemarks)
+        Me.GroupBox3.Controls.Add(Me.cmbRowMaterial)
+        Me.GroupBox3.Controls.Add(Me.cmbCategory)
+        Me.GroupBox3.Controls.Add(Me.txtUnit)
+        Me.GroupBox3.Controls.Add(Me.txtQty)
+        Me.GroupBox3.Controls.Add(Me.txtNo)
+        Me.GroupBox3.Controls.Add(Me.Label15)
+        Me.GroupBox3.Controls.Add(Me.Label14)
+        Me.GroupBox3.Controls.Add(Me.Button1)
+        Me.GroupBox3.Controls.Add(Me.DGVInwardItems)
+        Me.GroupBox3.Controls.Add(Me.Label13)
+        Me.GroupBox3.Controls.Add(Me.Label12)
+        Me.GroupBox3.Controls.Add(Me.Label11)
+        Me.GroupBox3.Controls.Add(Me.Label10)
+        Me.GroupBox3.Controls.Add(Me.btnRISave)
+        Me.GroupBox3.Controls.Add(Me.btnRIAdd)
+        Me.GroupBox3.Location = New System.Drawing.Point(6, 271)
+        Me.GroupBox3.Name = "GroupBox3"
+        Me.GroupBox3.Size = New System.Drawing.Size(652, 230)
+        Me.GroupBox3.TabIndex = 13
+        Me.GroupBox3.TabStop = False
+        '
+        'DGVInwardItems
+        '
+        Me.DGVInwardItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.DGVInwardItems.Location = New System.Drawing.Point(7, 67)
+        Me.DGVInwardItems.Name = "DGVInwardItems"
+        Me.DGVInwardItems.Size = New System.Drawing.Size(627, 152)
+        Me.DGVInwardItems.TabIndex = 11
+        '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label13.ForeColor = System.Drawing.Color.Maroon
+        Me.Label13.Location = New System.Drawing.Point(331, 20)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(98, 13)
+        Me.Label13.TabIndex = 8
+        Me.Label13.Text = "Received Stock"
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label12.ForeColor = System.Drawing.Color.Maroon
+        Me.Label12.Location = New System.Drawing.Point(209, 20)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(117, 13)
+        Me.Label12.TabIndex = 6
+        Me.Label12.Text = "Raw Material Name"
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = True
+        Me.Label11.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label11.ForeColor = System.Drawing.Color.Maroon
+        Me.Label11.Location = New System.Drawing.Point(101, 19)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(57, 13)
+        Me.Label11.TabIndex = 4
+        Me.Label11.Text = "Category"
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label10.ForeColor = System.Drawing.Color.Maroon
+        Me.Label10.Location = New System.Drawing.Point(63, 20)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(23, 13)
+        Me.Label10.TabIndex = 2
+        Me.Label10.Text = "No"
+        '
+        'btnRISave
+        '
+        Me.btnRISave.ForeColor = System.Drawing.Color.Red
+        Me.btnRISave.Location = New System.Drawing.Point(600, 7)
+        Me.btnRISave.Name = "btnRISave"
+        Me.btnRISave.Size = New System.Drawing.Size(47, 28)
+        Me.btnRISave.TabIndex = 1
+        Me.btnRISave.Text = "Save"
+        Me.btnRISave.UseVisualStyleBackColor = True
+        '
+        'btnRIAdd
+        '
+        Me.btnRIAdd.ForeColor = System.Drawing.Color.Red
+        Me.btnRIAdd.Location = New System.Drawing.Point(7, 12)
+        Me.btnRIAdd.Name = "btnRIAdd"
+        Me.btnRIAdd.Size = New System.Drawing.Size(43, 50)
+        Me.btnRIAdd.TabIndex = 0
+        Me.btnRIAdd.Text = "Add"
+        Me.btnRIAdd.UseVisualStyleBackColor = True
+        '
+        'txtRIContact
+        '
+        Me.txtRIContact.Location = New System.Drawing.Point(77, 106)
+        Me.txtRIContact.Name = "txtRIContact"
+        Me.txtRIContact.Size = New System.Drawing.Size(129, 20)
+        Me.txtRIContact.TabIndex = 12
+        '
+        'Label9
+        '
+        Me.Label9.AutoSize = True
+        Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label9.ForeColor = System.Drawing.Color.Maroon
+        Me.Label9.Location = New System.Drawing.Point(361, 40)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(57, 13)
+        Me.Label9.TabIndex = 11
+        Me.Label9.Text = "Engineer"
+        '
+        'txtRICust2
+        '
+        Me.txtRICust2.Location = New System.Drawing.Point(395, 59)
+        Me.txtRICust2.Name = "txtRICust2"
+        Me.txtRICust2.Size = New System.Drawing.Size(181, 20)
+        Me.txtRICust2.TabIndex = 10
+        '
+        'txtRIdt
+        '
+        Me.txtRIdt.Location = New System.Drawing.Point(255, 37)
+        Me.txtRIdt.Name = "txtRIdt"
+        Me.txtRIdt.Size = New System.Drawing.Size(100, 20)
+        Me.txtRIdt.TabIndex = 8
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label7.ForeColor = System.Drawing.Color.Maroon
+        Me.Label7.Location = New System.Drawing.Point(215, 40)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(34, 13)
+        Me.Label7.TabIndex = 7
+        Me.Label7.Text = "Date"
+        '
+        'txtRIEng
+        '
+        Me.txtRIEng.BackColor = System.Drawing.Color.White
+        Me.txtRIEng.Location = New System.Drawing.Point(421, 34)
+        Me.txtRIEng.Name = "txtRIEng"
+        Me.txtRIEng.Size = New System.Drawing.Size(156, 20)
+        Me.txtRIEng.TabIndex = 6
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label6.ForeColor = System.Drawing.Color.Maroon
+        Me.Label6.Location = New System.Drawing.Point(212, 15)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(76, 13)
+        Me.Label6.TabIndex = 5
+        Me.Label6.Text = "Inward Date"
+        '
+        'txtInvdDt
+        '
+        Me.txtInvdDt.Location = New System.Drawing.Point(292, 11)
+        Me.txtInvdDt.Name = "txtInvdDt"
+        Me.txtInvdDt.Size = New System.Drawing.Size(126, 20)
+        Me.txtInvdDt.TabIndex = 4
+        '
+        'txtOutvrdNo
+        '
+        Me.txtOutvrdNo.Location = New System.Drawing.Point(77, 37)
+        Me.txtOutvrdNo.Name = "txtOutvrdNo"
+        Me.txtOutvrdNo.Size = New System.Drawing.Size(129, 20)
+        Me.txtOutvrdNo.TabIndex = 3
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.ForeColor = System.Drawing.Color.Maroon
+        Me.Label5.Location = New System.Drawing.Point(5, 41)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(74, 13)
+        Me.Label5.TabIndex = 2
+        Me.Label5.Text = "Outward No"
+        '
+        'txtInvrdNo
+        '
+        Me.txtInvrdNo.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.txtInvrdNo.Location = New System.Drawing.Point(77, 14)
+        Me.txtInvrdNo.Name = "txtInvrdNo"
+        Me.txtInvrdNo.Size = New System.Drawing.Size(129, 20)
+        Me.txtInvrdNo.TabIndex = 1
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.ForeColor = System.Drawing.Color.Maroon
+        Me.Label4.Location = New System.Drawing.Point(10, 17)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(63, 13)
+        Me.Label4.TabIndex = 0
+        Me.Label4.Text = "Invard No"
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.btnRefRI)
+        Me.GroupBox1.Controls.Add(Me.txtTotRI)
+        Me.GroupBox1.Controls.Add(Me.Label3)
+        Me.GroupBox1.Controls.Add(Me.Panel1)
+        Me.GroupBox1.Controls.Add(Me.btnRIsearch)
+        Me.GroupBox1.Controls.Add(Me.dtpRITo)
+        Me.GroupBox1.Controls.Add(Me.Label2)
+        Me.GroupBox1.Controls.Add(Me.dtpRTFrom)
+        Me.GroupBox1.Controls.Add(Me.Label1)
+        Me.GroupBox1.Location = New System.Drawing.Point(5, 3)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(253, 572)
+        Me.GroupBox1.TabIndex = 3
+        Me.GroupBox1.TabStop = False
+        '
+        'btnRefRI
+        '
+        Me.btnRefRI.ForeColor = System.Drawing.Color.Red
+        Me.btnRefRI.Location = New System.Drawing.Point(186, 546)
+        Me.btnRefRI.Name = "btnRefRI"
+        Me.btnRefRI.Size = New System.Drawing.Size(60, 23)
+        Me.btnRefRI.TabIndex = 8
+        Me.btnRefRI.Text = "Refresh"
+        Me.btnRefRI.UseVisualStyleBackColor = True
+        '
+        'txtTotRI
+        '
+        Me.txtTotRI.Location = New System.Drawing.Point(83, 548)
+        Me.txtTotRI.Name = "txtTotRI"
+        Me.txtTotRI.Size = New System.Drawing.Size(100, 20)
+        Me.txtTotRI.TabIndex = 7
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.ForeColor = System.Drawing.Color.Maroon
+        Me.Label3.Location = New System.Drawing.Point(-2, 553)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(87, 13)
+        Me.Label3.TabIndex = 6
+        Me.Label3.Text = "Total Records"
+        '
+        'Panel1
+        '
+        Me.Panel1.Controls.Add(Me.GDVRInwardDetail)
+        Me.Panel1.Location = New System.Drawing.Point(7, 74)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(240, 466)
+        Me.Panel1.TabIndex = 5
+        '
+        'GDVRInwardDetail
+        '
+        Me.GDVRInwardDetail.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.GDVRInwardDetail.Location = New System.Drawing.Point(0, 3)
+        Me.GDVRInwardDetail.Name = "GDVRInwardDetail"
+        Me.GDVRInwardDetail.Size = New System.Drawing.Size(240, 463)
+        Me.GDVRInwardDetail.TabIndex = 0
+        '
+        'btnRIsearch
+        '
+        Me.btnRIsearch.Location = New System.Drawing.Point(174, 20)
+        Me.btnRIsearch.Name = "btnRIsearch"
+        Me.btnRIsearch.Size = New System.Drawing.Size(57, 39)
+        Me.btnRIsearch.TabIndex = 4
+        Me.btnRIsearch.Text = "Search"
+        Me.btnRIsearch.UseVisualStyleBackColor = True
+        '
+        'dtpRITo
+        '
+        Me.dtpRITo.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.dtpRITo.Location = New System.Drawing.Point(46, 46)
+        Me.dtpRITo.Name = "dtpRITo"
+        Me.dtpRITo.Size = New System.Drawing.Size(121, 20)
+        Me.dtpRITo.TabIndex = 3
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.ForeColor = System.Drawing.Color.Maroon
+        Me.Label2.Location = New System.Drawing.Point(12, 46)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(22, 13)
+        Me.Label2.TabIndex = 2
+        Me.Label2.Text = "To"
+        '
+        'dtpRTFrom
+        '
+        Me.dtpRTFrom.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.dtpRTFrom.Location = New System.Drawing.Point(46, 16)
+        Me.dtpRTFrom.Name = "dtpRTFrom"
+        Me.dtpRTFrom.Size = New System.Drawing.Size(121, 20)
+        Me.dtpRTFrom.TabIndex = 1
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.ForeColor = System.Drawing.Color.Maroon
+        Me.Label1.Location = New System.Drawing.Point(9, 20)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(34, 13)
+        Me.Label1.TabIndex = 0
+        Me.Label1.Text = "From"
+        '
+        'Button1
+        '
+        Me.Button1.ForeColor = System.Drawing.Color.Red
+        Me.Button1.Location = New System.Drawing.Point(600, 37)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(47, 28)
+        Me.Button1.TabIndex = 12
+        Me.Button1.Text = "Delete"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
+        'Label14
+        '
+        Me.Label14.AutoSize = True
+        Me.Label14.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label14.ForeColor = System.Drawing.Color.Maroon
+        Me.Label14.Location = New System.Drawing.Point(435, 19)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(30, 13)
+        Me.Label14.TabIndex = 13
+        Me.Label14.Text = "Unit"
+        '
+        'Label15
+        '
+        Me.Label15.AutoSize = True
+        Me.Label15.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label15.ForeColor = System.Drawing.Color.Maroon
+        Me.Label15.Location = New System.Drawing.Point(495, 19)
+        Me.Label15.Name = "Label15"
+        Me.Label15.Size = New System.Drawing.Size(56, 13)
+        Me.Label15.TabIndex = 15
+        Me.Label15.Text = "Remarks"
+        Me.Label15.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'txtRemarks
+        '
+        Me.txtRemarks.Location = New System.Drawing.Point(483, 36)
+        Me.txtRemarks.Multiline = True
+        Me.txtRemarks.Name = "txtRemarks"
+        Me.txtRemarks.Size = New System.Drawing.Size(106, 28)
+        Me.txtRemarks.TabIndex = 21
+        '
+        'cmbRowMaterial
+        '
+        Me.cmbRowMaterial.FormattingEnabled = True
+        Me.cmbRowMaterial.Location = New System.Drawing.Point(213, 37)
+        Me.cmbRowMaterial.Name = "cmbRowMaterial"
+        Me.cmbRowMaterial.Size = New System.Drawing.Size(137, 21)
+        Me.cmbRowMaterial.TabIndex = 18
+        '
+        'cmbCategory
+        '
+        Me.cmbCategory.FormattingEnabled = True
+        Me.cmbCategory.Location = New System.Drawing.Point(96, 37)
+        Me.cmbCategory.Name = "cmbCategory"
+        Me.cmbCategory.Size = New System.Drawing.Size(111, 21)
+        Me.cmbCategory.TabIndex = 17
+        '
+        'txtUnit
+        '
+        Me.txtUnit.Location = New System.Drawing.Point(421, 37)
+        Me.txtUnit.Name = "txtUnit"
+        Me.txtUnit.Size = New System.Drawing.Size(56, 20)
+        Me.txtUnit.TabIndex = 20
+        '
+        'txtQty
+        '
+        Me.txtQty.Location = New System.Drawing.Point(355, 37)
+        Me.txtQty.Name = "txtQty"
+        Me.txtQty.Size = New System.Drawing.Size(64, 20)
+        Me.txtQty.TabIndex = 19
+        '
+        'txtNo
+        '
+        Me.txtNo.Enabled = False
+        Me.txtNo.Location = New System.Drawing.Point(52, 37)
+        Me.txtNo.Name = "txtNo"
+        Me.txtNo.ReadOnly = True
+        Me.txtNo.Size = New System.Drawing.Size(38, 20)
+        Me.txtNo.TabIndex = 16
+        '
+        'Re_Invard_Register
+        '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.ClientSize = New System.Drawing.Size(925, 594)
+        Me.Controls.Add(Me.GroupBox2)
+        Me.Controls.Add(Me.GroupBox1)
+        Me.Name = "Re_Invard_Register"
+        Me.Text = "Re_Invard_Register"
+        Me.GroupBox2.ResumeLayout(False)
+        Me.GroupBox2.PerformLayout()
+        Me.Panel2.ResumeLayout(False)
+        CType(Me.DGVOutward, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox3.ResumeLayout(False)
+        Me.GroupBox3.PerformLayout()
+        CType(Me.DGVInwardItems, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
+        Me.Panel1.ResumeLayout(False)
+        CType(Me.GDVRInwardDetail, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.ResumeLayout(False)
+
+    End Sub
+    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
+    Friend WithEvents txtRIAdres As System.Windows.Forms.TextBox
+    Friend WithEvents Label22 As System.Windows.Forms.Label
+    Friend WithEvents txtRICust1 As System.Windows.Forms.TextBox
+    Friend WithEvents Label21 As System.Windows.Forms.Label
+    Friend WithEvents btnRIcancelTrans As System.Windows.Forms.Button
+    Friend WithEvents btnRITransEfect As System.Windows.Forms.Button
+    Friend WithEvents btnCancelRI As System.Windows.Forms.Button
+    Friend WithEvents btnSubDelRI As System.Windows.Forms.Button
+    Friend WithEvents btnDelRI As System.Windows.Forms.Button
+    Friend WithEvents btnchangeRI As System.Windows.Forms.Button
+    Friend WithEvents btnsaveRI As System.Windows.Forms.Button
+    Friend WithEvents btnAddRI As System.Windows.Forms.Button
+    Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
+    Friend WithEvents DGVInwardItems As System.Windows.Forms.DataGridView
+    Friend WithEvents Label13 As System.Windows.Forms.Label
+    Friend WithEvents Label12 As System.Windows.Forms.Label
+    Friend WithEvents Label11 As System.Windows.Forms.Label
+    Friend WithEvents Label10 As System.Windows.Forms.Label
+    Friend WithEvents btnRISave As System.Windows.Forms.Button
+    Friend WithEvents btnRIAdd As System.Windows.Forms.Button
+    Friend WithEvents txtRIContact As System.Windows.Forms.TextBox
+    Friend WithEvents Label9 As System.Windows.Forms.Label
+    Friend WithEvents txtRICust2 As System.Windows.Forms.TextBox
+    Friend WithEvents txtRIdt As System.Windows.Forms.TextBox
+    Friend WithEvents Label7 As System.Windows.Forms.Label
+    Friend WithEvents txtRIEng As System.Windows.Forms.TextBox
+    Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents txtInvdDt As System.Windows.Forms.TextBox
+    Friend WithEvents txtOutvrdNo As System.Windows.Forms.TextBox
+    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents txtInvrdNo As System.Windows.Forms.TextBox
+    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents btnRefRI As System.Windows.Forms.Button
+    Friend WithEvents txtTotRI As System.Windows.Forms.TextBox
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents Panel1 As System.Windows.Forms.Panel
+    Friend WithEvents GDVRInwardDetail As System.Windows.Forms.DataGridView
+    Friend WithEvents btnRIsearch As System.Windows.Forms.Button
+    Friend WithEvents dtpRITo As System.Windows.Forms.DateTimePicker
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents dtpRTFrom As System.Windows.Forms.DateTimePicker
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents Label8 As System.Windows.Forms.Label
+    Friend WithEvents Label23 As System.Windows.Forms.Label
+    Friend WithEvents txtRIRemks As System.Windows.Forms.TextBox
+    Friend WithEvents Panel2 As System.Windows.Forms.Panel
+    Friend WithEvents DGVOutward As System.Windows.Forms.DataGridView
+    Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents Label15 As System.Windows.Forms.Label
+    Friend WithEvents Label14 As System.Windows.Forms.Label
+    Friend WithEvents txtRemarks As System.Windows.Forms.TextBox
+    Friend WithEvents cmbRowMaterial As System.Windows.Forms.ComboBox
+    Friend WithEvents cmbCategory As System.Windows.Forms.ComboBox
+    Friend WithEvents txtUnit As System.Windows.Forms.TextBox
+    Friend WithEvents txtQty As System.Windows.Forms.TextBox
+    Friend WithEvents txtNo As System.Windows.Forms.TextBox
+End Class

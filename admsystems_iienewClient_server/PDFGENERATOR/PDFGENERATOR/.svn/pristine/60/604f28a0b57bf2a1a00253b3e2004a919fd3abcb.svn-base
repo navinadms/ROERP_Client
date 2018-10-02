@@ -1,0 +1,147 @@
+﻿Public Class UserAllotment
+    Dim linq_obj As New RoErpDataContext(System.Configuration.ConfigurationManager.AppSettings("constr").ToString())
+    Dim Address_ID As Integer
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+        AutoCompated_Text()
+        bindTeam()
+        bindUser()
+    End Sub
+    Public Sub bindUser()
+        cmbUser.DataSource = Nothing
+        Dim dataUser = linq_obj.SP_Get_UserListByTeam(Convert.ToInt32(cmbTeam.SelectedValue)).ToList()
+        cmbUser.DataSource = dataUser
+        cmbUser.DisplayMember = "UserName"
+        cmbUser.ValueMember = "Pk_UserId"
+        cmbUser.AutoCompleteMode = AutoCompleteMode.Append
+        cmbUser.DropDownStyle = ComboBoxStyle.DropDownList
+        cmbUser.AutoCompleteSource = AutoCompleteSource.ListItems
+    End Sub
+    Public Sub AutoCompated_Text()
+        txtCustName.AutoCompleteCustomSource.Clear()
+        txtEnqNo.AutoCompleteCustomSource.Clear()
+        Dim data = linq_obj.SP_Get_AddressListAutoComplete("Name").ToList()
+        For Each iteam As SP_Get_AddressListAutoCompleteResult In data
+            txtCustName.AutoCompleteCustomSource.Add(iteam.Result)
+        Next
+        Dim dataEnq = linq_obj.SP_Get_AddressListAutoComplete("EnqNo").ToList()
+        For Each iteam As SP_Get_AddressListAutoCompleteResult In dataEnq
+            txtEnqNo.AutoCompleteCustomSource.Add(iteam.Result)
+        Next
+        lblCount.Text = data.Count.ToString()
+    End Sub
+
+    Public Sub bindTeam()
+        cmbTeam.DataSource = Nothing
+        Dim dataTeam = linq_obj.SP_Tbl_TeamMaster_SelectAll().ToList()
+        cmbTeam.DataSource = dataTeam
+        cmbTeam.DisplayMember = "TeamName"
+        cmbTeam.ValueMember = "Pk_TeamId"
+        cmbTeam.AutoCompleteMode = AutoCompleteMode.Append
+        cmbTeam.DropDownStyle = ComboBoxStyle.DropDownList
+        cmbTeam.AutoCompleteSource = AutoCompleteSource.ListItems
+    End Sub
+
+    Private Sub btnAllot_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAllot.Click
+        Dim res As Integer
+        Try
+            If (cmbUser.SelectedIndex >= 0 AndAlso txtEnqNo.Text.Trim() <> "") Then
+
+                Dim result As DialogResult = MessageBox.Show("Are You Sure ?", "Important Message", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)
+                If result = DialogResult.Yes Then
+                    res = linq_obj.SP_Tbl_UserAllotmentDetail_Insert(Address_ID, Convert.ToInt32(cmbUser.SelectedValue), Convert.ToInt32(cmbTeam.SelectedValue))
+                    MessageBox.Show("Successfully Alloted To  Team : " + cmbTeam.Text + " and User : " + cmbUser.Text)
+                    txtCustName.Text = ""
+                    txtEnqNo.Text = ""
+                    txtEnqNo.Focus()
+
+
+                End If
+            Else
+                MessageBox.Show("Select User For Allotment...")
+            End If
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub txtEnqNo_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtEnqNo.Leave
+        Dim data = linq_obj.SP_Get_AddressListByEnqNo(txtEnqNo.Text.Trim()).ToList()
+
+        If (data.Count > 0) Then
+            txtCustName.Text = Convert.ToString(data(0).Name)
+            Address_ID = data(0).Pk_AddressID
+            Dim dataUser = linq_obj.SP_Get_AllotedUserForAddress(Address_ID).ToList()
+            If (dataUser.Count > 0) Then
+                cmbTeam.SelectedValue = dataUser(0).Fk_TeamId
+                bindUser()
+                cmbUser.SelectedValue = dataUser(0).Fk_UserId
+            Else
+                MessageBox.Show("Not Alloted To Any User...")
+            End If
+        End If
+    End Sub
+
+    Private Sub cmbTeam_SelectionChangeCommitted(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbTeam.SelectionChangeCommitted
+        bindUser()
+    End Sub
+
+
+    Private Sub UserAllotment_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        For Each control As Control In Me.Controls
+            ' The textbox control.
+            Dim parentControl As New Control
+
+
+            If (control.GetType() Is GetType(GroupBox)) Then
+                Dim grpBox As GroupBox = TryCast(control, GroupBox)
+                parentControl = grpBox
+            ElseIf (control.GetType() Is GetType(TabControl)) Then
+                Dim TC As TabControl = TryCast(control, TabControl)
+                parentControl = TC
+            Else
+                Try
+                    parentControl = control
+                Catch ex As Exception
+
+                End Try
+
+            End If
+
+            For Each subcontrol As Control In parentControl.Controls
+                If (subcontrol.GetType() Is GetType(TextBox)) Then
+                    Dim textBox As TextBox = TryCast(subcontrol, TextBox)
+
+                    ' If not null, set the handler.
+                    If textBox IsNot Nothing Then
+                        AddHandler textBox.Enter, AddressOf TextBox_Enter
+                        AddHandler textBox.Leave, AddressOf TextBox_Leave
+                    End If
+                End If
+
+                ' Set the handler.
+            Next
+
+            ' Set the handler.
+        Next
+    End Sub
+    Private Sub TextBox_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Dim txt As New TextBox()
+        txt = DirectCast(sender, TextBox)
+
+        txt.BackColor = Color.LightYellow
+    End Sub
+    Private Sub TextBox_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Dim txt As New TextBox()
+        txt = DirectCast(sender, TextBox)
+
+        txt.BackColor = Color.White
+    End Sub
+
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+        txtEnqNo.Text = ""
+        txtCustName.Text = ""
+
+    End Sub
+End Class

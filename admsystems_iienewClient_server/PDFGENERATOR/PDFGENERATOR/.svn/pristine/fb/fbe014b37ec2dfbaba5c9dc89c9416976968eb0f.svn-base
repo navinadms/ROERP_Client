@@ -1,0 +1,37 @@
+﻿Public Class Rpt_OrderWeeklyReport
+    Dim strCriteria As String
+    Dim dataTable As DataTable
+    Dim ds As New DataSet
+    Dim count As Integer
+
+    Dim linq_obj As New RoErpDataContext(System.Configuration.ConfigurationManager.AppSettings("constr").ToString())
+
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+
+    End Sub
+    Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+        Dim dt As Date?
+        dt = dtStartDate.Value
+
+
+
+
+        Dim data = linq_obj.Sp_GetWeeklyOrderReport(dtStartDate.Value, dtEndDate.Value, cmbOrderStatus.Text).ToList()
+        If (data.Count > 0) Then
+
+            dgRptMainView.DataSource = data
+
+            dgRptMainView.Columns(dgRptMainView.Columns.Count - 1).Visible = False
+
+
+
+        Else
+            dgRptMainView.DataSource = Nothing
+            MessageBox.Show("Record Not Found", "No Records", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        End If
+
+
+    End Sub
+End Class

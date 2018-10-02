@@ -1,0 +1,51 @@
+<?xml version="1.0" standalone="yes"?>
+<xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="ODEngineerDS" msdata:UseCurrentLocale="true">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="ODEngineerDS">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ServiceRequestNo" type="xs:string" minOccurs="0" />
+              <xs:element name="CustomerID" type="xs:string" minOccurs="0" />
+              <xs:element name="CDate" type="xs:string" minOccurs="0" />
+              <xs:element name="FormatNo" type="xs:string" minOccurs="0" />
+              <xs:element name="ServiceRequestType" type="xs:string" minOccurs="0" />
+              <xs:element name="RequestBy" type="xs:string" minOccurs="0" />
+              <xs:element name="PartyName" type="xs:string" minOccurs="0" />
+              <xs:element name="Address" type="xs:string" minOccurs="0" />
+              <xs:element name="Station" type="xs:string" minOccurs="0" />
+              <xs:element name="Pincode" type="xs:string" minOccurs="0" />
+              <xs:element name="Tal" type="xs:string" minOccurs="0" />
+              <xs:element name="Dist" type="xs:string" minOccurs="0" />
+              <xs:element name="State" type="xs:string" minOccurs="0" />
+              <xs:element name="Email" type="xs:string" minOccurs="0" />
+              <xs:element name="ContactPerson" type="xs:string" minOccurs="0" />
+              <xs:element name="ContactNumber" type="xs:string" minOccurs="0" />
+              <xs:element name="Plant" type="xs:string" minOccurs="0" />
+              <xs:element name="Capacity" type="xs:string" minOccurs="0" />
+              <xs:element name="Problem" type="xs:string" minOccurs="0" />
+              <xs:element name="Solution" type="xs:string" minOccurs="0" />
+              <xs:element name="AllotDate" type="xs:string" minOccurs="0" />
+              <xs:element name="EngName" type="xs:string" minOccurs="0" />
+              <xs:element name="DoneDate" type="xs:string" minOccurs="0" />
+              <xs:element name="MaterialDetail" type="xs:string" minOccurs="0" />
+              <xs:element name="BillDate" type="xs:string" minOccurs="0" />
+              <xs:element name="BillAmount" type="xs:string" minOccurs="0" />
+              <xs:element name="PaidByClient" type="xs:string" minOccurs="0" />
+              <xs:element name="Loading" type="xs:string" minOccurs="0" />
+              <xs:element name="ToFro" type="xs:string" minOccurs="0" />
+              <xs:element name="Client_MName" type="xs:string" minOccurs="0" />
+              <xs:element name="Client_MDate" type="xs:string" minOccurs="0" />
+              <xs:element name="Client_MTime" type="xs:string" minOccurs="0" />
+              <xs:element name="Client_EName" type="xs:string" minOccurs="0" />
+              <xs:element name="Client_EDate" type="xs:string" minOccurs="0" />
+              <xs:element name="Client_ETime" type="xs:string" minOccurs="0" />
+              <xs:element name="SrNo" type="xs:long" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

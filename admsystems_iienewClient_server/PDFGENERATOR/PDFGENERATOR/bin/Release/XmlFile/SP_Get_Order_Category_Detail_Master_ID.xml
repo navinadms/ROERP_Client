@@ -1,0 +1,55 @@
+<?xml version="1.0" standalone="yes"?>
+<xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="OrderPage4" msdata:UseCurrentLocale="true">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="OrderPage4">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="G_Image1" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="G_Text1" type="xs:string" minOccurs="0" />
+              <xs:element name="G_Image2" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="G_Text2" type="xs:string" minOccurs="0" />
+              <xs:element name="G_Image3" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="G_Text3" type="xs:string" minOccurs="0" />
+              <xs:element name="G_Image4" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="G_Text4" type="xs:string" minOccurs="0" />
+              <xs:element name="G_Image5" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="G_Text5" type="xs:string" minOccurs="0" />
+              <xs:element name="G_Image6" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="G_Text6" type="xs:string" minOccurs="0" />
+              <xs:element name="R_Image1" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="R_Text1" type="xs:string" minOccurs="0" />
+              <xs:element name="R_Image2" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="R_Text2" type="xs:string" minOccurs="0" />
+              <xs:element name="R_Image3" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="R_Text3" type="xs:string" minOccurs="0" />
+              <xs:element name="R_Image4" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="R_Text4" type="xs:string" minOccurs="0" />
+              <xs:element name="R_Image5" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="R_Text5" type="xs:string" minOccurs="0" />
+              <xs:element name="R_Image6" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="R_Text6" type="xs:string" minOccurs="0" />
+              <xs:element name="R_Image7" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="R_Text7" type="xs:string" minOccurs="0" />
+              <xs:element name="R_Image8" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="R_Text8" type="xs:string" minOccurs="0" />
+              <xs:element name="M_Image1" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="M_Text1" type="xs:string" minOccurs="0" />
+              <xs:element name="M_Image2" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="M_Text2" type="xs:string" minOccurs="0" />
+              <xs:element name="M_Image3" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="M_Text3" type="xs:string" minOccurs="0" />
+              <xs:element name="M_Image4" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="M_Text4" type="xs:string" minOccurs="0" />
+              <xs:element name="M_Image5" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="M_Text5" type="xs:string" minOccurs="0" />
+              <xs:element name="M_Image6" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="M_Text6" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

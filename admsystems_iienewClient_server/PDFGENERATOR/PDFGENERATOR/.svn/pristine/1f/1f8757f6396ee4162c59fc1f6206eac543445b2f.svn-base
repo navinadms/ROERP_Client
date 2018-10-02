@@ -1,0 +1,37 @@
+﻿Imports CrystalDecisions.CrystalReports.Engine
+Imports System.Data.SqlClient
+Imports System.Configuration
+Imports CrystalDecisions.Shared
+
+Public Class ReportsFolloupSheet
+    Public Sub New(ByVal ParaAddressID As Integer)
+
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        AddressID = ParaAddressID
+    End Sub
+    Dim AddressID As Integer
+
+
+    Private Sub ReportsFolloupSheet_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Dim sqlcon As New SqlConnection(System.Configuration.ConfigurationManager.AppSettings("constr").ToString())
+        Dim ds As New EnqFormat
+        Dim Enq_EnqMaster = ds.Enq_FolloupMaster
+
+        Dim cmd As New SqlCommand
+        cmd.CommandType = CommandType.StoredProcedure
+        cmd.CommandText = "Get_Rpt_FolloupSheet"
+        cmd.Connection = sqlcon
+        cmd.Parameters.Add("@AddressID", SqlDbType.Int).Value = AddressID
+        Dim da As New SqlDataAdapter()
+        da.SelectCommand = cmd
+        da.Fill(Enq_EnqMaster)
+        ds.AcceptChanges()
+        Dim rpt As New RptFolloupSheet
+        rpt.SetDataSource(ds)
+        CrystalReportViewer1.ReportSource = rpt
+        rpt.Refresh()
+    End Sub
+End Class

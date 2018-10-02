@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<NewDataSet>
+  <SP_Select_Tbl_InwardStockMaster_ById>
+    <Pk_InwardId>73</Pk_InwardId>
+    <PONo />
+    <InwardDate>2015-02-27T10:21:20.753+05:30</InwardDate>
+    <BillNo>MMP/679</BillNo>
+    <BillDate>2015-02-26T00:00:00+05:30</BillDate>
+    <Status>true</Status>
+    <CreateDate>2015-02-27T10:23:05.213+05:30</CreateDate>
+    <SupplierName>MMP FILTRATION PVT. LTD</SupplierName>
+    <SupplierAddress>AHMEDABAD</SupplierAddress>
+  </SP_Select_Tbl_InwardStockMaster_ById>
+</NewDataSet>

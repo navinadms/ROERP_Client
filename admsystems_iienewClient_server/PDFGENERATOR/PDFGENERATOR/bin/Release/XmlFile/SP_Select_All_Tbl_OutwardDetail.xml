@@ -1,0 +1,133 @@
+<?xml version="1.0" standalone="yes"?>
+<NewDataSet>
+  <SP_Select_All_Tbl_OutwardDetail>
+    <Pk_OutwardDetailId>14640</Pk_OutwardDetailId>
+    <Fk_ProductRegisterId>5</Fk_ProductRegisterId>
+    <Fk_RowMaterialId>91</Fk_RowMaterialId>
+    <Fk_OutwardId>2068</Fk_OutwardId>
+    <SrNo>1</SrNo>
+    <CategoryName>BALL VALVE</CategoryName>
+    <RowMaterialName>3/4" BALL VALVE</RowMaterialName>
+    <Unit>Nos.</Unit>
+    <Quantity>4</Quantity>
+    <Remarks xml:space="preserve">
+</Remarks>
+  </SP_Select_All_Tbl_OutwardDetail>
+  <SP_Select_All_Tbl_OutwardDetail>
+    <Pk_OutwardDetailId>14641</Pk_OutwardDetailId>
+    <Fk_ProductRegisterId>5</Fk_ProductRegisterId>
+    <Fk_RowMaterialId>92</Fk_RowMaterialId>
+    <Fk_OutwardId>2068</Fk_OutwardId>
+    <SrNo>2</SrNo>
+    <CategoryName>BALL VALVE</CategoryName>
+    <RowMaterialName>1" BALL VALVE</RowMaterialName>
+    <Unit>Nos.</Unit>
+    <Quantity>2</Quantity>
+    <Remarks xml:space="preserve">
+</Remarks>
+  </SP_Select_All_Tbl_OutwardDetail>
+  <SP_Select_All_Tbl_OutwardDetail>
+    <Pk_OutwardDetailId>14642</Pk_OutwardDetailId>
+    <Fk_ProductRegisterId>12</Fk_ProductRegisterId>
+    <Fk_RowMaterialId>166</Fk_RowMaterialId>
+    <Fk_OutwardId>2068</Fk_OutwardId>
+    <SrNo>3</SrNo>
+    <CategoryName>RUBBER</CategoryName>
+    <RowMaterialName>1" GASKET</RowMaterialName>
+    <Unit>Nos.</Unit>
+    <Quantity>7</Quantity>
+    <Remarks xml:space="preserve">
+</Remarks>
+  </SP_Select_All_Tbl_OutwardDetail>
+  <SP_Select_All_Tbl_OutwardDetail>
+    <Pk_OutwardDetailId>14643</Pk_OutwardDetailId>
+    <Fk_ProductRegisterId>3</Fk_ProductRegisterId>
+    <Fk_RowMaterialId>77</Fk_RowMaterialId>
+    <Fk_OutwardId>2068</Fk_OutwardId>
+    <SrNo>4</SrNo>
+    <CategoryName>NUT-BOLT</CategoryName>
+    <RowMaterialName>3×8×1 1/4" NUT BOLT</RowMaterialName>
+    <Unit>Nos.</Unit>
+    <Quantity>30</Quantity>
+    <Remarks xml:space="preserve">
+</Remarks>
+  </SP_Select_All_Tbl_OutwardDetail>
+  <SP_Select_All_Tbl_OutwardDetail>
+    <Pk_OutwardDetailId>14644</Pk_OutwardDetailId>
+    <Fk_ProductRegisterId>5</Fk_ProductRegisterId>
+    <Fk_RowMaterialId>90</Fk_RowMaterialId>
+    <Fk_OutwardId>2068</Fk_OutwardId>
+    <SrNo>5</SrNo>
+    <CategoryName>BALL VALVE</CategoryName>
+    <RowMaterialName>1/2"BALL VALVE</RowMaterialName>
+    <Unit>Nos.</Unit>
+    <Quantity>4</Quantity>
+    <Remarks xml:space="preserve">
+</Remarks>
+  </SP_Select_All_Tbl_OutwardDetail>
+  <SP_Select_All_Tbl_OutwardDetail>
+    <Pk_OutwardDetailId>14645</Pk_OutwardDetailId>
+    <Fk_ProductRegisterId>12</Fk_ProductRegisterId>
+    <Fk_RowMaterialId>452</Fk_RowMaterialId>
+    <Fk_OutwardId>2068</Fk_OutwardId>
+    <SrNo>6</SrNo>
+    <CategoryName>RUBBER</CategoryName>
+    <RowMaterialName>390х440 GASKET</RowMaterialName>
+    <Unit>Nos.</Unit>
+    <Quantity>4</Quantity>
+    <Remarks xml:space="preserve">
+</Remarks>
+  </SP_Select_All_Tbl_OutwardDetail>
+  <SP_Select_All_Tbl_OutwardDetail>
+    <Pk_OutwardDetailId>14646</Pk_OutwardDetailId>
+    <Fk_ProductRegisterId>3</Fk_ProductRegisterId>
+    <Fk_RowMaterialId>448</Fk_RowMaterialId>
+    <Fk_OutwardId>2068</Fk_OutwardId>
+    <SrNo>7</SrNo>
+    <CategoryName>NUT-BOLT</CategoryName>
+    <RowMaterialName>8х50 NUT-BOLT</RowMaterialName>
+    <Unit>Nos.</Unit>
+    <Quantity>50</Quantity>
+    <Remarks xml:space="preserve">
+</Remarks>
+  </SP_Select_All_Tbl_OutwardDetail>
+  <SP_Select_All_Tbl_OutwardDetail>
+    <Pk_OutwardDetailId>14647</Pk_OutwardDetailId>
+    <Fk_ProductRegisterId>33</Fk_ProductRegisterId>
+    <Fk_RowMaterialId>334</Fk_RowMaterialId>
+    <Fk_OutwardId>2068</Fk_OutwardId>
+    <SrNo>8</SrNo>
+    <CategoryName>PVC ITEM</CategoryName>
+    <RowMaterialName>3/4" FT</RowMaterialName>
+    <Unit>Nos.</Unit>
+    <Quantity>2</Quantity>
+    <Remarks xml:space="preserve">
+</Remarks>
+  </SP_Select_All_Tbl_OutwardDetail>
+  <SP_Select_All_Tbl_OutwardDetail>
+    <Pk_OutwardDetailId>14648</Pk_OutwardDetailId>
+    <Fk_ProductRegisterId>6</Fk_ProductRegisterId>
+    <Fk_RowMaterialId>100</Fk_RowMaterialId>
+    <Fk_OutwardId>2068</Fk_OutwardId>
+    <SrNo>9</SrNo>
+    <CategoryName>GATE VALVE </CategoryName>
+    <RowMaterialName>3/4" GATE VALVE </RowMaterialName>
+    <Unit>Nos.</Unit>
+    <Quantity>1</Quantity>
+    <Remarks xml:space="preserve">
+</Remarks>
+  </SP_Select_All_Tbl_OutwardDetail>
+  <SP_Select_All_Tbl_OutwardDetail>
+    <Pk_OutwardDetailId>14649</Pk_OutwardDetailId>
+    <Fk_ProductRegisterId>3</Fk_ProductRegisterId>
+    <Fk_RowMaterialId>81</Fk_RowMaterialId>
+    <Fk_OutwardId>2068</Fk_OutwardId>
+    <SrNo>10</SrNo>
+    <CategoryName>NUT-BOLT</CategoryName>
+    <RowMaterialName>1/2×3" NUT BOLT</RowMaterialName>
+    <Unit>Nos.</Unit>
+    <Quantity>4</Quantity>
+    <Remarks xml:space="preserve">
+</Remarks>
+  </SP_Select_All_Tbl_OutwardDetail>
+</NewDataSet>

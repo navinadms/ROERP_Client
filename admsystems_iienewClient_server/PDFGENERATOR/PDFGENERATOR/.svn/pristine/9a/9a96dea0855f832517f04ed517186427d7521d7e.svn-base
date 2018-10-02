@@ -1,0 +1,149 @@
+﻿Public Class DesignationMaster
+
+    Dim linq_obj As New RoErpDataContext(System.Configuration.ConfigurationManager.AppSettings("constr").ToString())
+    Dim Designation_ID As Integer
+
+
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+        dgDesignation_Bind()
+        If (lblHeader.Text = "Add Designation") Then
+            Button_Status()
+            btnSubmit.Visible = True
+        Else
+            Button_Status()
+            btnUpdate.Visible = True
+        End If
+
+    End Sub
+    Public Sub dgDesignation_Bind()
+
+        Try
+            Dim getdata = linq_obj.SP_Tbl_DesignationMaster_SelectAll().ToList()
+            dgDesignation.DataSource = getdata
+            dgDesignation.Columns(0).Visible = False
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+    Private Sub btnSubmit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSubmit.Click
+        Try
+
+            linq_obj.SP_Tbl_DesignationMaster_Insert(txtDesignation.Text, True)
+            linq_obj.SubmitChanges()
+            SetClean()
+            MessageBox.Show("Insert Sucessfully....")
+        Catch ex As Exception
+            MessageBox.Show(ex.Message.ToString())
+
+        End Try
+        dgDesignation_Bind()
+
+    End Sub
+    Public Sub SetClean()
+        txtDesignation.Text = ""
+    End Sub
+    Public Sub Button_Status()
+        btnSubmit.Visible = False
+        btnUpdate.Visible = False
+    End Sub
+    Public Sub bindData()
+        Button_Status()
+        btnUpdate.Visible = True
+        lblHeader.Text = "Edit Designation"
+        Designation_ID = Convert.ToInt32(Me.dgDesignation.SelectedCells(0).Value)
+        txtDesignation.Text = Me.dgDesignation.SelectedCells(1).Value
+    End Sub
+    Private Sub dgDesignation_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles dgDesignation.DoubleClick
+        bindData()
+    End Sub
+
+    Private Sub btnUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUpdate.Click
+        Try
+            linq_obj.SP_Tbl_DesignationMaster_Update(txtDesignation.Text, True, Designation_ID)
+            linq_obj.SubmitChanges()
+            SetClean()
+            MessageBox.Show("Update Sucessfully....")
+        Catch ex As Exception
+            MessageBox.Show(ex.Message.ToString())
+
+        End Try
+        dgDesignation_Bind()
+    End Sub
+
+    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+        Button_Status()
+        btnSubmit.Visible = True
+        lblHeader.Text = "Add Designation"
+    End Sub
+
+    Private Sub dgDesignation_PreviewKeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PreviewKeyDownEventArgs) Handles dgDesignation.PreviewKeyDown
+        bindData()
+    End Sub
+
+    Private Sub btnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete.Click
+        Try
+            linq_obj.SP_Tbl_DesignationMaster_Delete(Designation_ID)
+            linq_obj.SubmitChanges()
+            SetClean()
+            MessageBox.Show("Deleted Sucessfully....")
+        Catch ex As Exception
+            MessageBox.Show(ex.Message.ToString())
+
+        End Try
+        dgDesignation_Bind()
+    End Sub
+
+    Private Sub DesignationMaster_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        For Each control As Control In Me.Controls
+            ' The textbox control.
+            Dim parentControl As New Control
+
+
+            If (control.GetType() Is GetType(GroupBox)) Then
+                Dim grpBox As GroupBox = TryCast(control, GroupBox)
+                parentControl = grpBox
+            ElseIf (control.GetType() Is GetType(TabControl)) Then
+                Dim TC As TabControl = TryCast(control, TabControl)
+                parentControl = TC
+            Else
+                Try
+                    parentControl = control
+                Catch ex As Exception
+
+                End Try
+
+            End If
+
+            For Each subcontrol As Control In parentControl.Controls
+                If (subcontrol.GetType() Is GetType(TextBox)) Then
+                    Dim textBox As TextBox = TryCast(subcontrol, TextBox)
+
+                    ' If not null, set the handler.
+                    If textBox IsNot Nothing Then
+                        AddHandler textBox.Enter, AddressOf TextBox_Enter
+                        AddHandler textBox.Leave, AddressOf TextBox_Leave
+                    End If
+                End If
+
+                ' Set the handler.
+            Next
+
+            ' Set the handler.
+        Next
+    End Sub
+    Private Sub TextBox_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Dim txt As New TextBox()
+        txt = DirectCast(sender, TextBox)
+
+        txt.BackColor = Color.LightYellow
+    End Sub
+    Private Sub TextBox_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Dim txt As New TextBox()
+        txt = DirectCast(sender, TextBox)
+
+        txt.BackColor = Color.White
+    End Sub
+End Class

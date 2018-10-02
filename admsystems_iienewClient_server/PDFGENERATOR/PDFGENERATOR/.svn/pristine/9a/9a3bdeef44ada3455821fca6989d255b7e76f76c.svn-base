@@ -1,0 +1,1382 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1FF02E9B-B6D2-4B6A-9AA3-F0F20D46EF11}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>ROERPMAIN.My.MyApplication</StartupObject>
+    <RootNamespace>ROERPMAIN</RootNamespace>
+    <AssemblyName>PDFGENERATOR</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>WindowsForms</MyType>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>PDFGENERATOR.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>PDFGENERATOR.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'PDFNEWGENERATOR|x86'">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\PDFNEWGENERATOR\</OutputPath>
+    <DocumentationFile>PDFGENERATOR.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Release\PDFGENERATOR.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>
+    </ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="FlashControlV71, Version=1.0.3187.32366, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
+    <Reference Include="itextsharp">
+      <HintPath>..\..\..\PDFGenerator 18-10-2012\PDFGENERATOR\PDFGENERATOR\bin\Debug\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Word, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="pdfforge">
+      <HintPath>bin\Debug\pdfforge.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PDFONLY, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\PDFONLY.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="bin\AddressCateogry.Designer.vb">
+      <DependentUpon>AddressCateogry.vb</DependentUpon>
+    </Compile>
+    <Compile Include="bin\AddressCateogry.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Address\AddressDashboard.Designer.vb">
+      <DependentUpon>AddressDashboard.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Address\AddressDashboard.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Address\AddressForm.Designer.vb">
+      <DependentUpon>AddressForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Address\AddressForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Address\CourierForm.Designer.vb">
+      <DependentUpon>CourierForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Address\CourierForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Address\SubCategoryForm.Designer.vb">
+      <DependentUpon>SubCategoryForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Address\SubCategoryForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="App.vb" />
+    <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="bin\Release\Reports\AddressPrint12.vb">
+      <DependentUpon>AddressPrint12.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="bin\Release\Reports\AddressPrint21.vb">
+      <DependentUpon>AddressPrint21.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="bin\Release\Reports\Rpt_OrderRawMaterial.vb">
+      <DependentUpon>Rpt_OrderRawMaterial.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="bin\Release\Reports\CourierPrint12.vb">
+      <DependentUpon>CourierPrint12.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="bin\Release\Reports\CourierPrint21.vb">
+      <DependentUpon>CourierPrint21.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="bin\Release\Reports\frmDailyCardFollowup.Designer.vb">
+      <DependentUpon>frmDailyCardFollowup.vb</DependentUpon>
+    </Compile>
+    <Compile Include="bin\Release\Reports\frmDailyCardFollowup.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="bin\Release\Reports\RptPlantDrawingView.vb">
+      <DependentUpon>RptPlantDrawingView.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="bin\Release\Reports\Rpt_allotmentReport.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Rpt_allotmentReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="bin\Release\Reports\Rpt_CourierList.vb">
+      <DependentUpon>Rpt_CourierList.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="bin\Release\Reports\Rpt_OrderPartyDetail.vb">
+      <DependentUpon>Rpt_OrderPartyDetail.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="bin\Release\Reports\Rpt_PartyKasarDetail.vb">
+      <DependentUpon>Rpt_PartyKasarDetail.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="bin\Release\Reports\Rpt_PartyOutstandingAfterDispatch.vb">
+      <DependentUpon>Rpt_PartyOutstandingAfterDispatch.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="bin\Release\Reports\Rpt_PartyOutstandingbyExecutive.vb">
+      <DependentUpon>Rpt_PartyOutstandingbyExecutive.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="bin\Release\Reports\Rpt_PaymentTypePaymentRecieve.vb">
+      <DependentUpon>Rpt_PaymentTypePaymentRecieve.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DesignationMaster.Designer.vb">
+      <DependentUpon>DesignationMaster.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DesignationMaster.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OleMessgeFilter.vb" />
+    <Compile Include="OneInstanceWindow.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Order\Rpt_OrderWeeklyReport.Designer.vb">
+      <DependentUpon>Rpt_OrderWeeklyReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Order\Rpt_OrderWeeklyReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Order\Rpt_PlantDrawing.Designer.vb">
+      <DependentUpon>Rpt_PlantDrawing.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Order\Rpt_PlantDrawing.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Party\Party Dashboard.Designer.vb">
+      <DependentUpon>Party Dashboard.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Party\Party Dashboard.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Program.vb" />
+    <Compile Include="ReportDataSet\DocumentLog.Designer.vb">
+      <DependentUpon>DocumentLog.xsd</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="ReportDataSet\DSOrderData.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DSOrderData.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="ReportDataSet\DSOrderData.vb">
+      <DependentUpon>DSOrderData.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="ReportDataSet\EnqFormat.Designer.vb">
+      <DependentUpon>EnqFormat.xsd</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="ReportDataSet\EnqFormat.vb">
+      <DependentUpon>EnqFormat.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="ReportDataSet\EnqReport.Designer.vb">
+      <DependentUpon>EnqReport.xsd</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="ReportDataSet\PartyDataset.Designer.vb">
+      <DependentUpon>PartyDataset.xsd</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="ReportDataSet\PartyDataset.vb">
+      <DependentUpon>PartyDataset.xsd</DependentUpon>
+      <SubType>code</SubType>
+    </Compile>
+    <Compile Include="ReportDataSet\PerformaReport.Designer.vb">
+      <DependentUpon>PerformaReport.xsd</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Reports\DocumentLogDetails.Designer.vb">
+      <DependentUpon>DocumentLogDetails.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\DocumentLogDetails.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="bin\Release\Reports\Rpt_Document_Log.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\OrderManager\PartyOutstandingAfterDispatch.Designer.vb">
+      <DependentUpon>PartyOutstandingAfterDispatch.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\OrderManager\PartyOutstandingAfterDispatch.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\OrderManager\PaymentReceive.Designer.vb">
+      <DependentUpon>PaymentReceive.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\OrderManager\PaymentReceive.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\OrderManager\Rpt_DailyCardReport.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Rpt_DailyCardReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\OrderManager\ViewFollowUps.Designer.vb">
+      <DependentUpon>ViewFollowUps.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\OrderManager\ViewFollowUps.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportsDashboard.Designer.vb">
+      <DependentUpon>ReportsDashboard.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportsDashboard.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\Rpt_AssessmentSheet.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Rpt_AssessmentSheet.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Rpt_DailyAllotment.Designer.vb">
+      <DependentUpon>Rpt_DailyAllotment.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Rpt_DailyAllotment.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\Rpt_Document_Log1.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Rpt_Document_Log.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="bin\Release\Reports\Rpt_FollowUp_Summary.vb">
+      <DependentUpon>Rpt_FollowUp_Summary.rpt</DependentUpon>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="bin\Release\Reports\Rpt_FollowUp_Visit.vb">
+      <DependentUpon>Rpt_FollowUp_Visit.rpt</DependentUpon>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="CategoryMaster.Designer.vb">
+      <DependentUpon>CategoryMaster.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CategoryMaster.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Class1.vb" />
+    <Compile Include="CompanyMaster.Designer.vb">
+      <DependentUpon>CompanyMaster.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CompanyMaster.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CueProvider.vb" />
+    <Compile Include="frmpurchaseAgreement.Designer.vb">
+      <DependentUpon>frmpurchaseAgreement.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmpurchaseAgreement.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Inquiry\InquiryForm.Designer.vb">
+      <DependentUpon>InquiryForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Inquiry\InquiryForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Inquiry\ListFolloUps.Designer.vb">
+      <DependentUpon>ListFolloUps.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Inquiry\ListFolloUps.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Inquiry\RptEnquiryFormat.vb" />
+    <Compile Include="ISIQuotation.Designer.vb">
+      <DependentUpon>ISIQuotation.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ISIQuotation.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MDIMainForm.Designer.vb">
+      <DependentUpon>MDIMainForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MDIMainForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Order\AccountMaster.Designer.vb">
+      <DependentUpon>AccountMaster.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Order\AccountMaster.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Order\OrderMaster[1].Designer.vb">
+      <DependentUpon>OrderMaster[1].vb</DependentUpon>
+    </Compile>
+    <Compile Include="Order\OrderMaster[1].vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Order\Rpt_FollowUp-OrderDetails.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Rpt_FollowUp-OrderDetails.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Order\Rpt_FollowUp.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Rpt_FollowUp.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Order\Rpt_FollowUp_LetterMail.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Rpt_FollowUp_LetterMail.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Party\PartyAccountMaster.Designer.vb">
+      <DependentUpon>PartyAccountMaster.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Party\PartyAccountMaster.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Party\PartyInvoiceMaster.Designer.vb">
+      <DependentUpon>PartyInvoiceMaster.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Party\PartyInvoiceMaster.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="QuotationMaster.Designer.vb">
+      <DependentUpon>QuotationMaster.vb</DependentUpon>
+    </Compile>
+    <Compile Include="QuotationMaster.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\FollowUpReport.Designer.vb">
+      <DependentUpon>FollowUpReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\FollowUpReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\InqiurySearchByCriteria.Designer.vb">
+      <DependentUpon>InqiurySearchByCriteria.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\InqiurySearchByCriteria.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\InquiryByReference.Designer.vb">
+      <DependentUpon>InquiryByReference.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\InquiryByReference.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\InquiryReport.Designer.vb">
+      <DependentUpon>InquiryReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\InquiryReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\MainFollowUpDetail.Designer.vb">
+      <DependentUpon>MainFollowUpDetail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\MainFollowUpDetail.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportEnqFormat.Designer.vb">
+      <DependentUpon>ReportEnqFormat.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportEnqFormat.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportPartyOutstanding.Designer.vb">
+      <DependentUpon>ReportPartyOutstanding.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportPartyOutstanding.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportPartyOutstandingPrint.Designer.vb">
+      <DependentUpon>ReportPartyOutstandingPrint.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportPartyOutstandingPrint.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportPerformaInvoice.Designer.vb">
+      <DependentUpon>ReportPerformaInvoice.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportPerformaInvoice.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportsFolloupSheet.Designer.vb">
+      <DependentUpon>ReportsFolloupSheet.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportsFolloupSheet.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\Report_FollowUp.Designer.vb">
+      <DependentUpon>Report_FollowUp.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Report_FollowUp.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\rptEnqFormat.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptEnqFormat.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\DateWiseReports.Designer.vb">
+      <DependentUpon>DateWiseReports.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\DateWiseReports.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\DateWiseReports[1].Designer.vb">
+      <DependentUpon>DateWiseReports[1].vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\DateWiseReports[1].vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\Reports.Designer.vb">
+      <DependentUpon>Reports.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Reports.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\RptFolloupSheet.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RptFolloupSheet.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\rptFollowUpByUser.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptFollowUpByUser.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\RptVisitorDetail.Designer.vb">
+      <DependentUpon>RptVisitorDetail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\RptVisitorDetail.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\rpt_inquiryReport.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rpt_inquiryReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Rpt_PartyOutstanding.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Rpt_PartyOutstanding.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Rpt_PartyOutstanding_New.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Rpt_PartyOutstanding_New.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Rpt_ProformaInvoice.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Rpt_ProformaInvoice.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Rpt_TransferEnqType.Designer.vb">
+      <DependentUpon>Rpt_TransferEnqType.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Rpt_TransferEnqType.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\Rpt_TransferFollowUp.Designer.vb">
+      <DependentUpon>Rpt_TransferFollowUp.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Rpt_TransferFollowUp.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\TestInquiryReport.Designer.vb">
+      <DependentUpon>TestInquiryReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\TestInquiryReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\ViewCourierReports.Designer.vb">
+      <DependentUpon>ViewCourierReports.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ViewCourierReports.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\Worksheet.vb" />
+    <Compile Include="RoErp.designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RoErp.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="RoErp.vb">
+      <DependentUpon>RoErp.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="RupeeConvert.vb" />
+    <Compile Include="SecondAllotment.Designer.vb">
+      <DependentUpon>SecondAllotment.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SecondAllotment.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Service\ServiceManager.Designer.vb">
+      <DependentUpon>ServiceManager.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Service\ServiceManager.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StateTeamAllotment.Designer.vb">
+      <DependentUpon>StateTeamAllotment.vb</DependentUpon>
+    </Compile>
+    <Compile Include="StateTeamAllotment.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Stock\InwardRegister.Designer.vb">
+      <DependentUpon>InwardRegister.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Stock\InwardRegister.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Stock\OutwardRegister.Designer.vb">
+      <DependentUpon>OutwardRegister.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Stock\OutwardRegister.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Stock\POMaster.Designer.vb">
+      <DependentUpon>POMaster.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Stock\POMaster.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Stock\Rpt_StockMainReport.Designer.vb">
+      <DependentUpon>Rpt_StockMainReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Stock\Rpt_StockMainReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Stock\StockRegister.designer.vb">
+      <DependentUpon>StockRegister.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Stock\StockRegister.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Stock\ProductRegisterMaster.Designer.vb">
+      <DependentUpon>ProductRegisterMaster.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Stock\ProductRegisterMaster.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Stock\Re Invard Register.Designer.vb">
+      <DependentUpon>Re Invard Register.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Stock\Re Invard Register.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Stock\RowMaterialMaster.Designer.vb">
+      <DependentUpon>RowMaterialMaster.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Stock\RowMaterialMaster.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Stock\ViewDailyStock.Designer.vb">
+      <DependentUpon>ViewDailyStock.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Stock\ViewDailyStock.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Stock\ViewStockDetail.Designer.vb">
+      <DependentUpon>ViewStockDetail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Stock\ViewStockDetail.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TeamMaster.Designer.vb">
+      <DependentUpon>TeamMaster.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TeamMaster.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="test.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>test.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="test2.vb" />
+    <Compile Include="UploadExcel.Designer.vb">
+      <DependentUpon>UploadExcel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UploadExcel.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserAllotment.Designer.vb">
+      <DependentUpon>UserAllotment.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UserAllotment.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserMaster.Designer.vb">
+      <DependentUpon>UserMaster.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UserMaster.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login.Designer.vb">
+      <DependentUpon>Login.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Login.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="UserPermission\AddUserPermissionMaster.Designer.vb">
+      <DependentUpon>AddUserPermissionMaster.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UserPermission\AddUserPermissionMaster.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserPermission\UserPermissionMaster.Designer.vb">
+      <DependentUpon>UserPermissionMaster.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UserPermission\UserPermissionMaster.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserRights.Designer.vb">
+      <DependentUpon>UserRights.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UserRights.vb">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="bin\AddressCateogry.resx">
+      <DependentUpon>AddressCateogry.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Address\AddressDashboard.resx">
+      <DependentUpon>AddressDashboard.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Address\AddressForm.resx">
+      <DependentUpon>AddressForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Address\CourierForm.resx">
+      <DependentUpon>CourierForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Address\SubCategoryForm.resx">
+      <DependentUpon>SubCategoryForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="bin\Release\Reports\AddressPrint12.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>AddressPrint12.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="bin\Release\Reports\AddressPrint21.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>AddressPrint21.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="bin\Release\Reports\Rpt_OrderRawMaterial.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Rpt_OrderRawMaterial.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="bin\Release\Reports\CourierPrint12.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>CourierPrint12.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="bin\Release\Reports\CourierPrint21.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>CourierPrint21.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="bin\Release\Reports\frmDailyCardFollowup.resx">
+      <DependentUpon>frmDailyCardFollowup.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="bin\Release\Reports\RptPlantDrawingView.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>RptPlantDrawingView.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="bin\Release\Reports\Rpt_allotmentReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Rpt_allotmentReport.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="bin\Release\Reports\Rpt_CourierList.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Rpt_CourierList.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="bin\Release\Reports\Rpt_OrderPartyDetail.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Rpt_OrderPartyDetail.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="bin\Release\Reports\Rpt_PartyKasarDetail.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Rpt_PartyKasarDetail.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="bin\Release\Reports\Rpt_PartyOutstandingAfterDispatch.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Rpt_PartyOutstandingAfterDispatch.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="bin\Release\Reports\Rpt_PartyOutstandingbyExecutive.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Rpt_PartyOutstandingbyExecutive.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="bin\Release\Reports\Rpt_PaymentTypePaymentRecieve.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Rpt_PaymentTypePaymentRecieve.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DesignationMaster.resx">
+      <DependentUpon>DesignationMaster.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Order\Rpt_OrderWeeklyReport.resx">
+      <DependentUpon>Rpt_OrderWeeklyReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Order\Rpt_PlantDrawing.resx">
+      <DependentUpon>Rpt_PlantDrawing.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Party\Party Dashboard.resx">
+      <DependentUpon>Party Dashboard.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\DocumentLogDetails.resx">
+      <DependentUpon>DocumentLogDetails.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\OrderManager\PartyOutstandingAfterDispatch.resx">
+      <DependentUpon>PartyOutstandingAfterDispatch.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\OrderManager\PaymentReceive.resx">
+      <DependentUpon>PaymentReceive.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\OrderManager\Rpt_DailyCardReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Rpt_DailyCardReport.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\OrderManager\ViewFollowUps.resx">
+      <DependentUpon>ViewFollowUps.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ReportsDashboard.resx">
+      <DependentUpon>ReportsDashboard.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Rpt_AssessmentSheet.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Rpt_AssessmentSheet.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Rpt_DailyAllotment.resx">
+      <DependentUpon>Rpt_DailyAllotment.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Rpt_Document_Log.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Rpt_Document_Log1.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="bin\Release\Reports\Rpt_FollowUp_Summary.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Rpt_FollowUp_Summary.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="bin\Release\Reports\Rpt_FollowUp_Visit.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Rpt_FollowUp_Visit.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CategoryMaster.resx">
+      <DependentUpon>CategoryMaster.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CompanyMaster.resx">
+      <DependentUpon>CompanyMaster.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmpurchaseAgreement.resx">
+      <DependentUpon>frmpurchaseAgreement.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Inquiry\InquiryForm.resx">
+      <DependentUpon>InquiryForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Inquiry\ListFolloUps.resx">
+      <DependentUpon>ListFolloUps.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ISIQuotation.gu.resx">
+      <DependentUpon>ISIQuotation.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ISIQuotation.resx">
+      <DependentUpon>ISIQuotation.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MDIMainForm.resx">
+      <DependentUpon>MDIMainForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Order\AccountMaster.resx">
+      <DependentUpon>AccountMaster.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Order\OrderMaster[1].resx">
+      <DependentUpon>OrderMaster[1].vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Order\Rpt_FollowUp-OrderDetails.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Rpt_FollowUp-OrderDetails.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Order\Rpt_FollowUp.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Rpt_FollowUp.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Order\Rpt_FollowUp_LetterMail.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Rpt_FollowUp_LetterMail.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Party\PartyAccountMaster.resx">
+      <DependentUpon>PartyAccountMaster.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Party\PartyInvoiceMaster.resx">
+      <DependentUpon>PartyInvoiceMaster.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QuotationMaster.resx">
+      <DependentUpon>QuotationMaster.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\FollowUpReport.resx">
+      <DependentUpon>FollowUpReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\InqiurySearchByCriteria.resx">
+      <DependentUpon>InqiurySearchByCriteria.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\InquiryByReference.resx">
+      <DependentUpon>InquiryByReference.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\InquiryReport.resx">
+      <DependentUpon>InquiryReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\MainFollowUpDetail.resx">
+      <DependentUpon>MainFollowUpDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ReportEnqFormat.resx">
+      <DependentUpon>ReportEnqFormat.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ReportPartyOutstanding.resx">
+      <DependentUpon>ReportPartyOutstanding.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ReportPartyOutstandingPrint.resx">
+      <DependentUpon>ReportPartyOutstandingPrint.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ReportPerformaInvoice.resx">
+      <DependentUpon>ReportPerformaInvoice.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ReportsFolloupSheet.resx">
+      <DependentUpon>ReportsFolloupSheet.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Report_FollowUp.resx">
+      <DependentUpon>Report_FollowUp.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\rptEnqFormat.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptEnqFormat.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\DateWiseReports.resx">
+      <DependentUpon>DateWiseReports.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Reports.resx">
+      <DependentUpon>Reports.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\RptFolloupSheet.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>RptFolloupSheet.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\rptFollowUpByUser.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptFollowUpByUser.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\RptVisitorDetail.resx">
+      <DependentUpon>RptVisitorDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\rpt_inquiryReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rpt_inquiryReport.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Rpt_PartyOutstanding.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Rpt_PartyOutstanding.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Rpt_PartyOutstanding_New.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Rpt_PartyOutstanding_New.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Rpt_ProformaInvoice.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Rpt_ProformaInvoice.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Rpt_TransferEnqType.resx">
+      <DependentUpon>Rpt_TransferEnqType.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Rpt_TransferFollowUp.resx">
+      <DependentUpon>Rpt_TransferFollowUp.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\TestInquiryReport.resx">
+      <DependentUpon>TestInquiryReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ViewCourierReports.resx">
+      <DependentUpon>ViewCourierReports.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SecondAllotment.resx">
+      <DependentUpon>SecondAllotment.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Service\ServiceManager.resx">
+      <DependentUpon>ServiceManager.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StateTeamAllotment.resx">
+      <DependentUpon>StateTeamAllotment.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Stock\Rpt_StockMainReport.resx">
+      <DependentUpon>Rpt_StockMainReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Stock\StockRegister.resx">
+      <DependentUpon>StockRegister.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Stock\ProductRegisterMaster.resx">
+      <DependentUpon>ProductRegisterMaster.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Stock\RowMaterialMaster.resx">
+      <DependentUpon>RowMaterialMaster.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Stock\ViewDailyStock.resx">
+      <DependentUpon>ViewDailyStock.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Stock\ViewStockDetail.resx">
+      <DependentUpon>ViewStockDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TeamMaster.resx">
+      <DependentUpon>TeamMaster.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="test.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>test.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UploadExcel.resx">
+      <DependentUpon>UploadExcel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserAllotment.resx">
+      <DependentUpon>UserAllotment.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserPermission\AddUserPermissionMaster.resx">
+      <DependentUpon>AddUserPermissionMaster.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserPermission\UserPermissionMaster.resx">
+      <DependentUpon>UserPermissionMaster.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserRights.resx">
+      <DependentUpon>UserRights.vb</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="ReportDataSet\DocumentLog.xsc">
+      <DependentUpon>DocumentLog.xsd</DependentUpon>
+    </None>
+    <None Include="ReportDataSet\DocumentLog.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DocumentLog.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="ReportDataSet\DocumentLog.xss">
+      <DependentUpon>DocumentLog.xsd</DependentUpon>
+    </None>
+    <None Include="ReportDataSet\DSOrderData.xsc">
+      <DependentUpon>DSOrderData.xsd</DependentUpon>
+    </None>
+    <None Include="ReportDataSet\DSOrderData.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DSOrderData.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="ReportDataSet\DSOrderData.xss">
+      <DependentUpon>DSOrderData.xsd</DependentUpon>
+    </None>
+    <None Include="ReportDataSet\EnqFormat.xsc">
+      <DependentUpon>EnqFormat.xsd</DependentUpon>
+    </None>
+    <None Include="ReportDataSet\EnqFormat.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>EnqFormat.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="ReportDataSet\EnqFormat.xss">
+      <DependentUpon>EnqFormat.xsd</DependentUpon>
+    </None>
+    <None Include="ReportDataSet\EnqReport.xsc">
+      <DependentUpon>EnqReport.xsd</DependentUpon>
+    </None>
+    <None Include="ReportDataSet\EnqReport.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>EnqReport.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="ReportDataSet\EnqReport.xss">
+      <DependentUpon>EnqReport.xsd</DependentUpon>
+    </None>
+    <None Include="ReportDataSet\PartyDataset.xsc">
+      <DependentUpon>PartyDataset.xsd</DependentUpon>
+    </None>
+    <None Include="ReportDataSet\PartyDataset.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>PartyDataset.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="ReportDataSet\PartyDataset.xss">
+      <DependentUpon>PartyDataset.xsd</DependentUpon>
+    </None>
+    <None Include="ReportDataSet\PerformaReport.xsc">
+      <DependentUpon>PerformaReport.xsd</DependentUpon>
+    </None>
+    <None Include="ReportDataSet\PerformaReport.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>PerformaReport.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="ReportDataSet\PerformaReport.xss">
+      <DependentUpon>PerformaReport.xsd</DependentUpon>
+    </None>
+    <None Include="RoErp.dbml.layout">
+      <DependentUpon>RoErp.dbml</DependentUpon>
+    </None>
+    <EmbeddedResource Include="Stock\InwardRegister.resx">
+      <DependentUpon>InwardRegister.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Stock\OutwardRegister.resx">
+      <DependentUpon>OutwardRegister.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Stock\POMaster.resx">
+      <DependentUpon>POMaster.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Stock\Re Invard Register.resx">
+      <DependentUpon>Re Invard Register.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserMaster.resx">
+      <DependentUpon>UserMaster.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login.resx">
+      <DependentUpon>Login.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="RoErp.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>RoErp.designer.vb</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Sign\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Blue-Documents.ico" />
+    <Content Include="DefaultImage\NONISI.jpg" />
+    <Content Include="DefaultImage\RO.jpg" />
+    <Content Include="DefaultImage\search.png" />
+    <Content Include="Images\logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="EnvDTE">
+      <Guid>{80CC9F66-E7D8-4DDD-85B6-D9E6CD0E93E2}</Guid>
+      <VersionMajor>8</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="EnvDTE80">
+      <Guid>{1A31287A-4D7D-413E-8E32-3B374931BD89}</Guid>
+      <VersionMajor>8</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="ParameterPromptingLib13">
+      <Guid>{9ED6E45A-5FCE-4BB8-9248-8DFC7569D72A}</Guid>
+      <VersionMajor>13</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="PDCUBELib">
+      <Guid>{8A285C51-8687-11D3-AB5D-00C04F9407B9}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="PDFCreator">
+      <Guid>{1CE9DC08-9FBC-45C6-8A7C-4FE1E208A613}</Guid>
+      <VersionMajor>7</VersionMajor>
+      <VersionMinor>1</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="PDFFilterLib">
+      <Guid>{789AD2D7-E1C2-4EC7-A049-2DB5BB4CB57A}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="PDFPrevHndlrLib">
+      <Guid>{0F6D3808-7974-4B1A-94C2-3200767EACE8}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="PDFShellLib">
+      <Guid>{67E94227-7662-4050-9C72-746983CF37A2}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="PDFSHELLSERVERLib">
+      <Guid>{41C5FFFE-36DD-415D-9ED0-2976A342A1C8}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="stdole">
+      <Guid>{00020430-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="VBA">
+      <Guid>{000204EF-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>6</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>9</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.SQL.Server.Compact.3.5">
+      <Visible>False</Visible>
+      <ProductName>SQL Server Compact 3.5 SP2</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Sql.Server.Express.10.0">
+      <Visible>False</Visible>
+      <ProductName>SQL Server 2008 Express</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 4.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

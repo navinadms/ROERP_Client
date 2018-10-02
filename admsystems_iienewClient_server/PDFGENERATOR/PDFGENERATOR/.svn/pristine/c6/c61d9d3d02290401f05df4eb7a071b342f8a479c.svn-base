@@ -1,0 +1,103 @@
+﻿Imports CrystalDecisions.CrystalReports.Engine
+Imports System.Data.SqlClient
+Imports System
+Imports System.IO
+Imports System.Collections.Generic
+Imports System.ComponentModel
+Imports System.Data
+Imports System.Drawing
+Imports System.Text
+Imports System.Windows.Forms
+Imports System.Data.Sql
+
+Public Class FollowUpReport
+
+
+    Public Sub New(ByVal ParaAddressID As Integer, ByVal a_ReportName As String, Optional ByVal A_int_Visit_ID As Integer = 0, Optional ByVal From As DateTime = Nothing, Optional ByVal DateTo As DateTime = Nothing, Optional ByVal PType As String = "")
+
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        Address_ID = ParaAddressID
+        ReportName = a_ReportName
+        VisitID = A_int_Visit_ID
+    End Sub
+    Dim linq_obj As New RoErpDataContext(System.Configuration.ConfigurationManager.AppSettings("constr").ToString())
+    Dim rpt As New ReportDocument
+
+    Dim Address_ID As Integer
+    Dim ReportName As String
+    Dim VisitID As Integer
+    Dim fromDate As DateTime
+    Dim toDate As DateTime
+
+    Private Sub ReportPartyOutstanding_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        'Dim myReport As New Rpt_FollowUp_Visit()
+        'CrystalReportViewer1.ReportSource = myReport
+        'myReport.Load()
+        'Dim myDBConnectionInfo As New CrystalDecisions.Shared.ConnectionInfo()
+        'With myDBConnectionInfo
+        '    .ServerName = "192.168.1.100"
+        '    .DatabaseName = "ROERP"
+        '    .UserID = "comet_user"
+        '    .Password = "comet_user"
+        'End With
+        'rpt.SetDatabaseLogon("ion", "ion1", "SERVER", "ROTESTDB", True)
+        'rpt.VerifyDatabase()
+
+
+        Dim ss As String
+        ss = Application.LocalUserAppDataPath()
+
+        If ReportName = "Rpt_FollowUp-OrderDetails" Then
+            rpt.Load(Application.StartupPath & "\Reports\Rpt_FollowUp-OrderDetails.rpt")
+            rpt.SetParameterValue("@addressId", Address_ID)
+        ElseIf ReportName = "Rpt_FollowUp" Then
+            rpt.Load(Application.StartupPath & "\Reports\Rpt_FollowUp.rpt")
+            rpt.SetParameterValue("@addressId", Address_ID)
+        ElseIf ReportName = "Rpt_FollowUp_LetterMail" Then
+            rpt.Load(Application.StartupPath & "\Reports\Rpt_FollowUp_LetterMail.rpt")
+            rpt.SetParameterValue("@addressId", Address_ID)
+        ElseIf ReportName = "Rpt_FollowUp_ISIProcess" Then
+            rpt.Load(Application.StartupPath & "\Reports\Rpt_FollowUp_ISIProcess.rpt")
+            rpt.SetParameterValue("@addressId", Address_ID)
+        ElseIf ReportName = "Rpt_OrderRawMaterial" Then
+            rpt.Load(Application.StartupPath & "\Reports\Rpt_OrderRawMaterial.rpt")
+            rpt.SetParameterValue("@addressId", Address_ID)
+        ElseIf ReportName = "Rpt_FollowUp_ProjectSummary" Then
+            rpt.Load(Application.StartupPath & "\Reports\Rpt_FollowUp_ProjectSummary.rpt")
+            rpt.SetParameterValue("@addressId", Address_ID)
+        ElseIf ReportName = "Rpt_FollowUp-Visit" Then
+            rpt.Load(Application.StartupPath & "\Reports\Rpt_FollowUp_Visit.rpt")
+            rpt.SetParameterValue("@addressId", Address_ID)
+            rpt.SetParameterValue("@VisitorDetailID", VisitID)
+        ElseIf ReportName = "Rpt_FollowUp_Summary" Then
+            rpt.Load(Application.StartupPath & "\Reports\Rpt_FollowUp_Summary.rpt")
+            rpt.SetParameterValue("@addressId", Address_ID)
+        ElseIf ReportName = "Rpt_PartyKasarDetail" Then
+            rpt.Load(Application.StartupPath & "\Reports\Rpt_PartyKasarDetail.rpt")
+        ElseIf ReportName = "Rpt_OrderPartyDetail" Then
+            rpt.Load(Application.StartupPath & "\Reports\Rpt_OrderPartyDetail.rpt")
+        ElseIf ReportName = "Rpt_PartyOutstandingAfterDispatch" Then
+            rpt.Load(Application.StartupPath & "\Reports\Rpt_PartyOutstandingAfterDispatch.rpt")
+        ElseIf ReportName = "Rpt_PartyOutstandingbyExecutive" Then
+            rpt.Load(Application.StartupPath & "\Reports\Rpt_PartyOutstandingbyExecutive.rpt")
+        ElseIf ReportName = "Rpt_PaymentTypePaymentRecieve" Then
+            rpt.Load(Application.StartupPath & "\Reports\Rpt_PaymentTypePaymentRecieve.rpt")
+        End If
+
+
+
+        CrystalReportViewer1.ReportSource = rpt
+        CrystalReportViewer1.Show()
+        CrystalReportViewer1.Dock = DockStyle.Fill
+
+
+    End Sub
+
+    Private Sub CrystalReportViewer1_ReportRefresh(ByVal source As System.Object, ByVal e As CrystalDecisions.Windows.Forms.ViewerEventArgs) Handles CrystalReportViewer1.ReportRefresh
+        '   rpt.SetDatabaseLogon("adms", "adms1", ".\sqlexpress", "ROTESTDB")
+
+    End Sub
+End Class

@@ -1,0 +1,4 @@
+﻿
+Class var
+
+End Class

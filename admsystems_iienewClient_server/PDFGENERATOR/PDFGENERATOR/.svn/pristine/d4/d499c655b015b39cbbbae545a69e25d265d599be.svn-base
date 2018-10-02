@@ -1,0 +1,363 @@
+﻿Public Class AccountMaster
+
+    ''' <summary>
+    ''' defining a variables
+    ''' declare a global variables.
+    ''' </summary>
+    ''' <remarks></remarks>
+
+    Dim linq_obj As New RoErpDataContext(System.Configuration.ConfigurationManager.AppSettings("constr").ToString())
+    Dim Address_ID As Integer
+    Dim PartyId As Integer
+
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+        GvInEnq_Bind()
+        PartyId = 0
+        Address_ID = 0
+        RavSoft.CueProvider.SetCue(txtEmail1, "Email 1")
+        RavSoft.CueProvider.SetCue(txtEmail2, "Email 2")
+
+        getPageRight()
+
+    End Sub
+
+    Public Sub getPageRight()
+        Try
+            Dim dv As New DataTable
+            Dim dataView As DataView
+
+            Dim Class1 As New Class1
+            Dim RowCount As Integer
+            Dim statusCheck As Boolean = False
+
+            Dim strName As String = ""
+
+            dataView = Class1.global.UserPermissionDataset.Tables(0).DefaultView
+            dataView.RowFilter = "([DetailName] like 'Account Master')"
+
+            If (dataView.Count > 0) Then
+
+
+                dv = dataView.ToTable()
+
+                If (dv.Rows(0)("Type") = 1) Then
+
+                Else
+                    For RowCount = 0 To dv.Rows.Count - 1
+                        If (dv.Rows(RowCount)("IsAdd") = True) Then
+                            btnactAdd.Enabled = True
+                            btnactSave.Enabled = True
+                        Else
+                            btnactAdd.Enabled = False
+                            btnactSave.Enabled = False
+                        End If
+                        If (dv.Rows(RowCount)("IsUpdate") = True) Then
+                            btnactEdit.Enabled = True
+                        Else
+                            btnactEdit.Enabled = False
+                        End If
+                        If (dv.Rows(RowCount)("IsDelete") = True) Then
+                            btnactDel.Enabled = True
+                        Else
+                            btnactDel.Enabled = False
+                        End If
+                        If (dv.Rows(RowCount)("IsPrint") = True) Then
+                            btnactPrint.Enabled = True
+                        Else
+                            btnactPrint.Enabled = False
+                        End If
+
+                    Next
+                End If
+            End If
+
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+
+    End Sub
+    Public Sub GvInEnq_Bind()
+        Dim enq = linq_obj.SP_Get_AddressForOrderAll().ToList()
+        Dim dt As New DataTable
+        dt.Columns.Add("ID")
+        dt.Columns.Add("Code")
+        dt.Columns.Add("Name")
+        For Each item As SP_Get_AddressForOrderAllResult In enq
+            dt.Rows.Add(item.Pk_AddressID, item.EnqNo, item.Name)
+        Next
+        DGVActmaster.DataSource = dt
+        Me.DGVActmaster.Columns(0).Visible = False
+    End Sub
+    Private Sub btnactDel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnactDel.Click
+        Dim resultDel As DialogResult = MessageBox.Show("Are You Sure?", "Important Message", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)
+        If resultDel = DialogResult.Yes Then
+
+            Dim result As Integer
+            If PartyId <> 0 Then
+                result = linq_obj.SP_Delete_Tbl_OrderPartyMaster(PartyId)
+                linq_obj.SubmitChanges()
+                MessageBox.Show("Successfully Submitted")
+            Else
+                MessageBox.Show("Error In Delete")
+            End If
+
+        End If
+
+    End Sub
+
+    Private Sub btnactAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnactAdd.Click
+        ClearAll()
+    End Sub
+    Private Sub ClearAll()
+        txtactcode.Text = ""
+        txtactname.Text = ""
+        txtBilgaddress.Text = ""
+        txtArea.Text = ""
+        txtTaluka.Text = ""
+        txtCity.Text = ""
+        txtState.Text = ""
+        txtDistrict.Text = ""
+        txtPincode.Text = ""
+
+        txtdeladdress.Text = ""
+        txtDelState.Text = ""
+        txtDelArea.Text = ""
+        txtDelTaluka.Text = ""
+        txtDelCity.Text = ""
+        txtDelDistrict.Text = ""
+        txtDelPincode.Text = ""
+        txtEmailID.Text = ""
+        txtMobNo.Text = ""
+        txtname.Text = ""
+        txtEmail1.Text = ""
+        txtEmail2.Text = ""
+
+        txtactname.Text = ""
+        txtphone.Text = ""
+        txtRemarks.Text = ""
+        txtroadpermit1.Text = ""
+        txtroadpermit2.Text = ""
+        txtsearch.Text = ""
+        txttranExp.Text = ""
+        txtvatNo.Text = ""
+        txtCform.Text = ""
+        txtcontactprsn1.Text = ""
+        txtcontactprsn2.Text = ""
+        txtCSTNo.Text = ""
+    End Sub
+    Public Sub GetClientDetails_Bind()
+        Try
+            Dim Claient = linq_obj.SP_Get_AddressListById(Address_ID).ToList()
+            For Each item As SP_Get_AddressListByIdResult In Claient
+                txtactname.Text = Convert.ToString(item.Name)
+                txtphone.Text = Convert.ToString(item.LandlineNo)
+                txtEmailID.Text = Convert.ToString(item.EmailID)
+                txtMobNo.Text = Convert.ToString(item.MobileNo)
+                txtArea.Text = Convert.ToString(item.Area)
+                txtTaluka.Text = Convert.ToString(item.Taluka)
+                txtCity.Text = Convert.ToString(item.City)
+                txtState.Text = Convert.ToString(item.State)
+                txtDistrict.Text = Convert.ToString(item.District)
+                txtPincode.Text = Convert.ToString(item.Pincode)
+                txtBilgaddress.Text = Convert.ToString(item.Address)
+                txtcontactprsn1.Text = item.ContactPerson
+                txtdeladdress.Text = Convert.ToString(item.DeliveryAddress)
+                txtDelState.Text = Convert.ToString(item.DeliveryState)
+                txtDelArea.Text = Convert.ToString(item.DeliveryArea)
+                txtDelCity.Text = Convert.ToString(item.DeliveryState)
+                txtDelTaluka.Text = Convert.ToString(item.DeliveryTaluka)
+                txtDelPincode.Text = Convert.ToString(item.DeliveryPincode)
+                txtDelDistrict.Text = Convert.ToString(item.DeliveryDistrict)
+                txtEmail1.Text = Convert.ToString(item.EmailID1)
+                txtEmail2.Text = Convert.ToString(item.EmailID2)
+            Next
+            'Get Enquiry Client Master Details
+        Catch ex As Exception
+            MessageBox.Show("Error :" + ex.Message)
+        End Try
+    End Sub
+
+    Public Sub bindAllData()
+        ClearAll()
+        Try
+
+
+            Address_ID = Convert.ToInt64(Me.DGVActmaster.SelectedCells(0).Value)
+            GetClientDetails_Bind()
+            txtactcode.Text = Convert.ToString(Me.DGVActmaster.SelectedCells(1).Value)
+            Dim dataParty = linq_obj.SP_Select_Tbl_OrderParty_Master_ByAddressId(Address_ID).ToList()
+            If (dataParty.Count > 0) Then
+                PartyId = dataParty(0).Pk_OrderPartyId
+                txtCform.Text = Convert.ToString(dataParty(0).CForm)
+                txtcontactprsn1.Text = Convert.ToString(dataParty(0).ContactPersonOne)
+                txtcontactprsn2.Text = Convert.ToString(dataParty(0).ContactPersonTwo)
+                txtCSTNo.Text = Convert.ToString(dataParty(0).CSTNo)
+
+                txtRemarks.Text = Convert.ToString(dataParty(0).Remarks)
+                Dim str(0 To 1) As String
+                str = Convert.ToString(dataParty(0).RoadPermit).Split("/"c)
+                txtroadpermit1.Text = str(0)
+                txtroadpermit2.Text = str(1)
+                txttranExp.Text = Convert.ToString(dataParty(0).TransportExpences)
+                txtvatNo.Text = Convert.ToString(dataParty(0).VatNoTinNo)
+            Else
+
+            End If
+
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+
+        End Try
+    End Sub
+    Private Sub DGVActmaster_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DGVActmaster.DoubleClick
+        bindAllData()
+
+
+    End Sub
+
+    Private Sub btnactSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnactSave.Click
+        Dim result As Integer
+        If (Address_ID <> 0 And PartyId = 0) Then
+            result = linq_obj.SP_Insert_Tbl_OrderPartyMaster(Address_ID, txtcontactprsn1.Text, txtcontactprsn2.Text, txtvatNo.Text, txtCSTNo.Text, txtroadpermit1.Text + "/" + txtroadpermit2.Text, txtCform.Text, Convert.ToDecimal(txttranExp.Text), txtRemarks.Text)
+            If result > 0 Then
+                linq_obj.SubmitChanges()
+                linq_obj.SP_UpdateAddress(txtactname.Text, txtBilgaddress.Text, txtArea.Text, txtCity.Text, txtPincode.Text, txtTaluka.Text, txtDistrict.Text, txtState.Text, txtdeladdress.Text, txtDelArea.Text, txtDelCity.Text, txtDelPincode.Text, txtDelTaluka.Text, txtDelDistrict.Text, txtDelState.Text, Address_ID)
+                linq_obj.SubmitChanges()
+                Dim resContact As Integer
+                resContact = linq_obj.SP_UpdateAddressContactDetail(txtcontactprsn1.Text, txtMobNo.Text, txtEmailID.Text, txtEmail1.Text, txtEmail2.Text, Address_ID)
+                linq_obj.SubmitChanges()
+
+                Dim str As String
+
+                '  ClearAll()
+                MessageBox.Show("Successfully Submited")
+                PartyId = result
+            End If
+        Else
+            MessageBox.Show("Error In Save")
+        End If
+
+
+    End Sub
+
+    Private Sub btnactEdit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnactEdit.Click
+        Dim result As Integer
+        If (PartyId <> 0) Then
+            result = linq_obj.SP_Update_Tbl_OrderPartyMaster(Address_ID, txtcontactprsn1.Text, txtcontactprsn2.Text, txtvatNo.Text, txtCSTNo.Text, txtroadpermit1.Text + "/" + txtroadpermit2.Text, txtCform.Text, Convert.ToDecimal(txttranExp.Text), txtRemarks.Text)
+            If result >= 0 Then
+                linq_obj.SubmitChanges()
+                linq_obj.SP_UpdateAddress(txtactname.Text, txtBilgaddress.Text, txtArea.Text, txtCity.Text, txtPincode.Text, txtTaluka.Text, txtDistrict.Text, txtState.Text, txtdeladdress.Text, txtDelArea.Text, txtDelCity.Text, txtDelPincode.Text, txtDelTaluka.Text, txtDelDistrict.Text, txtDelState.Text, Address_ID)
+                linq_obj.SubmitChanges()
+                Dim resContact As Integer
+                resContact = linq_obj.SP_UpdateAddressContactDetail(txtcontactprsn1.Text, txtMobNo.Text, txtEmailID.Text, txtEmail1.Text, txtEmail2.Text, Address_ID)
+                linq_obj.SubmitChanges()
+                '   ClearAll()
+                MessageBox.Show("Successfully Submited")
+
+            End If
+        Else
+            MessageBox.Show("Error In Edit")
+        End If
+
+    End Sub
+
+    Private Sub btnactCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnactCancel.Click
+        ClearAll()
+    End Sub
+
+    Private Sub btnactPrint_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnactPrint.Click
+        MessageBox.Show("View Detail")
+    End Sub
+
+    Private Sub btnactClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnactClose.Click
+        Me.Close()
+    End Sub
+
+    Private Sub Panel1_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Panel1.Paint
+
+    End Sub
+
+    Private Sub btnaMsearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnaMsearch.Click
+        If (txtname.Text.Trim() <> "") Then
+            Dim enq = linq_obj.SP_Get_AddressForOrderAll().Where(Function(t) t.Name.ToUpper.Contains(txtname.Text.ToUpper.Trim())).ToList()
+            Dim dt As New DataTable
+            dt.Columns.Add("ID")
+            dt.Columns.Add("Code")
+            dt.Columns.Add("Name")
+            For Each item As SP_Get_AddressForOrderAllResult In enq
+                dt.Rows.Add(item.Pk_AddressID, item.EnqNo, item.Name)
+            Next
+            DGVActmaster.DataSource = dt
+            Me.DGVActmaster.Columns(0).Visible = False
+        Else
+            Dim enq = linq_obj.SP_Get_AddressForOrderAll().ToList()
+            Dim dt As New DataTable
+            dt.Columns.Add("ID")
+            dt.Columns.Add("Code")
+            dt.Columns.Add("Name")
+            For Each item As SP_Get_AddressForOrderAllResult In enq
+                dt.Rows.Add(item.Pk_AddressID, item.EnqNo, item.Name)
+            Next
+            DGVActmaster.DataSource = dt
+            Me.DGVActmaster.Columns(0).Visible = False
+        End If
+    End Sub
+
+    Private Sub DGVActmaster_PreviewKeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PreviewKeyDownEventArgs) Handles DGVActmaster.PreviewKeyDown
+        bindAllData()
+    End Sub
+
+    Private Sub AccountMaster_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        For Each control As Control In Me.Controls
+            ' The textbox control.
+            Dim parentControl As New Control
+
+
+            If (control.GetType() Is GetType(GroupBox)) Then
+                Dim grpBox As GroupBox = TryCast(control, GroupBox)
+                parentControl = grpBox
+            ElseIf (control.GetType() Is GetType(TabControl)) Then
+                Dim TC As TabControl = TryCast(control, TabControl)
+                parentControl = TC
+            Else
+                Try
+                    parentControl = control
+                Catch ex As Exception
+
+                End Try
+
+            End If
+
+            For Each subcontrol As Control In parentControl.Controls
+                If (subcontrol.GetType() Is GetType(TextBox)) Then
+                    Dim textBox As TextBox = TryCast(subcontrol, TextBox)
+
+                    ' If not null, set the handler.
+                    If textBox IsNot Nothing Then
+                        AddHandler textBox.Enter, AddressOf TextBox_Enter
+                        AddHandler textBox.Leave, AddressOf TextBox_Leave
+                    End If
+                End If
+
+                ' Set the handler.
+            Next
+
+            ' Set the handler.
+        Next
+    End Sub
+    Private Sub TextBox_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Dim txt As New TextBox()
+        txt = DirectCast(sender, TextBox)
+
+        txt.BackColor = Color.LightYellow
+    End Sub
+    Private Sub TextBox_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Dim txt As New TextBox()
+        txt = DirectCast(sender, TextBox)
+
+        txt.BackColor = Color.White
+    End Sub
+
+End Class

@@ -1,0 +1,41 @@
+<?xml version="1.0" standalone="yes"?>
+<xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="SpareQuotation" msdata:UseCurrentLocale="true">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="SpareQuotation">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="RefNo" type="xs:string" minOccurs="0" />
+              <xs:element name="PartyName" type="xs:string" minOccurs="0" />
+              <xs:element name="Sub" type="xs:string" minOccurs="0" />
+              <xs:element name="Description" type="xs:string" minOccurs="0" />
+              <xs:element name="ItemName" type="xs:string" minOccurs="0" />
+              <xs:element name="Rate" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Qty" type="xs:string" minOccurs="0" />
+              <xs:element name="Disc" type="xs:decimal" minOccurs="0" />
+              <xs:element name="FinalRate" type="xs:decimal" minOccurs="0" />
+              <xs:element name="GST" type="xs:string" minOccurs="0" />
+              <xs:element name="Amount" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Terms1" type="xs:string" minOccurs="0" />
+              <xs:element name="Terms2" type="xs:string" minOccurs="0" />
+              <xs:element name="Terms3" type="xs:string" minOccurs="0" />
+              <xs:element name="Terms4" type="xs:string" minOccurs="0" />
+              <xs:element name="Terms5" type="xs:string" minOccurs="0" />
+              <xs:element name="Terms6" type="xs:string" minOccurs="0" />
+              <xs:element name="Terms7" type="xs:string" minOccurs="0" />
+              <xs:element name="TotalRate" type="xs:string" minOccurs="0" />
+              <xs:element name="TotalDisc" type="xs:string" minOccurs="0" />
+              <xs:element name="CreateDate" type="xs:string" minOccurs="0" />
+              <xs:element name="FinalAmount" type="xs:string" minOccurs="0" />
+              <xs:element name="Total_GST" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Total_FinalRate" type="xs:decimal" minOccurs="0" />
+              <xs:element name="UserName" type="xs:string" minOccurs="0" />
+              <xs:element name="Designation" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

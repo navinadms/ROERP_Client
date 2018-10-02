@@ -1,0 +1,719 @@
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+Partial Class CategoryMaster
+    Inherits System.Windows.Forms.Form
+
+    'Form overrides dispose to clean up the component list.
+    <System.Diagnostics.DebuggerNonUserCode()> _
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Try
+            If disposing AndAlso components IsNot Nothing Then
+                components.Dispose()
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
+    End Sub
+
+    'Required by the Windows Form Designer
+    Private components As System.ComponentModel.IContainer
+
+    'NOTE: The following procedure is required by the Windows Form Designer
+    'It can be modified using the Windows Form Designer.  
+    'Do not modify it using the code editor.
+    <System.Diagnostics.DebuggerStepThrough()> _
+    Private Sub InitializeComponent()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.btnDeleteSub = New System.Windows.Forms.Button()
+        Me.btnAddNew = New System.Windows.Forms.Button()
+        Me.btnUpdate = New System.Windows.Forms.Button()
+        Me.BtnSave = New System.Windows.Forms.Button()
+        Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.btnPhoto3 = New System.Windows.Forms.Button()
+        Me.Photo3 = New System.Windows.Forms.PictureBox()
+        Me.GroupBox4 = New System.Windows.Forms.GroupBox()
+        Me.btnPhoto2 = New System.Windows.Forms.Button()
+        Me.Photo2 = New System.Windows.Forms.PictureBox()
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.btnPhoto1 = New System.Windows.Forms.Button()
+        Me.Photo1 = New System.Windows.Forms.PictureBox()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.GvCategory = New System.Windows.Forms.DataGridView()
+        Me.txtPhoto3 = New System.Windows.Forms.TextBox()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.txtPhoto2 = New System.Windows.Forms.TextBox()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.txtPhoto1 = New System.Windows.Forms.TextBox()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.txtPrice = New System.Windows.Forms.TextBox()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.txtCapacity = New System.Windows.Forms.TextBox()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.txtNo = New System.Windows.Forms.TextBox()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.txtCategory = New System.Windows.Forms.TextBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.txtMainCategory = New System.Windows.Forms.TextBox()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.txtEntryNo = New System.Windows.Forms.TextBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.GroupBox6 = New System.Windows.Forms.GroupBox()
+        Me.RblCapacity = New System.Windows.Forms.RadioButton()
+        Me.RblPrice = New System.Windows.Forms.RadioButton()
+        Me.RblMainCategory = New System.Windows.Forms.RadioButton()
+        Me.GvCategorySearch = New System.Windows.Forms.DataGridView()
+        Me.btnRefresh = New System.Windows.Forms.Button()
+        Me.txtTotalRecord = New System.Windows.Forms.TextBox()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.txtsearch = New System.Windows.Forms.TextBox()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.grpLangaugeBar = New System.Windows.Forms.GroupBox()
+        Me.RdbTelugu = New System.Windows.Forms.RadioButton()
+        Me.RdbTamil = New System.Windows.Forms.RadioButton()
+        Me.RdbMarathi = New System.Windows.Forms.RadioButton()
+        Me.RdbHindi = New System.Windows.Forms.RadioButton()
+        Me.RdbGujarati = New System.Windows.Forms.RadioButton()
+        Me.RdbEnglish = New System.Windows.Forms.RadioButton()
+        Me.GroupBox1.SuspendLayout()
+        Me.GroupBox5.SuspendLayout()
+        CType(Me.Photo3, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox4.SuspendLayout()
+        CType(Me.Photo2, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox3.SuspendLayout()
+        CType(Me.Photo1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox2.SuspendLayout()
+        CType(Me.GvCategory, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox6.SuspendLayout()
+        CType(Me.GvCategorySearch, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.grpLangaugeBar.SuspendLayout()
+        Me.SuspendLayout()
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.btnDeleteSub)
+        Me.GroupBox1.Controls.Add(Me.btnAddNew)
+        Me.GroupBox1.Controls.Add(Me.btnUpdate)
+        Me.GroupBox1.Controls.Add(Me.BtnSave)
+        Me.GroupBox1.Controls.Add(Me.GroupBox5)
+        Me.GroupBox1.Controls.Add(Me.GroupBox4)
+        Me.GroupBox1.Controls.Add(Me.GroupBox3)
+        Me.GroupBox1.Controls.Add(Me.GroupBox2)
+        Me.GroupBox1.Controls.Add(Me.txtPhoto3)
+        Me.GroupBox1.Controls.Add(Me.Label9)
+        Me.GroupBox1.Controls.Add(Me.txtPhoto2)
+        Me.GroupBox1.Controls.Add(Me.Label8)
+        Me.GroupBox1.Controls.Add(Me.txtPhoto1)
+        Me.GroupBox1.Controls.Add(Me.Label7)
+        Me.GroupBox1.Controls.Add(Me.txtPrice)
+        Me.GroupBox1.Controls.Add(Me.Label6)
+        Me.GroupBox1.Controls.Add(Me.txtCapacity)
+        Me.GroupBox1.Controls.Add(Me.Label5)
+        Me.GroupBox1.Controls.Add(Me.txtNo)
+        Me.GroupBox1.Controls.Add(Me.Label4)
+        Me.GroupBox1.Controls.Add(Me.txtCategory)
+        Me.GroupBox1.Controls.Add(Me.Label3)
+        Me.GroupBox1.Controls.Add(Me.txtMainCategory)
+        Me.GroupBox1.Controls.Add(Me.Label2)
+        Me.GroupBox1.Controls.Add(Me.txtEntryNo)
+        Me.GroupBox1.Controls.Add(Me.Label1)
+        Me.GroupBox1.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox1.Location = New System.Drawing.Point(341, 29)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(695, 614)
+        Me.GroupBox1.TabIndex = 0
+        Me.GroupBox1.TabStop = False
+        '
+        'btnDeleteSub
+        '
+        Me.btnDeleteSub.Location = New System.Drawing.Point(413, 209)
+        Me.btnDeleteSub.Name = "btnDeleteSub"
+        Me.btnDeleteSub.Size = New System.Drawing.Size(75, 30)
+        Me.btnDeleteSub.TabIndex = 20
+        Me.btnDeleteSub.Text = "Delete"
+        Me.btnDeleteSub.UseVisualStyleBackColor = True
+        '
+        'btnAddNew
+        '
+        Me.btnAddNew.Location = New System.Drawing.Point(141, 209)
+        Me.btnAddNew.Name = "btnAddNew"
+        Me.btnAddNew.Size = New System.Drawing.Size(75, 30)
+        Me.btnAddNew.TabIndex = 30
+        Me.btnAddNew.Text = "Add New "
+        Me.btnAddNew.UseVisualStyleBackColor = True
+        '
+        'btnUpdate
+        '
+        Me.btnUpdate.Location = New System.Drawing.Point(330, 209)
+        Me.btnUpdate.Name = "btnUpdate"
+        Me.btnUpdate.Size = New System.Drawing.Size(75, 30)
+        Me.btnUpdate.TabIndex = 29
+        Me.btnUpdate.Text = "Update"
+        Me.btnUpdate.UseVisualStyleBackColor = True
+        '
+        'BtnSave
+        '
+        Me.BtnSave.Location = New System.Drawing.Point(236, 209)
+        Me.BtnSave.Name = "BtnSave"
+        Me.BtnSave.Size = New System.Drawing.Size(75, 30)
+        Me.BtnSave.TabIndex = 28
+        Me.BtnSave.Text = "Save"
+        Me.BtnSave.UseVisualStyleBackColor = True
+        '
+        'GroupBox5
+        '
+        Me.GroupBox5.Controls.Add(Me.btnPhoto3)
+        Me.GroupBox5.Controls.Add(Me.Photo3)
+        Me.GroupBox5.Location = New System.Drawing.Point(513, 398)
+        Me.GroupBox5.Name = "GroupBox5"
+        Me.GroupBox5.Size = New System.Drawing.Size(167, 157)
+        Me.GroupBox5.TabIndex = 22
+        Me.GroupBox5.TabStop = False
+        Me.GroupBox5.Text = "Photo3"
+        '
+        'btnPhoto3
+        '
+        Me.btnPhoto3.Location = New System.Drawing.Point(77, 116)
+        Me.btnPhoto3.Name = "btnPhoto3"
+        Me.btnPhoto3.Size = New System.Drawing.Size(75, 30)
+        Me.btnPhoto3.TabIndex = 20
+        Me.btnPhoto3.Text = "Browse"
+        Me.btnPhoto3.UseVisualStyleBackColor = True
+        '
+        'Photo3
+        '
+        Me.Photo3.BackColor = System.Drawing.Color.Gray
+        Me.Photo3.Location = New System.Drawing.Point(16, 22)
+        Me.Photo3.Name = "Photo3"
+        Me.Photo3.Size = New System.Drawing.Size(145, 88)
+        Me.Photo3.TabIndex = 19
+        Me.Photo3.TabStop = False
+        '
+        'GroupBox4
+        '
+        Me.GroupBox4.Controls.Add(Me.btnPhoto2)
+        Me.GroupBox4.Controls.Add(Me.Photo2)
+        Me.GroupBox4.Location = New System.Drawing.Point(513, 231)
+        Me.GroupBox4.Name = "GroupBox4"
+        Me.GroupBox4.Size = New System.Drawing.Size(167, 157)
+        Me.GroupBox4.TabIndex = 21
+        Me.GroupBox4.TabStop = False
+        Me.GroupBox4.Text = "Photo2"
+        '
+        'btnPhoto2
+        '
+        Me.btnPhoto2.Location = New System.Drawing.Point(77, 116)
+        Me.btnPhoto2.Name = "btnPhoto2"
+        Me.btnPhoto2.Size = New System.Drawing.Size(75, 30)
+        Me.btnPhoto2.TabIndex = 20
+        Me.btnPhoto2.Text = "Browse"
+        Me.btnPhoto2.UseVisualStyleBackColor = True
+        '
+        'Photo2
+        '
+        Me.Photo2.BackColor = System.Drawing.Color.Gray
+        Me.Photo2.Location = New System.Drawing.Point(16, 22)
+        Me.Photo2.Name = "Photo2"
+        Me.Photo2.Size = New System.Drawing.Size(145, 88)
+        Me.Photo2.TabIndex = 19
+        Me.Photo2.TabStop = False
+        '
+        'GroupBox3
+        '
+        Me.GroupBox3.Controls.Add(Me.btnPhoto1)
+        Me.GroupBox3.Controls.Add(Me.Photo1)
+        Me.GroupBox3.Location = New System.Drawing.Point(513, 58)
+        Me.GroupBox3.Name = "GroupBox3"
+        Me.GroupBox3.Size = New System.Drawing.Size(167, 157)
+        Me.GroupBox3.TabIndex = 20
+        Me.GroupBox3.TabStop = False
+        Me.GroupBox3.Text = "Photo1"
+        '
+        'btnPhoto1
+        '
+        Me.btnPhoto1.Location = New System.Drawing.Point(77, 116)
+        Me.btnPhoto1.Name = "btnPhoto1"
+        Me.btnPhoto1.Size = New System.Drawing.Size(84, 30)
+        Me.btnPhoto1.TabIndex = 20
+        Me.btnPhoto1.Text = "Browse"
+        Me.btnPhoto1.UseVisualStyleBackColor = True
+        '
+        'Photo1
+        '
+        Me.Photo1.BackColor = System.Drawing.Color.Gray
+        Me.Photo1.Location = New System.Drawing.Point(16, 22)
+        Me.Photo1.Name = "Photo1"
+        Me.Photo1.Size = New System.Drawing.Size(145, 88)
+        Me.Photo1.TabIndex = 19
+        Me.Photo1.TabStop = False
+        '
+        'GroupBox2
+        '
+        Me.GroupBox2.AutoSize = True
+        Me.GroupBox2.Controls.Add(Me.GvCategory)
+        Me.GroupBox2.Location = New System.Drawing.Point(20, 231)
+        Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Size = New System.Drawing.Size(470, 332)
+        Me.GroupBox2.TabIndex = 18
+        Me.GroupBox2.TabStop = False
+        '
+        'GvCategory
+        '
+        Me.GvCategory.AllowDrop = True
+        Me.GvCategory.AllowUserToAddRows = False
+        Me.GvCategory.AllowUserToDeleteRows = False
+        Me.GvCategory.AllowUserToOrderColumns = True
+        Me.GvCategory.AllowUserToResizeColumns = False
+        Me.GvCategory.AllowUserToResizeRows = False
+        Me.GvCategory.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.GvCategory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.GvCategory.Location = New System.Drawing.Point(9, 14)
+        Me.GvCategory.Name = "GvCategory"
+        Me.GvCategory.Size = New System.Drawing.Size(455, 298)
+        Me.GvCategory.TabIndex = 0
+        '
+        'txtPhoto3
+        '
+        Me.txtPhoto3.Location = New System.Drawing.Point(286, 182)
+        Me.txtPhoto3.Name = "txtPhoto3"
+        Me.txtPhoto3.Size = New System.Drawing.Size(166, 21)
+        Me.txtPhoto3.TabIndex = 17
+        '
+        'Label9
+        '
+        Me.Label9.AutoSize = True
+        Me.Label9.Location = New System.Drawing.Point(285, 160)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(79, 15)
+        Me.Label9.TabIndex = 16
+        Me.Label9.Text = "Photo3(Path)"
+        '
+        'txtPhoto2
+        '
+        Me.txtPhoto2.Location = New System.Drawing.Point(152, 182)
+        Me.txtPhoto2.Name = "txtPhoto2"
+        Me.txtPhoto2.Size = New System.Drawing.Size(117, 21)
+        Me.txtPhoto2.TabIndex = 15
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Location = New System.Drawing.Point(151, 160)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(79, 15)
+        Me.Label8.TabIndex = 14
+        Me.Label8.Text = "Photo2(Path)"
+        '
+        'txtPhoto1
+        '
+        Me.txtPhoto1.Location = New System.Drawing.Point(361, 123)
+        Me.txtPhoto1.Name = "txtPhoto1"
+        Me.txtPhoto1.Size = New System.Drawing.Size(91, 21)
+        Me.txtPhoto1.TabIndex = 13
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Location = New System.Drawing.Point(360, 103)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(79, 15)
+        Me.Label7.TabIndex = 12
+        Me.Label7.Text = "Photo1(Path)"
+        '
+        'txtPrice
+        '
+        Me.txtPrice.Location = New System.Drawing.Point(286, 123)
+        Me.txtPrice.Name = "txtPrice"
+        Me.txtPrice.Size = New System.Drawing.Size(56, 21)
+        Me.txtPrice.TabIndex = 11
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(285, 103)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(35, 15)
+        Me.Label6.TabIndex = 10
+        Me.Label6.Text = "Price"
+        '
+        'txtCapacity
+        '
+        Me.txtCapacity.Location = New System.Drawing.Point(148, 123)
+        Me.txtCapacity.Name = "txtCapacity"
+        Me.txtCapacity.Size = New System.Drawing.Size(121, 21)
+        Me.txtCapacity.TabIndex = 9
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(145, 103)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(82, 15)
+        Me.Label5.TabIndex = 8
+        Me.Label5.Text = "Capacity/Type"
+        '
+        'txtNo
+        '
+        Me.txtNo.Location = New System.Drawing.Point(74, 123)
+        Me.txtNo.Name = "txtNo"
+        Me.txtNo.ReadOnly = True
+        Me.txtNo.Size = New System.Drawing.Size(56, 21)
+        Me.txtNo.TabIndex = 7
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(73, 103)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(23, 15)
+        Me.Label4.TabIndex = 6
+        Me.Label4.Text = "No"
+        '
+        'txtCategory
+        '
+        Me.txtCategory.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
+        Me.txtCategory.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource
+        Me.txtCategory.Location = New System.Drawing.Point(74, 57)
+        Me.txtCategory.Name = "txtCategory"
+        Me.txtCategory.Size = New System.Drawing.Size(219, 21)
+        Me.txtCategory.TabIndex = 5
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(6, 58)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(56, 15)
+        Me.Label3.TabIndex = 4
+        Me.Label3.Text = "Category"
+        '
+        'txtMainCategory
+        '
+        Me.txtMainCategory.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
+        Me.txtMainCategory.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource
+        Me.txtMainCategory.Location = New System.Drawing.Point(290, 23)
+        Me.txtMainCategory.Name = "txtMainCategory"
+        Me.txtMainCategory.Size = New System.Drawing.Size(390, 21)
+        Me.txtMainCategory.TabIndex = 3
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(184, 26)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(85, 15)
+        Me.Label2.TabIndex = 2
+        Me.Label2.Text = "Main Category"
+        '
+        'txtEntryNo
+        '
+        Me.txtEntryNo.Location = New System.Drawing.Point(77, 23)
+        Me.txtEntryNo.Name = "txtEntryNo"
+        Me.txtEntryNo.ReadOnly = True
+        Me.txtEntryNo.Size = New System.Drawing.Size(100, 21)
+        Me.txtEntryNo.TabIndex = 1
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(7, 26)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(53, 15)
+        Me.Label1.TabIndex = 0
+        Me.Label1.Text = "Entry No"
+        '
+        'GroupBox6
+        '
+        Me.GroupBox6.Controls.Add(Me.RblCapacity)
+        Me.GroupBox6.Controls.Add(Me.RblPrice)
+        Me.GroupBox6.Controls.Add(Me.RblMainCategory)
+        Me.GroupBox6.Controls.Add(Me.GvCategorySearch)
+        Me.GroupBox6.Controls.Add(Me.btnRefresh)
+        Me.GroupBox6.Controls.Add(Me.txtTotalRecord)
+        Me.GroupBox6.Controls.Add(Me.Label10)
+        Me.GroupBox6.Controls.Add(Me.Button1)
+        Me.GroupBox6.Controls.Add(Me.Label11)
+        Me.GroupBox6.Controls.Add(Me.txtsearch)
+        Me.GroupBox6.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox6.Location = New System.Drawing.Point(12, 29)
+        Me.GroupBox6.Name = "GroupBox6"
+        Me.GroupBox6.Size = New System.Drawing.Size(309, 614)
+        Me.GroupBox6.TabIndex = 26
+        Me.GroupBox6.TabStop = False
+        '
+        'RblCapacity
+        '
+        Me.RblCapacity.AutoSize = True
+        Me.RblCapacity.Location = New System.Drawing.Point(113, 26)
+        Me.RblCapacity.Name = "RblCapacity"
+        Me.RblCapacity.Size = New System.Drawing.Size(72, 19)
+        Me.RblCapacity.TabIndex = 18
+        Me.RblCapacity.TabStop = True
+        Me.RblCapacity.Text = "Capacity"
+        Me.RblCapacity.UseVisualStyleBackColor = True
+        '
+        'RblPrice
+        '
+        Me.RblPrice.AutoSize = True
+        Me.RblPrice.Location = New System.Drawing.Point(203, 26)
+        Me.RblPrice.Name = "RblPrice"
+        Me.RblPrice.Size = New System.Drawing.Size(53, 19)
+        Me.RblPrice.TabIndex = 17
+        Me.RblPrice.TabStop = True
+        Me.RblPrice.Text = "Price"
+        Me.RblPrice.UseVisualStyleBackColor = True
+        '
+        'RblMainCategory
+        '
+        Me.RblMainCategory.AutoSize = True
+        Me.RblMainCategory.Location = New System.Drawing.Point(9, 26)
+        Me.RblMainCategory.Name = "RblMainCategory"
+        Me.RblMainCategory.Size = New System.Drawing.Size(103, 19)
+        Me.RblMainCategory.TabIndex = 16
+        Me.RblMainCategory.TabStop = True
+        Me.RblMainCategory.Text = "Main Category"
+        Me.RblMainCategory.UseVisualStyleBackColor = True
+        '
+        'GvCategorySearch
+        '
+        Me.GvCategorySearch.AllowDrop = True
+        Me.GvCategorySearch.AllowUserToAddRows = False
+        Me.GvCategorySearch.AllowUserToDeleteRows = False
+        Me.GvCategorySearch.AllowUserToOrderColumns = True
+        Me.GvCategorySearch.AllowUserToResizeColumns = False
+        Me.GvCategorySearch.AllowUserToResizeRows = False
+        Me.GvCategorySearch.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.GvCategorySearch.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.GvCategorySearch.Location = New System.Drawing.Point(6, 123)
+        Me.GvCategorySearch.Name = "GvCategorySearch"
+        Me.GvCategorySearch.ReadOnly = True
+        Me.GvCategorySearch.Size = New System.Drawing.Size(297, 432)
+        Me.GvCategorySearch.TabIndex = 15
+        '
+        'btnRefresh
+        '
+        Me.btnRefresh.Location = New System.Drawing.Point(175, 571)
+        Me.btnRefresh.Name = "btnRefresh"
+        Me.btnRefresh.Size = New System.Drawing.Size(75, 30)
+        Me.btnRefresh.TabIndex = 14
+        Me.btnRefresh.Text = "Refresh"
+        Me.btnRefresh.UseVisualStyleBackColor = True
+        '
+        'txtTotalRecord
+        '
+        Me.txtTotalRecord.Location = New System.Drawing.Point(88, 574)
+        Me.txtTotalRecord.Name = "txtTotalRecord"
+        Me.txtTotalRecord.Size = New System.Drawing.Size(80, 21)
+        Me.txtTotalRecord.TabIndex = 13
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Location = New System.Drawing.Point(6, 574)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(76, 15)
+        Me.Label10.TabIndex = 12
+        Me.Label10.Text = "Total Record"
+        '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(228, 80)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(75, 23)
+        Me.Button1.TabIndex = 10
+        Me.Button1.Text = "Search"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = True
+        Me.Label11.Location = New System.Drawing.Point(6, 84)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(56, 15)
+        Me.Label11.TabIndex = 7
+        Me.Label11.Text = "Category"
+        '
+        'txtsearch
+        '
+        Me.txtsearch.Location = New System.Drawing.Point(65, 83)
+        Me.txtsearch.Name = "txtsearch"
+        Me.txtsearch.Size = New System.Drawing.Size(157, 21)
+        Me.txtsearch.TabIndex = 0
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label12.ForeColor = System.Drawing.Color.Red
+        Me.Label12.Location = New System.Drawing.Point(14, 9)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(141, 20)
+        Me.Label12.TabIndex = 27
+        Me.Label12.Text = "Category Master"
+        '
+        'grpLangaugeBar
+        '
+        Me.grpLangaugeBar.Controls.Add(Me.RdbTelugu)
+        Me.grpLangaugeBar.Controls.Add(Me.RdbTamil)
+        Me.grpLangaugeBar.Controls.Add(Me.RdbMarathi)
+        Me.grpLangaugeBar.Controls.Add(Me.RdbHindi)
+        Me.grpLangaugeBar.Controls.Add(Me.RdbGujarati)
+        Me.grpLangaugeBar.Controls.Add(Me.RdbEnglish)
+        Me.grpLangaugeBar.Location = New System.Drawing.Point(522, 4)
+        Me.grpLangaugeBar.Name = "grpLangaugeBar"
+        Me.grpLangaugeBar.Size = New System.Drawing.Size(511, 32)
+        Me.grpLangaugeBar.TabIndex = 37
+        Me.grpLangaugeBar.TabStop = False
+        Me.grpLangaugeBar.Text = "LanguageBar"
+        '
+        'RdbTelugu
+        '
+        Me.RdbTelugu.AutoSize = True
+        Me.RdbTelugu.Location = New System.Drawing.Point(444, 9)
+        Me.RdbTelugu.Name = "RdbTelugu"
+        Me.RdbTelugu.Size = New System.Drawing.Size(58, 17)
+        Me.RdbTelugu.TabIndex = 41
+        Me.RdbTelugu.TabStop = True
+        Me.RdbTelugu.Text = "Telugu"
+        Me.RdbTelugu.UseVisualStyleBackColor = True
+        '
+        'RdbTamil
+        '
+        Me.RdbTamil.AutoSize = True
+        Me.RdbTamil.Location = New System.Drawing.Point(386, 9)
+        Me.RdbTamil.Name = "RdbTamil"
+        Me.RdbTamil.Size = New System.Drawing.Size(50, 17)
+        Me.RdbTamil.TabIndex = 40
+        Me.RdbTamil.TabStop = True
+        Me.RdbTamil.Text = "Tamil"
+        Me.RdbTamil.UseVisualStyleBackColor = True
+        '
+        'RdbMarathi
+        '
+        Me.RdbMarathi.AutoSize = True
+        Me.RdbMarathi.Location = New System.Drawing.Point(318, 9)
+        Me.RdbMarathi.Name = "RdbMarathi"
+        Me.RdbMarathi.Size = New System.Drawing.Size(60, 17)
+        Me.RdbMarathi.TabIndex = 39
+        Me.RdbMarathi.TabStop = True
+        Me.RdbMarathi.Text = "Marathi"
+        Me.RdbMarathi.UseVisualStyleBackColor = True
+        '
+        'RdbHindi
+        '
+        Me.RdbHindi.AutoSize = True
+        Me.RdbHindi.Location = New System.Drawing.Point(258, 9)
+        Me.RdbHindi.Name = "RdbHindi"
+        Me.RdbHindi.Size = New System.Drawing.Size(49, 17)
+        Me.RdbHindi.TabIndex = 38
+        Me.RdbHindi.TabStop = True
+        Me.RdbHindi.Text = "Hindi"
+        Me.RdbHindi.UseVisualStyleBackColor = True
+        '
+        'RdbGujarati
+        '
+        Me.RdbGujarati.AutoSize = True
+        Me.RdbGujarati.Location = New System.Drawing.Point(187, 9)
+        Me.RdbGujarati.Name = "RdbGujarati"
+        Me.RdbGujarati.Size = New System.Drawing.Size(61, 17)
+        Me.RdbGujarati.TabIndex = 37
+        Me.RdbGujarati.TabStop = True
+        Me.RdbGujarati.Text = "Gujarati"
+        Me.RdbGujarati.UseVisualStyleBackColor = True
+        '
+        'RdbEnglish
+        '
+        Me.RdbEnglish.AutoSize = True
+        Me.RdbEnglish.Location = New System.Drawing.Point(122, 9)
+        Me.RdbEnglish.Name = "RdbEnglish"
+        Me.RdbEnglish.Size = New System.Drawing.Size(59, 17)
+        Me.RdbEnglish.TabIndex = 36
+        Me.RdbEnglish.TabStop = True
+        Me.RdbEnglish.Text = "English"
+        Me.RdbEnglish.UseVisualStyleBackColor = True
+        '
+        'CategoryMaster
+        '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.ClientSize = New System.Drawing.Size(1028, 648)
+        Me.Controls.Add(Me.grpLangaugeBar)
+        Me.Controls.Add(Me.Label12)
+        Me.Controls.Add(Me.GroupBox6)
+        Me.Controls.Add(Me.GroupBox1)
+        Me.Name = "CategoryMaster"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+        Me.Text = "CategoryMaster"
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
+        Me.GroupBox5.ResumeLayout(False)
+        CType(Me.Photo3, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox4.ResumeLayout(False)
+        CType(Me.Photo2, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox3.ResumeLayout(False)
+        CType(Me.Photo1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox2.ResumeLayout(False)
+        CType(Me.GvCategory, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox6.ResumeLayout(False)
+        Me.GroupBox6.PerformLayout()
+        CType(Me.GvCategorySearch, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.grpLangaugeBar.ResumeLayout(False)
+        Me.grpLangaugeBar.PerformLayout()
+        Me.ResumeLayout(False)
+        Me.PerformLayout()
+
+    End Sub
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents txtEntryNo As System.Windows.Forms.TextBox
+    Friend WithEvents txtMainCategory As System.Windows.Forms.TextBox
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents txtCategory As System.Windows.Forms.TextBox
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents txtNo As System.Windows.Forms.TextBox
+    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents txtCapacity As System.Windows.Forms.TextBox
+    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents txtPrice As System.Windows.Forms.TextBox
+    Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents txtPhoto1 As System.Windows.Forms.TextBox
+    Friend WithEvents Label7 As System.Windows.Forms.Label
+    Friend WithEvents txtPhoto3 As System.Windows.Forms.TextBox
+    Friend WithEvents Label9 As System.Windows.Forms.Label
+    Friend WithEvents txtPhoto2 As System.Windows.Forms.TextBox
+    Friend WithEvents Label8 As System.Windows.Forms.Label
+    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
+    Friend WithEvents GvCategory As System.Windows.Forms.DataGridView
+    Friend WithEvents GroupBox5 As System.Windows.Forms.GroupBox
+    Friend WithEvents btnPhoto3 As System.Windows.Forms.Button
+    Friend WithEvents Photo3 As System.Windows.Forms.PictureBox
+    Friend WithEvents GroupBox4 As System.Windows.Forms.GroupBox
+    Friend WithEvents btnPhoto2 As System.Windows.Forms.Button
+    Friend WithEvents Photo2 As System.Windows.Forms.PictureBox
+    Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
+    Friend WithEvents btnPhoto1 As System.Windows.Forms.Button
+    Friend WithEvents Photo1 As System.Windows.Forms.PictureBox
+    Friend WithEvents GroupBox6 As System.Windows.Forms.GroupBox
+    Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents Label11 As System.Windows.Forms.Label
+    Friend WithEvents txtsearch As System.Windows.Forms.TextBox
+    Friend WithEvents Label10 As System.Windows.Forms.Label
+    Friend WithEvents txtTotalRecord As System.Windows.Forms.TextBox
+    Friend WithEvents btnRefresh As System.Windows.Forms.Button
+    Friend WithEvents GvCategorySearch As System.Windows.Forms.DataGridView
+    Friend WithEvents Label12 As System.Windows.Forms.Label
+    Friend WithEvents BtnSave As System.Windows.Forms.Button
+    Friend WithEvents btnUpdate As System.Windows.Forms.Button
+    Friend WithEvents btnAddNew As System.Windows.Forms.Button
+    Friend WithEvents RblCapacity As System.Windows.Forms.RadioButton
+    Friend WithEvents RblPrice As System.Windows.Forms.RadioButton
+    Friend WithEvents RblMainCategory As System.Windows.Forms.RadioButton
+    Friend WithEvents grpLangaugeBar As System.Windows.Forms.GroupBox
+    Friend WithEvents RdbTelugu As System.Windows.Forms.RadioButton
+    Friend WithEvents RdbTamil As System.Windows.Forms.RadioButton
+    Friend WithEvents RdbMarathi As System.Windows.Forms.RadioButton
+    Friend WithEvents RdbHindi As System.Windows.Forms.RadioButton
+    Friend WithEvents RdbGujarati As System.Windows.Forms.RadioButton
+    Friend WithEvents RdbEnglish As System.Windows.Forms.RadioButton
+    Friend WithEvents btnDeleteSub As System.Windows.Forms.Button
+End Class

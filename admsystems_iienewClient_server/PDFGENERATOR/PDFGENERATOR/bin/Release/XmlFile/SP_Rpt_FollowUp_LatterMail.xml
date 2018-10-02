@@ -1,0 +1,40 @@
+<?xml version="1.0" standalone="yes"?>
+<xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="SP_Rpt_FollowUp_LatterMail" msdata:UseCurrentLocale="true">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="SP_Rpt_FollowUp_LatterMail">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="EnqNo" type="xs:string" minOccurs="0" />
+              <xs:element name="OrderNo" type="xs:string" minOccurs="0" />
+              <xs:element name="PartyName" type="xs:string" minOccurs="0" />
+              <xs:element name="EntryDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="OrderStatus" type="xs:boolean" minOccurs="0" />
+              <xs:element name="ProjectDetail" type="xs:string" minOccurs="0" />
+              <xs:element name="OrderDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="DispatchDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="PONo" type="xs:string" minOccurs="0" />
+              <xs:element name="BrandName" type="xs:string" minOccurs="0" />
+              <xs:element name="City" type="xs:string" minOccurs="0" />
+              <xs:element name="State" type="xs:string" minOccurs="0" />
+              <xs:element name="District" type="xs:string" minOccurs="0" />
+              <xs:element name="MobileNo" type="xs:string" minOccurs="0" />
+              <xs:element name="ContactPerson" type="xs:string" minOccurs="0" />
+              <xs:element name="EmailID" type="xs:string" minOccurs="0" />
+              <xs:element name="PK_LetterDetailID" type="xs:long" minOccurs="0" />
+              <xs:element name="Fk_AddressId" type="xs:long" minOccurs="0" />
+              <xs:element name="LDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="Card_Date" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="Card_Rem" type="xs:string" minOccurs="0" />
+              <xs:element name="Mail_Rec" type="xs:string" minOccurs="0" />
+              <xs:element name="Mail_Send" type="xs:string" minOccurs="0" />
+              <xs:element name="BY_Whom" type="xs:string" minOccurs="0" />
+              <xs:element name="Mail_Rem" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

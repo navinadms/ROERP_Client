@@ -1,0 +1,469 @@
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+Partial Class Rpt_OrderWeeklyReport
+    Inherits System.Windows.Forms.Form
+
+    'Form overrides dispose to clean up the component list.
+    <System.Diagnostics.DebuggerNonUserCode()> _
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Try
+            If disposing AndAlso components IsNot Nothing Then
+                components.Dispose()
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
+    End Sub
+
+    'Required by the Windows Form Designer
+    Private components As System.ComponentModel.IContainer
+
+    'NOTE: The following procedure is required by the Windows Form Designer
+    'It can be modified using the Windows Form Designer.  
+    'Do not modify it using the code editor.
+    <System.Diagnostics.DebuggerStepThrough()> _
+    Private Sub InitializeComponent()
+        Me.dtEndDate = New System.Windows.Forms.DateTimePicker()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.btnSearch = New System.Windows.Forms.Button()
+        Me.dtStartDate = New System.Windows.Forms.DateTimePicker()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.cmbOrderStatus = New System.Windows.Forms.ComboBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.dgRptMainView = New System.Windows.Forms.DataGridView()
+        Me.dgLAB = New System.Windows.Forms.DataGridView()
+        Me.dgBlow = New System.Windows.Forms.DataGridView()
+        Me.dgJAR = New System.Windows.Forms.DataGridView()
+        Me.dgPouch = New System.Windows.Forms.DataGridView()
+        Me.dgBottle = New System.Windows.Forms.DataGridView()
+        Me.dgChiller = New System.Windows.Forms.DataGridView()
+        Me.dgBulk = New System.Windows.Forms.DataGridView()
+        Me.dgBatch = New System.Windows.Forms.DataGridView()
+        Me.dgSoda = New System.Windows.Forms.DataGridView()
+        Me.dgGlass = New System.Windows.Forms.DataGridView()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.Label13 = New System.Windows.Forms.Label()
+        CType(Me.dgRptMainView, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dgLAB, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dgBlow, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dgJAR, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dgPouch, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dgBottle, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dgChiller, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dgBulk, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dgBatch, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dgSoda, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dgGlass, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.SuspendLayout()
+        '
+        'dtEndDate
+        '
+        Me.dtEndDate.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.dtEndDate.Location = New System.Drawing.Point(264, 9)
+        Me.dtEndDate.Name = "dtEndDate"
+        Me.dtEndDate.Size = New System.Drawing.Size(121, 20)
+        Me.dtEndDate.TabIndex = 20
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Location = New System.Drawing.Point(216, 9)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(30, 13)
+        Me.Label2.TabIndex = 19
+        Me.Label2.Text = "To :"
+        '
+        'btnSearch
+        '
+        Me.btnSearch.Location = New System.Drawing.Point(621, 8)
+        Me.btnSearch.Name = "btnSearch"
+        Me.btnSearch.Size = New System.Drawing.Size(121, 23)
+        Me.btnSearch.TabIndex = 18
+        Me.btnSearch.Text = "Search"
+        Me.btnSearch.UseVisualStyleBackColor = True
+        '
+        'dtStartDate
+        '
+        Me.dtStartDate.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.dtStartDate.Location = New System.Drawing.Point(80, 9)
+        Me.dtStartDate.Name = "dtStartDate"
+        Me.dtStartDate.Size = New System.Drawing.Size(121, 20)
+        Me.dtStartDate.TabIndex = 17
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Location = New System.Drawing.Point(22, 9)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(42, 13)
+        Me.Label1.TabIndex = 16
+        Me.Label1.Text = "From :"
+        '
+        'cmbOrderStatus
+        '
+        Me.cmbOrderStatus.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
+        Me.cmbOrderStatus.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource
+        Me.cmbOrderStatus.FormattingEnabled = True
+        Me.cmbOrderStatus.Items.AddRange(New Object() {"", "ISI HOT", "ISI CONFIRM", "NON ISI HOT", "NON ISI CONFIRM"})
+        Me.cmbOrderStatus.Location = New System.Drawing.Point(476, 8)
+        Me.cmbOrderStatus.Name = "cmbOrderStatus"
+        Me.cmbOrderStatus.Size = New System.Drawing.Size(121, 21)
+        Me.cmbOrderStatus.TabIndex = 69
+        '
+        'Label3
+        '
+        Me.Label3.Location = New System.Drawing.Point(401, 9)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(53, 17)
+        Me.Label3.TabIndex = 68
+        Me.Label3.Text = "O.Status"
+        '
+        'dgRptMainView
+        '
+        Me.dgRptMainView.AllowUserToAddRows = False
+        Me.dgRptMainView.AllowUserToDeleteRows = False
+        Me.dgRptMainView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.dgRptMainView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgRptMainView.Location = New System.Drawing.Point(3, 42)
+        Me.dgRptMainView.Name = "dgRptMainView"
+        Me.dgRptMainView.Size = New System.Drawing.Size(963, 254)
+        Me.dgRptMainView.TabIndex = 70
+        '
+        'dgLAB
+        '
+        Me.dgLAB.AllowDrop = True
+        Me.dgLAB.AllowUserToAddRows = False
+        Me.dgLAB.AllowUserToDeleteRows = False
+        Me.dgLAB.AllowUserToOrderColumns = True
+        Me.dgLAB.AllowUserToResizeColumns = False
+        Me.dgLAB.AllowUserToResizeRows = False
+        Me.dgLAB.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.dgLAB.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgLAB.Location = New System.Drawing.Point(6, 321)
+        Me.dgLAB.Name = "dgLAB"
+        Me.dgLAB.Size = New System.Drawing.Size(183, 150)
+        Me.dgLAB.TabIndex = 71
+        '
+        'dgBlow
+        '
+        Me.dgBlow.AllowDrop = True
+        Me.dgBlow.AllowUserToAddRows = False
+        Me.dgBlow.AllowUserToDeleteRows = False
+        Me.dgBlow.AllowUserToOrderColumns = True
+        Me.dgBlow.AllowUserToResizeColumns = False
+        Me.dgBlow.AllowUserToResizeRows = False
+        Me.dgBlow.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.dgBlow.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgBlow.Location = New System.Drawing.Point(801, 321)
+        Me.dgBlow.Name = "dgBlow"
+        Me.dgBlow.Size = New System.Drawing.Size(174, 150)
+        Me.dgBlow.TabIndex = 73
+        '
+        'dgJAR
+        '
+        Me.dgJAR.AllowDrop = True
+        Me.dgJAR.AllowUserToAddRows = False
+        Me.dgJAR.AllowUserToDeleteRows = False
+        Me.dgJAR.AllowUserToOrderColumns = True
+        Me.dgJAR.AllowUserToResizeColumns = False
+        Me.dgJAR.AllowUserToResizeRows = False
+        Me.dgJAR.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.dgJAR.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgJAR.Location = New System.Drawing.Point(195, 321)
+        Me.dgJAR.Name = "dgJAR"
+        Me.dgJAR.Size = New System.Drawing.Size(190, 150)
+        Me.dgJAR.TabIndex = 74
+        '
+        'dgPouch
+        '
+        Me.dgPouch.AllowDrop = True
+        Me.dgPouch.AllowUserToAddRows = False
+        Me.dgPouch.AllowUserToDeleteRows = False
+        Me.dgPouch.AllowUserToOrderColumns = True
+        Me.dgPouch.AllowUserToResizeColumns = False
+        Me.dgPouch.AllowUserToResizeRows = False
+        Me.dgPouch.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.dgPouch.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgPouch.Location = New System.Drawing.Point(391, 321)
+        Me.dgPouch.Name = "dgPouch"
+        Me.dgPouch.Size = New System.Drawing.Size(206, 150)
+        Me.dgPouch.TabIndex = 75
+        '
+        'dgBottle
+        '
+        Me.dgBottle.AllowDrop = True
+        Me.dgBottle.AllowUserToAddRows = False
+        Me.dgBottle.AllowUserToDeleteRows = False
+        Me.dgBottle.AllowUserToOrderColumns = True
+        Me.dgBottle.AllowUserToResizeColumns = False
+        Me.dgBottle.AllowUserToResizeRows = False
+        Me.dgBottle.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.dgBottle.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgBottle.Location = New System.Drawing.Point(603, 321)
+        Me.dgBottle.Name = "dgBottle"
+        Me.dgBottle.Size = New System.Drawing.Size(192, 150)
+        Me.dgBottle.TabIndex = 76
+        '
+        'dgChiller
+        '
+        Me.dgChiller.AllowDrop = True
+        Me.dgChiller.AllowUserToAddRows = False
+        Me.dgChiller.AllowUserToDeleteRows = False
+        Me.dgChiller.AllowUserToOrderColumns = True
+        Me.dgChiller.AllowUserToResizeColumns = False
+        Me.dgChiller.AllowUserToResizeRows = False
+        Me.dgChiller.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.dgChiller.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgChiller.Location = New System.Drawing.Point(603, 499)
+        Me.dgChiller.Name = "dgChiller"
+        Me.dgChiller.Size = New System.Drawing.Size(192, 150)
+        Me.dgChiller.TabIndex = 81
+        '
+        'dgBulk
+        '
+        Me.dgBulk.AllowDrop = True
+        Me.dgBulk.AllowUserToAddRows = False
+        Me.dgBulk.AllowUserToDeleteRows = False
+        Me.dgBulk.AllowUserToOrderColumns = True
+        Me.dgBulk.AllowUserToResizeColumns = False
+        Me.dgBulk.AllowUserToResizeRows = False
+        Me.dgBulk.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.dgBulk.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgBulk.Location = New System.Drawing.Point(391, 499)
+        Me.dgBulk.Name = "dgBulk"
+        Me.dgBulk.Size = New System.Drawing.Size(206, 150)
+        Me.dgBulk.TabIndex = 80
+        '
+        'dgBatch
+        '
+        Me.dgBatch.AllowDrop = True
+        Me.dgBatch.AllowUserToAddRows = False
+        Me.dgBatch.AllowUserToDeleteRows = False
+        Me.dgBatch.AllowUserToOrderColumns = True
+        Me.dgBatch.AllowUserToResizeColumns = False
+        Me.dgBatch.AllowUserToResizeRows = False
+        Me.dgBatch.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.dgBatch.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgBatch.Location = New System.Drawing.Point(195, 499)
+        Me.dgBatch.Name = "dgBatch"
+        Me.dgBatch.Size = New System.Drawing.Size(190, 150)
+        Me.dgBatch.TabIndex = 79
+        '
+        'dgSoda
+        '
+        Me.dgSoda.AllowDrop = True
+        Me.dgSoda.AllowUserToAddRows = False
+        Me.dgSoda.AllowUserToDeleteRows = False
+        Me.dgSoda.AllowUserToOrderColumns = True
+        Me.dgSoda.AllowUserToResizeColumns = False
+        Me.dgSoda.AllowUserToResizeRows = False
+        Me.dgSoda.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.dgSoda.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgSoda.Location = New System.Drawing.Point(801, 499)
+        Me.dgSoda.Name = "dgSoda"
+        Me.dgSoda.Size = New System.Drawing.Size(174, 150)
+        Me.dgSoda.TabIndex = 78
+        '
+        'dgGlass
+        '
+        Me.dgGlass.AllowDrop = True
+        Me.dgGlass.AllowUserToAddRows = False
+        Me.dgGlass.AllowUserToDeleteRows = False
+        Me.dgGlass.AllowUserToOrderColumns = True
+        Me.dgGlass.AllowUserToResizeColumns = False
+        Me.dgGlass.AllowUserToResizeRows = False
+        Me.dgGlass.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.dgGlass.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgGlass.Location = New System.Drawing.Point(6, 499)
+        Me.dgGlass.Name = "dgGlass"
+        Me.dgGlass.Size = New System.Drawing.Size(183, 150)
+        Me.dgGlass.TabIndex = 77
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.Location = New System.Drawing.Point(60, 483)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(47, 13)
+        Me.Label4.TabIndex = 82
+        Me.Label4.Text = "GLASS"
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.Location = New System.Drawing.Point(60, 305)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(30, 13)
+        Me.Label5.TabIndex = 83
+        Me.Label5.Text = "LAB"
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label6.Location = New System.Drawing.Point(467, 305)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(50, 13)
+        Me.Label6.TabIndex = 84
+        Me.Label6.Text = "POUCH"
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label7.Location = New System.Drawing.Point(671, 304)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(55, 13)
+        Me.Label7.TabIndex = 85
+        Me.Label7.Text = "BOTTLE"
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label8.Location = New System.Drawing.Point(869, 483)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(41, 13)
+        Me.Label8.TabIndex = 86
+        Me.Label8.Text = "SODA"
+        '
+        'Label9
+        '
+        Me.Label9.AutoSize = True
+        Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label9.Location = New System.Drawing.Point(467, 483)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(39, 13)
+        Me.Label9.TabIndex = 87
+        Me.Label9.Text = "BULK"
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label10.Location = New System.Drawing.Point(261, 305)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(30, 13)
+        Me.Label10.TabIndex = 88
+        Me.Label10.Text = "JAR"
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = True
+        Me.Label11.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label11.Location = New System.Drawing.Point(869, 304)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(43, 13)
+        Me.Label11.TabIndex = 89
+        Me.Label11.Text = "BLOW"
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label12.Location = New System.Drawing.Point(671, 483)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(59, 13)
+        Me.Label12.TabIndex = 90
+        Me.Label12.Text = "CHILLER"
+        '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label13.Location = New System.Drawing.Point(261, 483)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(48, 13)
+        Me.Label13.TabIndex = 91
+        Me.Label13.Text = "BATCH"
+        '
+        'Rpt_OrderWeeklyReport
+        '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.ClientSize = New System.Drawing.Size(978, 667)
+        Me.Controls.Add(Me.Label13)
+        Me.Controls.Add(Me.Label12)
+        Me.Controls.Add(Me.Label11)
+        Me.Controls.Add(Me.Label10)
+        Me.Controls.Add(Me.Label9)
+        Me.Controls.Add(Me.Label8)
+        Me.Controls.Add(Me.Label7)
+        Me.Controls.Add(Me.Label6)
+        Me.Controls.Add(Me.Label5)
+        Me.Controls.Add(Me.Label4)
+        Me.Controls.Add(Me.dgChiller)
+        Me.Controls.Add(Me.dgBulk)
+        Me.Controls.Add(Me.dgBatch)
+        Me.Controls.Add(Me.dgSoda)
+        Me.Controls.Add(Me.dgGlass)
+        Me.Controls.Add(Me.dgBottle)
+        Me.Controls.Add(Me.dgPouch)
+        Me.Controls.Add(Me.dgJAR)
+        Me.Controls.Add(Me.dgBlow)
+        Me.Controls.Add(Me.dgLAB)
+        Me.Controls.Add(Me.dgRptMainView)
+        Me.Controls.Add(Me.cmbOrderStatus)
+        Me.Controls.Add(Me.Label3)
+        Me.Controls.Add(Me.dtEndDate)
+        Me.Controls.Add(Me.Label2)
+        Me.Controls.Add(Me.btnSearch)
+        Me.Controls.Add(Me.dtStartDate)
+        Me.Controls.Add(Me.Label1)
+        Me.Name = "Rpt_OrderWeeklyReport"
+        Me.Text = "Rpt_OrderWeeklyReport"
+        CType(Me.dgRptMainView, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dgLAB, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dgBlow, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dgJAR, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dgPouch, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dgBottle, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dgChiller, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dgBulk, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dgBatch, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dgSoda, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dgGlass, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.ResumeLayout(False)
+        Me.PerformLayout()
+
+    End Sub
+    Friend WithEvents dtEndDate As System.Windows.Forms.DateTimePicker
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents btnSearch As System.Windows.Forms.Button
+    Friend WithEvents dtStartDate As System.Windows.Forms.DateTimePicker
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents cmbOrderStatus As System.Windows.Forms.ComboBox
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents dgRptMainView As System.Windows.Forms.DataGridView
+    Friend WithEvents dgLAB As System.Windows.Forms.DataGridView
+    Friend WithEvents dgBlow As System.Windows.Forms.DataGridView
+    Friend WithEvents dgJAR As System.Windows.Forms.DataGridView
+    Friend WithEvents dgPouch As System.Windows.Forms.DataGridView
+    Friend WithEvents dgBottle As System.Windows.Forms.DataGridView
+    Friend WithEvents dgChiller As System.Windows.Forms.DataGridView
+    Friend WithEvents dgBulk As System.Windows.Forms.DataGridView
+    Friend WithEvents dgBatch As System.Windows.Forms.DataGridView
+    Friend WithEvents dgSoda As System.Windows.Forms.DataGridView
+    Friend WithEvents dgGlass As System.Windows.Forms.DataGridView
+    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents Label7 As System.Windows.Forms.Label
+    Friend WithEvents Label8 As System.Windows.Forms.Label
+    Friend WithEvents Label9 As System.Windows.Forms.Label
+    Friend WithEvents Label10 As System.Windows.Forms.Label
+    Friend WithEvents Label11 As System.Windows.Forms.Label
+    Friend WithEvents Label12 As System.Windows.Forms.Label
+    Friend WithEvents Label13 As System.Windows.Forms.Label
+End Class

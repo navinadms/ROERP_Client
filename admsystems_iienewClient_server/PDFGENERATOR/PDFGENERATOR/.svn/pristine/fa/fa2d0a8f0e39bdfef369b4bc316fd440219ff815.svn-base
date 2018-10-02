@@ -1,0 +1,48 @@
+﻿Imports System.Data.SqlClient
+Imports CrystalDecisions.CrystalReports.Engine
+
+Public Class Rpt_DailyAllotment
+    Dim linq_obj As New RoErpDataContext(System.Configuration.ConfigurationManager.AppSettings("constr").ToString())
+
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        If (Class1.global.InquiryView = "1") Then
+            bindUser()
+            grpUser.Visible = True
+        Else
+            grpUser.Visible = False
+        End If
+    End Sub
+    Public Sub bindUser()
+        cmbUser.DataSource = Nothing
+        Dim dataUser = linq_obj.SP_Get_UserList().ToList()
+        cmbUser.DataSource = dataUser
+        cmbUser.DisplayMember = "UserName"
+        cmbUser.ValueMember = "Pk_UserId"
+        cmbUser.AutoCompleteMode = AutoCompleteMode.Append
+        cmbUser.DropDownStyle = ComboBoxStyle.DropDownList
+        cmbUser.AutoCompleteSource = AutoCompleteSource.ListItems
+    End Sub
+
+    Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+        Dim rpt As New ReportDocument
+        Dim ss As String
+        Try
+            ss = Application.LocalUserAppDataPath()
+            rpt.Load(Application.StartupPath & "\Reports\Rpt_allotmentReport.rpt")
+            rpt.SetParameterValue("@Start", dtStartDate.Value)
+            rpt.SetParameterValue("@End", dtEndDate.Value)
+            rpt.SetParameterValue("@byUser", If(Class1.global.InquiryView = "1", Convert.ToInt32(cmbUser.SelectedValue), Convert.ToInt32(Class1.global.UserID)))
+            CrystalReportViewer1.ReportSource = rpt
+            CrystalReportViewer1.Show()
+            CrystalReportViewer1.Dock = DockStyle.Fill
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+
+
+    End Sub
+
+End Class

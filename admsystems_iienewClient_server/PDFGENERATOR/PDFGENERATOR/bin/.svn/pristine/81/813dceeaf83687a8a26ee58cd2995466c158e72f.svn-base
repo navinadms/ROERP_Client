@@ -1,0 +1,209 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+PDFGENERATORNEW
+</name>
+</assembly>
+<members>
+<member name="F:ROERPMAIN.AccountMaster.linq_obj">
+	<summary>
+ defining a variables
+ declare a global variables.
+ </summary>
+	<remarks></remarks>
+</member><member name="T:ROERPMAIN.PerformaReport.PartyMasterDataTable">
+	<summary>
+Represents the strongly named DataTable class.
+</summary>
+</member><member name="T:ROERPMAIN.PerformaReport.PartyDebitDataTable">
+	<summary>
+Represents the strongly named DataTable class.
+</summary>
+</member><member name="T:ROERPMAIN.PerformaReport.PartyMasterRow">
+	<summary>
+Represents strongly named DataRow class.
+</summary>
+</member><member name="T:ROERPMAIN.PerformaReport.PartyDebitRow">
+	<summary>
+Represents strongly named DataRow class.
+</summary>
+</member><member name="T:ROERPMAIN.PerformaReport.PartyMasterRowChangeEvent">
+	<summary>
+Row event argument class
+</summary>
+</member><member name="T:ROERPMAIN.PerformaReport.PartyDebitRowChangeEvent">
+	<summary>
+Row event argument class
+</summary>
+</member><member name="T:ROERPMAIN.PerformaReport">
+	<summary>
+Represents a strongly typed in-memory cache of data.
+</summary>
+</member><member name="M:ROERPMAIN.RavSoft.CueProvider.SetCue(System.Windows.Forms.TextBox,System.String)">
+	<summary>
+ Sets a text box's cue text.
+ </summary>
+	<param name="textBox">The text box.</param>
+	<param name="cue">The cue text.</param>
+</member><member name="M:ROERPMAIN.RavSoft.CueProvider.ClearCue(System.Windows.Forms.TextBox)">
+	<summary>
+ Clears a text box's cue text.
+ </summary>
+	<param name="textBox">The text box</param>
+</member><member name="P:ROERPMAIN.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:ROERPMAIN.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="P:ROERPMAIN.My.Resources.Resources._250_LPH___1">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:ROERPMAIN.My.Resources.Resources._250_LPH___2">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:ROERPMAIN.My.Resources.Resources._250_LPH___3">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:ROERPMAIN.My.Resources.Resources.search">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="T:ROERPMAIN.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member><member name="T:ROERPMAIN.EnqFormat.FollowUpDataDataTable">
+	<summary>
+Represents the strongly named DataTable class.
+</summary>
+</member><member name="T:ROERPMAIN.EnqFormat.Enq_FolloupMasterDataTable">
+	<summary>
+Represents the strongly named DataTable class.
+</summary>
+</member><member name="T:ROERPMAIN.EnqFormat.Enq_EnqMasterDataTable">
+	<summary>
+Represents the strongly named DataTable class.
+</summary>
+</member><member name="T:ROERPMAIN.EnqFormat.FollowUpDataRow">
+	<summary>
+Represents strongly named DataRow class.
+</summary>
+</member><member name="T:ROERPMAIN.EnqFormat.Enq_FolloupMasterRow">
+	<summary>
+Represents strongly named DataRow class.
+</summary>
+</member><member name="T:ROERPMAIN.EnqFormat.Enq_EnqMasterRow">
+	<summary>
+Represents strongly named DataRow class.
+</summary>
+</member><member name="T:ROERPMAIN.EnqFormat.FollowUpDataRowChangeEvent">
+	<summary>
+Row event argument class
+</summary>
+</member><member name="T:ROERPMAIN.EnqFormat.Enq_FolloupMasterRowChangeEvent">
+	<summary>
+Row event argument class
+</summary>
+</member><member name="T:ROERPMAIN.EnqFormat.Enq_EnqMasterRowChangeEvent">
+	<summary>
+Row event argument class
+</summary>
+</member><member name="T:ROERPMAIN.EnqFormat">
+	<summary>
+Represents a strongly typed in-memory cache of data.
+</summary>
+</member><member name="M:ROERPMAIN.Class1.getTotalNo(System.String)">
+	<summary>
+ ADDED BY RAJESH
+ FOR GETTING A REFNO. INDEX OF THE FILE NAME.
+ </summary>
+	<param name="str"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="T:ROERPMAIN.RupeeConvert">
+	<summary>
+ Summary description for NewRupeeConvert
+ </summary>
+</member><member name="T:ROERPMAIN.EnqReport.TblEnqReport1DataTable">
+	<summary>
+Represents the strongly named DataTable class.
+</summary>
+</member><member name="T:ROERPMAIN.EnqReport.TblEnqReport1Row">
+	<summary>
+Represents strongly named DataRow class.
+</summary>
+</member><member name="T:ROERPMAIN.EnqReport.TblEnqReport1RowChangeEvent">
+	<summary>
+Row event argument class
+</summary>
+</member><member name="T:ROERPMAIN.EnqReport">
+	<summary>
+Represents a strongly typed in-memory cache of data.
+</summary>
+</member><member name="T:ROERPMAIN.DocumentLog.DocumentDataTable">
+	<summary>
+Represents the strongly named DataTable class.
+</summary>
+</member><member name="T:ROERPMAIN.DocumentLog.DocumentRow">
+	<summary>
+Represents strongly named DataRow class.
+</summary>
+</member><member name="T:ROERPMAIN.DocumentLog.DocumentRowChangeEvent">
+	<summary>
+Row event argument class
+</summary>
+</member><member name="T:ROERPMAIN.DocumentLog">
+	<summary>
+Represents a strongly typed in-memory cache of data.
+</summary>
+</member><member name="T:ROERPMAIN.PartyDataset.PartyMasterDataTable">
+	<summary>
+Represents the strongly named DataTable class.
+</summary>
+</member><member name="T:ROERPMAIN.PartyDataset.PartyDebitDataTable">
+	<summary>
+Represents the strongly named DataTable class.
+</summary>
+</member><member name="T:ROERPMAIN.PartyDataset.PartyCreditDataTable">
+	<summary>
+Represents the strongly named DataTable class.
+</summary>
+</member><member name="T:ROERPMAIN.PartyDataset.PartyMasterRow">
+	<summary>
+Represents strongly named DataRow class.
+</summary>
+</member><member name="T:ROERPMAIN.PartyDataset.PartyDebitRow">
+	<summary>
+Represents strongly named DataRow class.
+</summary>
+</member><member name="T:ROERPMAIN.PartyDataset.PartyCreditRow">
+	<summary>
+Represents strongly named DataRow class.
+</summary>
+</member><member name="T:ROERPMAIN.PartyDataset.PartyMasterRowChangeEvent">
+	<summary>
+Row event argument class
+</summary>
+</member><member name="T:ROERPMAIN.PartyDataset.PartyDebitRowChangeEvent">
+	<summary>
+Row event argument class
+</summary>
+</member><member name="T:ROERPMAIN.PartyDataset.PartyCreditRowChangeEvent">
+	<summary>
+Row event argument class
+</summary>
+</member><member name="T:ROERPMAIN.PartyDataset">
+	<summary>
+Represents a strongly typed in-memory cache of data.
+</summary>
+</member>
+</members>
+</doc>

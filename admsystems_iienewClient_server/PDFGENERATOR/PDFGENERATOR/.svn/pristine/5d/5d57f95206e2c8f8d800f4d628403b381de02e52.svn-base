@@ -1,0 +1,2545 @@
+﻿Imports System.IO
+Imports System.Data.SqlClient
+
+
+Public Class OrderMaster_1_
+    Dim linq_obj As New RoErpDataContext(System.Configuration.ConfigurationManager.AppSettings("constr").ToString())
+    Dim Address_ID As Integer
+    Dim tblFollowup As New DataTable
+    Dim tblSFollowup As New DataTable
+    Dim tblProjectDetail As New DataTable
+    Dim TblISIDesc As New DataTable
+    Dim TblProInst As New DataTable
+    Dim TblLetter As New DataTable
+    Dim TblRawMaterial As New DataTable
+    Dim tblLog As New DataTable
+
+
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+        AutoComplete_Text()
+        GvInEnq_Bind()
+        TCorderMast.TabPages.RemoveAt(4)
+        TCorderMast.TabPages.RemoveAt(6)
+        RavSoft.CueProvider.SetCue(txtEmail1, "Email 1")
+        RavSoft.CueProvider.SetCue(txtEmail2, "Email 2")
+        RavSoft.CueProvider.SetCue(txtDR11, "Drawing Name")
+        RavSoft.CueProvider.SetCue(txtDR21, "Drawing Name")
+        RavSoft.CueProvider.SetCue(txtDR31, "Drawing Name")
+        RavSoft.CueProvider.SetCue(txtDR12, "Remarks")
+        RavSoft.CueProvider.SetCue(txtDR22, "Remarks")
+        RavSoft.CueProvider.SetCue(txtDR32, "Remarks")
+    End Sub
+    Public Sub GvInEnq_Bind()
+        bindEnqGrid()
+        'Dim enq = linq_obj.SP_Get_AddressForOrder().ToList()
+        'Dim dt As New DataTable
+        'dt.Columns.Add("ID")
+        'dt.Columns.Add("Name")
+        'dt.Columns.Add("EnqNo")
+        'For Each item As SP_Get_AddressForOrderResult In enq
+        '    dt.Rows.Add(item.Pk_AddressID, item.Name, item.EnqNo)
+        'Next
+        'DGVOrderDetails.DataSource = dt
+        'txtTotOrders.Text = (DGVOrderDetails.RowCount - 1).ToString()
+        'Me.gvAddressList.Columns(0).Visible = False
+
+    End Sub
+    Public Sub bindEnqGrid()
+        Dim criteria As String
+        criteria = " and "
+
+        If txtParty.Text.Trim() <> "" Then
+            criteria = criteria + " Name like '%" + txtParty.Text + "%' and"
+        End If
+        If txtcoPerson.Text.Trim() <> "" Then
+            criteria = criteria + " ContactPerson like '%" + txtcoPerson.Text + "%' and"
+        End If
+        If txtStation.Text.Trim <> "" Then
+            criteria = criteria + " City like '%" + txtStation.Text + "%' and"
+        End If
+        'If txtInqSearchLandLineNo.Text.Trim() <> "" Then
+        '    criteria = criteria + " LandlineNo like '%" + txtInqSearchLandLineNo.Text + "%' and"
+        'End If
+        If txtConatactno.Text.Trim() <> "" Then
+            criteria = criteria + " MobileNo like '%" + txtConatactno.Text + "%' and"
+        End If
+        If txtEmail.Text.Trim() <> "" Then
+            criteria = criteria + " EmialID like '%" + txtEmail.Text + "%' and"
+        End If
+        If txtDisStatus.Text.Trim() <> "" Then
+            criteria = criteria + " TypeOfEnq like '" + txtDisStatus.Text + "' and"
+        End If
+
+        If txtSearchEnqNo.Text.Trim() <> "" Then
+            criteria = criteria + " EnqNo like '%" + txtSearchEnqNo.Text + "%' and"
+        End If
+
+        If criteria = " and " Then
+            criteria = ""
+        End If
+
+        If (criteria.Length > 0) Then
+            criteria = criteria.ToString().Substring(0, criteria.Length - 3)
+        End If
+
+        Dim cmd As New SqlCommand
+
+        If (chkAllStatus.Checked = True) Then
+            cmd.CommandText = "SP_Search_AllOrder_WithAllotment"
+        Else
+            cmd.CommandText = "SP_Search_Order_WithAllotment"
+        End If
+
+        cmd.Parameters.Add("@criteria", SqlDbType.VarChar).Value = IIf(criteria = "", "", criteria)
+        ' cmd.Parameters.Add("@User", SqlDbType.VarChar).Value = If(Class1.global.UserName.ToLower() = "admin", "0", Class1.global.UserID.ToString())
+
+        'Add Navin 29-8-2013 Start 
+        If (Class1.global.InquiryView = "1") Then
+            cmd.Parameters.AddWithValue("@User", 0)
+        Else
+            cmd.Parameters.AddWithValue("@User", Class1.global.UserID.ToString())
+        End If
+        'End 
+
+        Dim objclass As New Class1
+
+        Dim dt As New DataTable
+        dt.Columns.Add("Pk_AddressID")
+        dt.Columns.Add("EnqNo")
+        dt.Columns.Add("Name")
+        Dim dtData As DataTable
+
+        dtData = objclass.GetEnqOrderReportData(cmd)
+        If dtData.Rows.Count < 1 Then
+            MessageBox.Show("Record Not Found", "No Records", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            DGVOrderDetails.DataSource = Nothing
+            dtData.Dispose()
+            dt.Dispose()
+        Else
+            For index = 0 To dtData.Rows.Count - 1
+                dt.Rows.Add(dtData.Rows(index)(0), dtData(index)(1), dtData(index)(2))
+            Next
+            DGVOrderDetails.DataSource = dt
+            Me.DGVOrderDetails.Columns(0).Visible = False
+            dtData.Dispose()
+            dt.Dispose()
+        End If
+        txtTotOrders.Text = DGVOrderDetails.RowCount - 1
+    End Sub
+    Public Sub getPageRight()
+        Try
+            Dim dv As New DataTable
+            Dim dataView As New DataView
+
+            Dim Class1 As New Class1
+            Dim RowCount As Integer
+            Dim statusCheck As Boolean = False
+            Dim TabIndexNo As Integer
+            Dim strName As String = ""
+            Dim TabCountValue As Integer
+
+            dataView = Class1.global.UserPermissionDataset.Tables(0).DefaultView
+
+            dataView.RowFilter = "([Name] like 'Order Manager')"
+
+            TabCountValue = TCorderMast.TabCount - 1
+
+            dv = dataView.ToTable()
+
+
+            If (dv.Rows(0)("Type") = 1) Then
+
+            Else
+                Dim indexTest As Integer = 0
+                While indexTest <= TabCountValue
+                    statusCheck = False
+                    For RowCount = 0 To dv.Rows.Count - 1
+                        If (dv.Rows(RowCount)("DetailName").ToString().ToUpper() = TCorderMast.TabPages(indexTest).Text.ToUpper()) Then
+                            statusCheck = True
+                            TabIndexNo = indexTest
+                            Exit For
+                        End If
+                    Next
+                    If statusCheck = False Then
+                        TCorderMast.TabPages.RemoveAt(indexTest)
+                        indexTest = -1
+                        TabCountValue = TabCountValue - 1
+                    End If
+                    indexTest += 1
+                End While
+            End If
+
+            'making a visible and invisible by their rights.
+            For RowCount = 0 To dv.Rows.Count - 1
+                If (dv.Rows(RowCount)("IsAdd") = True) Then
+                    btnSave.Enabled = True
+                Else
+                    btnSave.Enabled = False
+                End If
+                If (dv.Rows(RowCount)("IsUpdate") = True) Then
+                    btnChange.Enabled = True
+                Else
+                    btnChange.Enabled = False
+                End If
+                If (dv.Rows(RowCount)("IsDelete") = True) Then
+                    btnDelete.Enabled = True
+                Else
+                    btnDelete.Enabled = False
+                End If
+                If (dv.Rows(RowCount)("IsPrint") = True) Then
+                    btnPfolowup.Enabled = True
+                    btnLFolowup.Enabled = True
+                    btnSfolowup.Enabled = True
+                    btnIfolowup.Enabled = True
+                    btnVisitor.Enabled = True
+                    btnNewReport.Enabled = True
+                    btnProSumary.Enabled = True
+                Else
+                    btnPfolowup.Enabled = False
+                    btnLFolowup.Enabled = False
+                    btnSfolowup.Enabled = False
+                    btnIfolowup.Enabled = False
+                    btnVisitor.Enabled = False
+                    btnNewReport.Enabled = False
+                    btnProSumary.Enabled = False
+                End If
+            Next
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+
+    End Sub
+
+    Public Sub AutoComplete_Text()
+        Dim data = linq_obj.SP_Get_AddressListAutoComplete("Name").ToList()
+        For Each iteam As SP_Get_AddressListAutoCompleteResult In data
+            txtPartyName.AutoCompleteCustomSource.Add(iteam.Result)
+
+        Next
+        Dim dataEnq = linq_obj.SP_Get_AddressListAutoComplete("EnqNo").ToList()
+        For Each iteam As SP_Get_AddressListAutoCompleteResult In data
+            txtOrderNo.AutoCompleteCustomSource.Add(iteam.Result)
+        Next
+        ' txtInqSearchParty.AutoCompleteCustomSource.Add(iteam.Name)
+        ' txtRef.AutoCompleteCustomSource.Add(iteam.Reference1)
+        ' txtRef2.AutoCompleteCustomSource.Add(iteam.Reference2)
+        ' txtenquiryfor.AutoCompleteCustomSource.Add(iteam.EnqFor)
+        ' txtPerHr.AutoCompleteCustomSource.Add(iteam.CapacityHour)
+        Dim GetUser = linq_obj.SP_Get_UserList().ToList()
+        For Each item As SP_Get_UserListResult In GetUser
+            txtSendCourierBy.AutoCompleteCustomSource.Add(item.UserName)
+            txtRecCourierBy.AutoCompleteCustomSource.Add(item.UserName)
+            txtSendMailBy.AutoCompleteCustomSource.Add(item.UserName)
+            txtRecMailBy.AutoCompleteCustomSource.Add(item.UserName)
+        Next
+    End Sub
+
+    Public Sub GetClientDetails_Bind()
+        Try
+            Dim Claient = linq_obj.SP_Get_AddressListById(Address_ID).ToList()
+            For Each item As SP_Get_AddressListByIdResult In Claient
+                txtPartyName.Text = item.Name
+                txtBillAdresss.Text = item.Address
+                txtCity.Text = item.City
+                txtState.Text = item.State
+                txtDistrict.Text = item.District
+                txtTaluka.Text = item.Taluka
+                txtPincode.Text = item.Pincode
+                txtArea.Text = item.Area
+                txtcontctName.Text = item.ContactPerson
+                txtContactNo.Text = item.MobileNo
+                txtOrdermastEmail.Text = item.EmailID
+                txtOrderNo.Text = item.EnqNo
+
+                txtDeladress.Text = item.DeliveryAddress
+                txtDelArea.Text = item.DeliveryArea
+                txtDelCity.Text = item.DeliveryCity
+                txtDelDistrict.Text = item.DeliveryDistrict
+                txtDelPincode.Text = item.DeliveryPincode
+                txtDelState.Text = item.DeliveryState
+                txtDelTaluka.Text = item.DeliveryTaluka
+                txtEmail1.Text = item.EmailID1
+                txtEmail2.Text = item.EmailID2
+            Next
+            'Get Enquiry Client Master Details
+            Dim dataOrder = linq_obj.SP_GetOrderDetailFromAgreements(txtOrderNo.Text.Trim()).ToList()
+            If (dataOrder.Count > 0) Then
+                txtPONo.Text = Convert.ToString(dataOrder(0).Ref)
+                txtModel.Text = Convert.ToString(dataOrder(0).Model)
+                txtPlantName.Text = Convert.ToString(dataOrder(0).Plant)
+                txttentiveSchem.Text = Convert.ToString(dataOrder(0).TreatmentScheme)
+
+            End If
+
+            'Dim partyDetail = linq_obj.SP_Select_Party_Master_ByAddressId(Address_ID).ToList()
+            'If partyDetail.Count > 0 Then
+            '    ' txtPONo.Text = partyDetail(0).PONo
+            '    '  dtOrderDate.Text = Convert.ToString(partyDetail(0).OrderDate)
+            'End If
+        Catch ex As Exception
+            MessageBox.Show("Error :" + ex.Message)
+        End Try
+    End Sub
+
+    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Me.Close()
+    End Sub
+
+    Private Sub txtPhto11_KeyUp(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtPhto11.KeyUp
+
+    End Sub
+
+    Private Sub OrderMaster_1__Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        RavSoft.CueProvider.SetCue(txtPhto11, "Enter Name Here.")
+        RavSoft.CueProvider.SetCue(txtPhto21, "Enter Name Here.")
+        RavSoft.CueProvider.SetCue(txtPhto31, "Enter Name Here.")
+        RavSoft.CueProvider.SetCue(txtPhto12, "Contact Number.")
+        RavSoft.CueProvider.SetCue(txtPhto22, "Contact Number.")
+        RavSoft.CueProvider.SetCue(txtPhto32, "Contact Number.")
+        RavSoft.CueProvider.SetCue(txtPhto13, "Email Address.")
+        RavSoft.CueProvider.SetCue(txtPhto23, "Email Address.")
+        RavSoft.CueProvider.SetCue(txtPhto33, "Email Address.")
+        RavSoft.CueProvider.SetCue(txtPhto14, "Area")
+        RavSoft.CueProvider.SetCue(txtPhto24, "Area")
+        RavSoft.CueProvider.SetCue(txtPhto34, "Area")
+
+
+        'add Columns To all Tables
+
+        tblFollowup.Columns.Add("F_Date")
+        tblFollowup.Columns.Add("Followup")
+        tblFollowup.Columns.Add("N_F_FollowpDate")
+        tblFollowup.Columns.Add("Status")
+        tblFollowup.Columns.Add("ByWhom")
+        tblFollowup.Columns.Add("Pro_Type")
+        tblFollowup.Columns.Add("Remarks")
+
+        'Added A Service FollowUp
+        tblSFollowup.Columns.Add("Date")
+        tblSFollowup.Columns.Add("ServiceType")
+        tblSFollowup.Columns.Add("ComplainNo")
+        tblSFollowup.Columns.Add("AttendDate")
+        tblSFollowup.Columns.Add("AttendBy")
+        tblSFollowup.Columns.Add("Engineer")
+        tblSFollowup.Columns.Add("FollowUp")
+        tblSFollowup.Columns.Add("TentativeDate")
+        tblSFollowup.Columns.Add("Status")
+        tblSFollowup.Columns.Add("Remarks")
+
+        'Project Detail
+        tblProjectDetail.Columns.Add("SrNo")
+        tblProjectDetail.Columns.Add("PlantScheme")
+        tblProjectDetail.Columns.Add("VendorName")
+        tblProjectDetail.Columns.Add("DispatchDate")
+
+
+        '/ ISI Desc
+        TblISIDesc.Columns.Add("F_Date")
+        TblISIDesc.Columns.Add("Followup")
+        TblISIDesc.Columns.Add("N_F_FollowpDate")
+        TblISIDesc.Columns.Add("Status")
+        TblISIDesc.Columns.Add("ByWhom")
+        TblISIDesc.Columns.Add("Pro_Type")
+        TblISIDesc.Columns.Add("Remarks")
+
+        '/ Product Install
+        TblProInst.Columns.Add("PDate")
+        TblProInst.Columns.Add("Dis_Date")
+        TblProInst.Columns.Add("Product_Name")
+        TblProInst.Columns.Add("Vendor_Name")
+        TblProInst.Columns.Add("Station")
+        TblProInst.Columns.Add("Send_CU_To")
+        TblProInst.Columns.Add("Rec_CU_From")
+        TblProInst.Columns.Add("CU_To_Venue")
+        TblProInst.Columns.Add("Comp_Date_With_Inst")
+        TblProInst.Columns.Add("By_Whom")
+        TblProInst.Columns.Add("Remark")
+
+        '/ Letter Desc
+        TblLetter.Columns.Add("Date")
+        TblLetter.Columns.Add("Card_Date")
+        TblLetter.Columns.Add("Card_Rem")
+        TblLetter.Columns.Add("Mail_Rec")
+        TblLetter.Columns.Add("Mail_Send")
+        TblLetter.Columns.Add("BY_Whom")
+        TblLetter.Columns.Add("Mail_Rem")
+
+
+        '/ RawMaterial Details
+        TblRawMaterial.Columns.Add("ItemName")
+        TblRawMaterial.Columns.Add("Qty")
+        TblRawMaterial.Columns.Add("Price")
+        TblRawMaterial.Columns.Add("Amount")
+        TblRawMaterial.Columns.Add("OrderConfirm")
+        TblRawMaterial.Columns.Add("PaymentReceived")
+
+        '/Log
+        tblLog.Columns.Add("Title")
+        tblLog.Columns.Add("MailDate")
+        tblLog.Columns.Add("MailBy")
+        tblLog.Columns.Add("CourierDate")
+        tblLog.Columns.Add("CourierBy")
+        tblLog.Columns.Add("RecMailDate")
+        tblLog.Columns.Add("RecMailBy")
+        tblLog.Columns.Add("RecCourierDate")
+        tblLog.Columns.Add("RecCourierBy")
+
+        'permission get
+        getPageRight()
+
+
+        'set a backcolor of focus textboxes
+        For Each control As Control In Me.Controls
+            ' The textbox control.
+            Dim parentControl As New Control
+
+
+            If (control.GetType() Is GetType(GroupBox)) Then
+                Dim grpBox As GroupBox = TryCast(control, GroupBox)
+                parentControl = grpBox
+            ElseIf (control.GetType() Is GetType(TabControl)) Then
+                Dim TC As TabControl = TryCast(control, TabControl)
+                parentControl = TC
+            ElseIf (control.GetType() Is GetType(Panel)) Then
+                Dim Panel As Panel = TryCast(control, Panel)
+                parentControl = Panel
+
+            Else
+                Try
+                    parentControl = control
+                Catch ex As Exception
+
+                End Try
+
+            End If
+
+            For Each subcontrol As Control In parentControl.Controls
+                If (subcontrol.GetType() Is GetType(TabControl)) Then
+                    For Each subcontrolTwo As Control In subcontrol.Controls
+                        If (subcontrolTwo.GetType() Is GetType(TabPage)) Then
+                            For Each subcontrolthree As Control In subcontrolTwo.Controls
+                                If (subcontrolthree.GetType() Is GetType(Panel)) Then
+                                    For Each subcontrolFour As Control In subcontrolthree.Controls
+                                        If (subcontrolFour.GetType() Is GetType(TextBox)) Then
+                                            Dim textBox As TextBox = TryCast(subcontrolFour, TextBox)
+
+                                            ' If not null, set the handler.
+                                            If textBox IsNot Nothing Then
+                                                AddHandler textBox.Enter, AddressOf TextBox_Enter
+                                                AddHandler textBox.Leave, AddressOf TextBox_Leave
+                                            End If
+                                        End If
+                                    Next
+                                End If
+                            Next
+                        End If
+                    Next
+                End If
+                If (subcontrol.GetType() Is GetType(TextBox)) Then
+                    Dim textBox As TextBox = TryCast(subcontrol, TextBox)
+
+                    ' If not null, set the handler.
+                    If textBox IsNot Nothing Then
+                        AddHandler textBox.Enter, AddressOf TextBox_Enter
+                        AddHandler textBox.Leave, AddressOf TextBox_Leave
+                    End If
+                End If
+
+                ' Set the handler.
+            Next
+
+            ' Set the handler.
+        Next
+    End Sub
+    Private Sub TextBox_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Dim txt As New TextBox()
+        txt = DirectCast(sender, TextBox)
+
+        txt.BackColor = Color.LightYellow
+    End Sub
+    Private Sub TextBox_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Dim txt As New TextBox()
+        txt = DirectCast(sender, TextBox)
+
+        txt.BackColor = Color.White
+    End Sub
+
+    Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
+        SaveAllData()
+    End Sub
+
+    Public Sub SaveAllData()
+        Try
+            'Save All Data
+            If Address_ID > 0 Then
+                'save main Order Details.
+                Dim resorder As Integer
+                resorder = linq_obj.SP_Insert_Tbl_OrderOneMaster(txtOrderNo.Text, dtEntryDate.Text, txtPONo.Text, txtOrderNo.Text, Convert.ToDateTime(If(dtOrderDate.Text = "", "01-01-1900", dtOrderDate.Text)), Convert.ToDateTime(If(dtDispatchDate.Text = "", "01-01-1900", dtDispatchDate.Text)), txtPartyName.Text,
+                                                              txtBatchName.Text, Address_ID, txtOrderRec.Text, txtOrderFollowBy.Text, cmbOrderStatus.Text)
+                If (resorder > 0) Then
+                    linq_obj.SubmitChanges()
+                End If
+
+                'Update Contact Detail
+                Dim resContact As Integer
+                resContact = linq_obj.SP_UpdateAddressContactDetail(txtcoPerson.Text, txtContactNo.Text, txtEmail.Text, txtEmail1.Text, txtEmail2.Text, Address_ID)
+                linq_obj.SubmitChanges()
+
+                'bind Address Detail
+                Dim resAddress As Integer
+                resAddress = linq_obj.SP_UpdateAddress(txtPartyName.Text, txtBillAdresss.Text, txtArea.Text, txtCity.Text, txtPincode.Text, txtTaluka.Text, txtDistrict.Text, txtState.Text, txtDeladress.Text, txtDelArea.Text, txtDelCity.Text, txtDelPincode.Text, txtDelTaluka.Text, txtDelDistrict.Text, txtDelState.Text, Address_ID)
+                If resAddress >= 0 Then
+                    linq_obj.SubmitChanges()
+                End If
+
+                'bind Project Information
+
+                Dim resProjectId As Integer
+                resProjectId = linq_obj.SP_Insert_Tbl_ProjectInformationMaster(txtPlantName.Text, txtModel.Text, txtProject.Text, txtCapacity.Text, txtPowerAvail.Text, txtPlantShape.Text,
+                                                                             txtLandArea.Text, txtDtype.Text, txttentiveSchem.Text, txtJarDis.Text, txtBmouldDis.Text, Convert.ToDateTime(If(dtTentativeDate.Text = "", "01-01-1900", dtTentativeDate.Text)), Address_ID)
+                If (resProjectId > 0) Then
+                    linq_obj.SubmitChanges()
+
+                    linq_obj.SP_Delete_Tbl_ProjectDetail(Address_ID)
+                    linq_obj.SubmitChanges()
+                    For i As Integer = 0 To tblProjectDetail.Rows.Count - 1
+                        linq_obj.SP_Insert_Tbl_ProjectDetail(Address_ID,
+                                                                    tblProjectDetail.Rows(i)("SrNo").ToString(),
+                                                                    tblProjectDetail.Rows(i)("PlantScheme").ToString(),
+                                                                    tblProjectDetail.Rows(i)("VendorName").ToString(),
+                                                                   Convert.ToDateTime(tblProjectDetail.Rows(i)("DispatchDate").ToString()))
+                        linq_obj.SubmitChanges()
+                    Next
+
+                End If
+
+
+                'Save All Packing Details
+                Dim respackid As Integer
+                respackid = linq_obj.SP_Insert_Tbl_PackagingMaster(txtBottling.Text, txtType.Text, txtcapcity.Text, txtAvendor.Text, txtVendor2Bottle.Text, txtBPouch.Text, txtBtype.Text, txtSize.Text,
+                                                                  txtBvendor.Text, txtPouchvendor2.Text, txtCchiler.Text, txtCvendor.Text, txtC1vendor.Text, txtCompresor.Text, txtLab.Text, txtlabvendor.Text, txtlabvendor2.Text,
+                                                                  txtLetrDetal1.Text, txtLetrDetal2.Text, txtLetrDetalL21.Text, txtLetrDetalL22.Text, txtLetrDetalL31.Text, txtLetrDetalL32.Text, txtLetrDetalL41.Text, txtLetrDetalL42.Text,
+                                                                  txtLetrDetalL51.Text, txtLetrDetalL52.Text, txtRemarks.Text, txtProjType.Text, txtDisStatus.Text, txtDispatchRemarks.Text, Address_ID, txtmouldBotle.Text, txtvendor1.Text,
+                                                                    txtMould.Text, txtvendor2.Text, txtJarWashing.Text, txtJarWashingType.Text, txtJarWashingCapacity.Text, txtJarWashingVendor.Text, txtBlow.Text, txtBlowType.Text, txtBlowCapacity.Text, txtBlowVendor.Text, txtBulk.Text, txtBulkType.Text, txtBulkCapacity.Text, txtBulkVendor.Text, txtSoda.Text, txtSodaType.Text, txtSodaCapacity.Text, txtSodaVendor.Text, txtBatchCoding.Text, txtBatchCodingType.Text, txtBatchCodingCapacity.Text, txtBatchCodingVendor.Text)
+                If (respackid > 0) Then
+                    linq_obj.SubmitChanges()
+                End If
+
+                'Save Folloup Details
+                Dim resFollowupMaster As Integer
+                resFollowupMaster = linq_obj.SP_Insert_Tbl_OrderFollowupMaster(txtProjectDetail.Text, Address_ID)
+                If (resFollowupMaster > 0) Then
+
+                    linq_obj.SubmitChanges()
+                    'delete Old Data
+                    Dim delfollowDetail = linq_obj.SP_Delete_Tbl_OrderFollowupDetail(Address_ID)
+                    linq_obj.SubmitChanges()
+
+                    For i As Integer = 0 To tblFollowup.Rows.Count - 1
+
+
+                        linq_obj.SP_Insert_Tbl_OrderFollowupDetail(Address_ID,
+                                                                    Convert.ToDateTime(tblFollowup.Rows(i)("F_Date").ToString()),
+                                                                    tblFollowup.Rows(i)("Followup").ToString(),
+                                                                     Convert.ToDateTime(tblFollowup.Rows(i)("N_F_FollowpDate").ToString()),
+                                                                   tblFollowup.Rows(i)("Status").ToString(),
+                                                                   tblFollowup.Rows(i)("ByWhom").ToString(),
+                                                                    tblFollowup.Rows(i)("Pro_Type").ToString(),
+                                                                   tblFollowup.Rows(i)("Remarks").ToString())
+                        linq_obj.SubmitChanges()
+                    Next
+
+                End If
+
+
+                'Save Service Folllowup detail
+                Dim delservicedata = linq_obj.SP_Delete_Tbl_OrderServiceFollowUpDetail(Address_ID)
+                linq_obj.SubmitChanges()
+
+
+                For i As Integer = 0 To tblSFollowup.Rows.Count - 1
+
+
+                    linq_obj.SP_Insert_Tbl_OrderServiceFollowUpDetail(
+                                                                Convert.ToDateTime(tblSFollowup.Rows(i)("Date").ToString()),
+                                                                tblSFollowup.Rows(i)("ServiceType").ToString(),
+                                                                tblSFollowup.Rows(i)("ComplainNo").ToString(),
+                                                                Convert.ToDateTime(tblSFollowup.Rows(i)("AttendDate").ToString()),
+                                                                tblSFollowup.Rows(i)("AttendBy").ToString(),
+                                                                tblSFollowup.Rows(i)("Engineer").ToString(),
+                                                                tblSFollowup.Rows(i)("FollowUp").ToString(),
+                                                                Convert.ToDateTime(tblSFollowup.Rows(i)("TentativeDate").ToString()),
+                                                                tblSFollowup.Rows(i)("Status").ToString(),
+                                                                tblSFollowup.Rows(i)("Remarks").ToString(),
+                                                                Address_ID)
+                    linq_obj.SubmitChanges()
+                Next
+
+                'Save Visitor Detail
+                Dim str1, str2, str3 As String
+                If (pic1.ImageLocation Is Nothing) Then
+                    str1 = ""
+                Else
+                    str1 = pic1.ImageLocation
+                End If
+                If (pic2.ImageLocation Is Nothing) Then
+                    str2 = ""
+                Else
+                    str2 = pic2.ImageLocation
+                End If
+                If (pic3.ImageLocation Is Nothing) Then
+                    str3 = ""
+                Else
+                    str3 = pic3.ImageLocation
+                End If
+
+
+                Dim resVisitor As Integer
+                resVisitor = linq_obj.SP_Insert_Tbl_OrderVisitorDetail(str1, txtPhto11.Text, txtPhto12.Text, txtPhto13.Text, txtPhto14.Text, str2, txtPhto21.Text,
+                                                                     txtPhto22.Text, txtPhto23.Text, txtPhto24.Text, str3, txtPhto31.Text, txtPhto32.Text, txtPhto33.Text, txtPhto34.Text, Address_ID)
+
+                If (resVisitor > 0) Then
+                    linq_obj.SubmitChanges()
+
+                End If
+
+                'Save Plant Drawing Detail
+                Dim path1, path2, path3 As String
+                If (PB1.ImageLocation Is Nothing) Then
+                    path1 = ""
+                Else
+                    path1 = PB1.ImageLocation
+                End If
+                If (PB2.ImageLocation Is Nothing) Then
+                    path2 = ""
+                Else
+                    path2 = PB2.ImageLocation
+                End If
+                If (PB3.ImageLocation Is Nothing) Then
+                    path3 = ""
+                Else
+                    path3 = PB3.ImageLocation
+                End If
+
+
+                Dim resPlan As Integer
+                resPlan = linq_obj.SP_Tbl_OrderPlanDrawing_Insert(txtDR11.Text, txtDR12.Text, path1, txtDR21.Text, txtDR22.Text, path2, txtDR31.Text, txtDR32.Text, path3, Address_ID)
+                If (resPlan > 0) Then
+                    linq_obj.SubmitChanges()
+                End If
+
+                '/ Letter Header 
+                linq_obj.SP_Insert_Tbl_LetterMailComMaster_Two(Address_ID,
+                                                               TxtLetterProDetail.Text)
+                linq_obj.SubmitChanges()
+
+
+
+                linq_obj.SP_Delete_Tbl_LetterMailComMaster_Detail_Two(Address_ID)
+                linq_obj.SubmitChanges()
+
+                '/ Letter Description
+                For i As Integer = 0 To TblLetter.Rows.Count - 1
+                    linq_obj.SP_Insert_Tbl_LetterMailComMaster_Detail_Two(Address_ID,
+                    Convert.ToDateTime(TblLetter.Rows(i)("Date").ToString()),
+                    Convert.ToDateTime(TblLetter.Rows(i)("Card_Date").ToString()),
+                    TblLetter.Rows(i)("Card_Rem").ToString(),
+                    TblLetter.Rows(i)("Mail_Rec").ToString(),
+                    TblLetter.Rows(i)("Mail_Send").ToString(),
+                    TblLetter.Rows(i)("BY_Whom").ToString(),
+                    TblLetter.Rows(i)("Mail_Rem").ToString())
+                    linq_obj.SubmitChanges()
+                Next
+
+
+                linq_obj.SP_Delete_Tbl_ProductInstallationMaster_Two(Address_ID)
+                linq_obj.SubmitChanges()
+                '/ Product Instalation
+                For i As Integer = 0 To TblProInst.Rows.Count - 1
+                    linq_obj.SP_Insert_Tbl_ProductInstallationMaster_Two(Address_ID,
+                    Convert.ToDateTime(TblProInst.Rows(i)("PDate").ToString()),
+                    Convert.ToDateTime(TblProInst.Rows(i)("Dis_Date").ToString()),
+                    TblProInst.Rows(i)("Product_Name").ToString(),
+                    TblProInst.Rows(i)("Vendor_Name").ToString(),
+                    TblProInst.Rows(i)("Station").ToString(),
+                    TblProInst.Rows(i)("Send_CU_To").ToString(),
+                    TblProInst.Rows(i)("Rec_CU_From").ToString(),
+                    TblProInst.Rows(i)("CU_To_Venue").ToString(),
+                    Convert.ToDateTime(TblProInst.Rows(i)("Comp_Date_With_Inst").ToString()),
+                    TblProInst.Rows(i)("By_Whom").ToString(),
+                    TblProInst.Rows(i)("Remark").ToString())
+                    linq_obj.SubmitChanges()
+                Next
+
+
+                '/ISI Header
+
+                linq_obj.SP_Insert_Tbl_ISIProcessMaster_Two(Address_ID,
+                                                            TxtScheme.Text,
+                                                            Convert.ToDateTime(TxtRecDate.Value),
+                                                            Convert.ToDateTime(TxtDocFDate.Value),
+                                                            Convert.ToDateTime(TxtDocRDate.Value),
+                                                            TxtSToP.Text, TxtFSubmit.Text,
+                                                            Convert.ToDateTime(TxtFileRegDate.Value),
+                                                            Convert.ToDateTime(TxtBISInspDate.Value),
+                                                            Convert.ToDateTime(TxtLicenceDate.Value),
+                                                            TxtVender.Text,
+                                                            TxtRemark.Text)
+                linq_obj.SubmitChanges()
+
+                '/ ISI Description 
+
+                linq_obj.SP_Delete_Tbl_ISIProcess_DetailMaster_Two(Address_ID)
+                linq_obj.SubmitChanges()
+                For i As Integer = 0 To TblISIDesc.Rows.Count - 1
+                    linq_obj.SP_Insert_Tbl_ISIProcess_DetailMaster_Two(Address_ID,
+                     Convert.ToDateTime(TblISIDesc.Rows(i)("F_Date").ToString()),
+                                                                    TblISIDesc.Rows(i)("Followup").ToString(),
+                                                                     Convert.ToDateTime(TblISIDesc.Rows(i)("N_F_FollowpDate").ToString()),
+                                                                   TblISIDesc.Rows(i)("Status").ToString(),
+                                                                   TblISIDesc.Rows(i)("ByWhom").ToString(),
+                                                                    TblISIDesc.Rows(i)("Pro_Type").ToString(),
+                                                                   TblISIDesc.Rows(i)("Remarks").ToString())
+                    linq_obj.SubmitChanges()
+                Next
+                MessageBox.Show("Successfully Saved")
+                btnSave.Enabled = False
+            Else
+                MessageBox.Show("No Address Informations Found")
+            End If
+
+        Catch ex As Exception
+            MessageBox.Show("Error :" + ex.Message)
+        End Try
+    End Sub
+
+
+
+    Private Sub btnAddFolowup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddFolowup.Click
+        txtSerType.Text = ""
+        txtComplainNo.Text = ""
+        txtAtendedBy.Text = ""
+        txtEnginer.Text = ""
+        txtFolowup1.Text = ""
+        txtstatus.Text = ""
+        txtSfolwRemarks.Text = ""
+        dtSFDate.Value = DateTime.Now
+        dtAttendDate.Value = DateTime.Now
+        dtTentativeAttendDate.Value = DateTime.Now
+    End Sub
+
+    Private Sub GroupBox2_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GroupBox2.Enter
+
+    End Sub
+
+    Public Sub BindAllGridData()
+        ' clearAll()
+        Try
+            GetClientDetails_Bind()
+            BindAllData()
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub DGVOrderDetails_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DGVOrderDetails.DoubleClick
+        clearAll()
+        Address_ID = Convert.ToInt64(Me.DGVOrderDetails.SelectedCells(0).Value)
+
+        BindAllGridData()
+
+    End Sub
+
+    Public Sub BindAllData()
+
+        Dim dataOrderDetail = linq_obj.Sp_GetOrderRecFollowDetail(Address_ID).ToList()
+        If (dataOrderDetail.Count > 0) Then
+            For Each item As Sp_GetOrderRecFollowDetailResult In dataOrderDetail
+                txtOrderRec.Text = Convert.ToString(item.RecBy)
+                txtOrderFollowBy.Text = Convert.ToString(item.FollowBy)
+            Next
+        End If
+        Dim dataEntryDetail = linq_obj.Sp_GetOrderEntryDate(Address_ID).ToList()
+        If (dataEntryDetail.Count > 0) Then
+            dtEntryDate.Value = Convert.ToDateTime(IIf(dataEntryDetail(0).F_Date Is Nothing, Date.Now, dataEntryDetail(0).F_Date)).ToShortDateString()
+        End If
+
+        Dim dataOrder = linq_obj.SP_Select_All_Tbl_OrderOneMaster(Address_ID).ToList()
+        If (dataOrder.Count > 0) Then
+            btnSave.Enabled = False
+            'bind Main Order Data
+            For Each item As SP_Select_All_Tbl_OrderOneMasterResult In dataOrder
+                dtEntryDate.Text = Convert.ToDateTime(IIf(item.EntryDate Is Nothing, Date.Now, item.EntryDate)).ToShortDateString()
+                '  txtPONo.Text = item.PONo
+                dtOrderDate.Text = Convert.ToString(item.OrderDate)
+                txtPartyName.Text = item.PartyName
+                dtDispatchDate.Text = Convert.ToString(item.DispatchDate)
+                txtBatchName.Text = item.BrandName
+                txtOrderFollowBy.Text = item.OrderFollowBy
+                txtOrderRec.Text = item.OrderRecBy
+                cmbOrderStatus.SelectedIndex = If(cmbOrderStatus.FindString(item.OrderStatus) > 0, cmbOrderStatus.FindString(item.OrderStatus), -1)
+            Next
+            'bind project Detail
+            Dim dataprojectMaster = linq_obj.SP_Select_Tbl_ProjectInformationMaster(Address_ID).ToList()
+            If (dataprojectMaster.Count > 0) Then
+                For Each item As SP_Select_Tbl_ProjectInformationMasterResult In dataprojectMaster
+                    txtPlantName.Text = item.PlantName
+                    txtModel.Text = item.Model
+                    txtProject.Text = item.ProjectName
+                    txtCapacity.Text = item.Capacity
+                    txtPowerAvail.Text = item.PowerAvailable
+                    txtPlantShape.Text = item.PlantShape
+                    txtLandArea.Text = item.LandArea
+                    txtDtype.Text = item.DType
+                    txttentiveSchem.Text = item.TreatmentScheme
+                    txtJarDis.Text = item.JarDis
+                    txtBmouldDis.Text = item.BMouldDis
+                    dtTentativeAttendDate.Text = Convert.ToString(item.TentativeDispatch)
+                Next
+            End If
+            Dim dataProjectDetail = linq_obj.SP_Select_Tbl_ProjectDetail(Address_ID).ToList()
+            If (dataProjectDetail.Count > 0) Then
+
+                tblProjectDetail.Clear()
+
+                For Each item As SP_Select_Tbl_ProjectDetailResult In dataProjectDetail
+                    Dim dr As DataRow
+                    dr = tblProjectDetail.NewRow()
+                    dr("SrNo") = item.SrNo
+                    dr("PlantScheme") = item.PlantScheme
+                    dr("VendorName") = item.VendorName
+                    dr("DispatchDate") = item.DispatchDate
+                    tblProjectDetail.Rows.Add(dr)
+                Next
+                DGVOrderdtail.DataSource = tblProjectDetail
+                txtSrNo.Text = If(DGVOrderdtail.Rows.Count = 0, 1, DGVOrderdtail.Rows.Count + 1).ToString()
+            End If
+
+            'bind Packing Detail
+            Dim dataPackaging = linq_obj.SP_Select_Tbl_PackagingMaster(Address_ID).ToList()
+            If (dataPackaging.Count > 0) Then
+                For Each item As SP_Select_Tbl_PackagingMasterResult In dataPackaging
+                    txtBottling.Text = item.Bottling
+                    txtType.Text = item.BottlingType
+                    txtcapcity.Text = item.BottllingCapacity
+                    txtAvendor.Text = item.BottlingVendor1
+                    txtVendor2Bottle.Text = item.BottlingVendor2
+                    txtBPouch.Text = item.Pouch
+                    txtBtype.Text = item.PouchType
+
+                    txtSize.Text = item.PouchCapacity
+                    txtBvendor.Text = item.PouchVendor1
+                    txtPouchvendor2.Text = item.PouchVendor2
+                    txtCchiler.Text = item.Chiller
+                    txtCvendor.Text = item.ChillerVendor1
+                    txtC1vendor.Text = item.ChillerVendor2
+                    txtCompresor.Text = item.Compressor
+                    txtLab.Text = item.Lab
+                    txtlabvendor.Text = item.LabVendor1
+                    txtlabvendor2.Text = item.LabVendor2
+                    txtLetrDetal1.Text = item.Letter11
+                    txtLetrDetal2.Text = item.Letter12
+                    txtLetrDetalL21.Text = item.Letter21
+                    txtLetrDetalL22.Text = item.Letter22
+
+                    txtLetrDetalL31.Text = item.Letter31
+                    txtLetrDetalL32.Text = item.Letter32
+                    txtLetrDetalL41.Text = item.Letter41
+                    txtLetrDetalL42.Text = item.Letter42
+                    txtLetrDetalL51.Text = item.Letter51
+                    txtLetrDetalL52.Text = item.Letter52
+                    txtRemarks.Text = item.Remarks
+                    txtProjType.Text = item.ProjectType
+                    txtDisStatus.Text = item.DipatchStatus
+                    txtDispatchRemarks.Text = item.DispatchRemarks
+                    txtmouldBotle.Text = item.MouldBottle
+                    txtvendor1.Text = item.VendorBottleMould
+                    txtMould.Text = item.MouldPouch
+                    txtvendor2.Text = item.VendorMouldPouch
+                Next
+            End If
+
+            'get FollowUp Data
+            Dim dataFollowUp = linq_obj.SP_Select_Tbl_OrderFollowupMasterByOrder(Address_ID).ToList()
+            If (dataFollowUp.Count > 0) Then
+                txtProjectDetail.Text = dataFollowUp(0).ProjectDetail
+            End If
+
+            'get Followup detail data
+
+            Dim datafolloupDetail = linq_obj.SP_Select_All_Tbl_OrderFollowupDetailByFollowUp(Address_ID).ToList()
+            If (datafolloupDetail.Count > 0) Then
+                tblFollowup.Clear()
+                For Each item As SP_Select_All_Tbl_OrderFollowupDetailByFollowUpResult In datafolloupDetail
+
+
+                    Dim dr As DataRow
+                    dr = tblFollowup.NewRow()
+                    dr("F_Date") = item.FDate
+                    dr("Followup") = item.FollowUp
+                    dr("N_F_FollowpDate") = item.NFDate
+                    dr("Status") = item.Status
+                    dr("ByWhom") = item.ByWhom
+                    dr("Pro_Type") = item.ProjectType
+                    dr("Remarks") = item.Remarks
+                    tblFollowup.Rows.Add(dr)
+                Next
+                DGVfollowUp.DataSource = tblFollowup
+            End If
+
+
+            'get Service Follow Up.
+
+            Dim dataservicefolloupDetail = linq_obj.SP_Select_Tbl_OrderServiceFollowUpDetailByOrder(Address_ID).ToList()
+            If (dataservicefolloupDetail.Count > 0) Then
+
+                tblSFollowup.Clear()
+                For Each item As SP_Select_Tbl_OrderServiceFollowUpDetailByOrderResult In dataservicefolloupDetail
+                    Dim dr As DataRow
+                    dr = tblSFollowup.NewRow()
+                    dr("Date") = item.SFDate
+                    dr("ServiceType") = item.ServiceType
+                    dr("ComplainNo") = item.ComplainNo
+                    dr("AttendDate") = item.AttendDate
+                    dr("AttendBy") = item.AttendBy
+                    dr("Engineer") = item.Engineer
+                    dr("FollowUp") = item.FollowUp
+                    dr("TentativeDate") = item.TentativeADate
+                    dr("Status") = item.Status
+                    dr("Remarks") = item.Remarks
+                    tblSFollowup.Rows.Add(dr)
+                Next
+                DGVFolowup.DataSource = tblSFollowup
+            End If
+
+            'get visitor detail
+            Dim dataVisitor = linq_obj.SP_Select_Tbl_OrderVisitorDetail(Address_ID).ToList()
+            If (dataVisitor.Count > 0) Then
+                For Each item As SP_Select_Tbl_OrderVisitorDetailResult In dataVisitor
+                    pic1.ImageLocation = item.Visitor1Image1
+                    txtPhto11.Text = item.Visitor1Value1
+                    txtPhto12.Text = item.Visitor1Value2
+                    txtPhto13.Text = item.Visitor1Value3
+                    txtPhto14.Text = item.Visitor1Value4
+                    pic2.ImageLocation = item.Visitor2Image1
+                    txtPhto21.Text = item.Visitor2Value1
+                    txtPhto22.Text = item.Visitor2Value2
+                    txtPhto23.Text = item.Visitor2Value3
+                    txtPhto24.Text = item.Visitor2Value4
+                    pic3.ImageLocation = item.Visitor3Image1
+                    txtPhto31.Text = item.Visitor3Value1
+                    txtPhto32.Text = item.Visitor3Value2
+                    txtPhto33.Text = item.Visitor3Value3
+                    txtPhto34.Text = item.Visitor3Value4
+
+                Next
+            End If
+
+
+            'get PlantDrawing detail
+            Dim dataPlantDetail = linq_obj.SP_Tbl_OrderPlanDrawing_Select(Address_ID).ToList()
+            If (dataPlantDetail.Count > 0) Then
+                For Each item As SP_Tbl_OrderPlanDrawing_SelectResult In dataPlantDetail
+                    txtDR11.Text = item.Draw1Val1
+                    txtDR12.Text = item.Draw1Val2
+                    txtDR21.Text = item.Draw2Val1
+                    txtDR22.Text = item.Draw2Val2
+                    txtDR31.Text = item.Draw3Val1
+                    txtDR32.Text = item.Draw3Val2
+                    PB1.ImageLocation = item.Draw1Image1
+                    PB2.ImageLocation = item.Draw2Image2
+                    PB3.ImageLocation = item.Draw3Image3
+                Next
+            End If
+
+            '/ Fill Data by Tbl_LetterMailComMaster_Two Table
+            Dim LetterH = linq_obj.SP_Select_Tbl_LetterMailComMaster_Two(Address_ID).ToList()
+            If LetterH.Count > 0 Then
+                TxtLetterProDetail.Text = LetterH(0).ProjectDetail
+            End If
+
+            TblLetter.Clear()
+            '/ Fill Data by Tbl_LetterMailComMaster_Detail_Two Table
+            Dim LetterDesc = linq_obj.SP_Select_Tbl_LetterMailComMaster_Detail_Two(Address_ID).ToList()
+            If LetterDesc.Count > 0 Then
+                For Each item As SP_Select_Tbl_LetterMailComMaster_Detail_TwoResult In LetterDesc
+                    Dim dr As DataRow
+                    dr = TblLetter.NewRow()
+                    dr("Date") = item.LDate
+                    dr("Card_Date") = item.Card_Date
+                    dr("Card_Rem") = item.Card_Rem
+                    dr("Mail_Rec") = item.Mail_Rec
+                    dr("Mail_Send") = item.Mail_Send
+                    dr("BY_Whom") = item.BY_Whom
+                    dr("Mail_Rem") = item.Mail_Rem
+                    TblLetter.Rows.Add(dr)
+                Next
+                DataLetter.DataSource = TblLetter
+            End If
+
+            TblProInst.Clear()
+            '/ Fill Data by Tbl_ProductInstallationMaster_Two Table
+            Dim ProInst = linq_obj.SP_Select_Tbl_ProductInstallationMaster_Two(Address_ID).ToList()
+            If ProInst.Count > 0 Then
+                For Each item As SP_Select_Tbl_ProductInstallationMaster_TwoResult In ProInst
+                    Dim dr As DataRow
+                    dr = TblProInst.NewRow()
+                    dr("PDate") = item.PDate
+                    dr("Dis_Date") = item.Dis_Date
+                    dr("Product_Name") = item.Product_Name
+                    dr("Vendor_Name") = item.Vendor_Name
+                    dr("Station") = item.Station
+                    dr("Send_CU_To") = item.Send_CU_To
+                    dr("Rec_CU_From") = item.Rec_CU_From
+                    dr("CU_To_Venue") = item.CU_To_Venue
+                    dr("Comp_Date_With_Inst") = item.Comp_Date_With_Inst
+                    dr("By_Whom") = item.By_Whom
+                    dr("Remark") = item.Remark
+                    TblProInst.Rows.Add(dr)
+                Next
+                DataProInst.DataSource = TblProInst
+            End If
+
+            '/ Fill Data by Tbl_ProductInstallationMaster_Two Table
+            Dim ISI = linq_obj.SP_Select_Tbl_ISIProcessMaster_Two(Address_ID).ToList()
+            If ISI.Count > 0 Then
+                TxtScheme.Text = ISI(0).Scheme_Name
+                TxtRecDate.Text = Convert.ToDateTime(ISI(0).D_Rec_Date).ToString()
+                TxtDocFDate.Text = Convert.ToDateTime(ISI(0).P_Doc_F_Date).ToString()
+                TxtDocRDate.Text = Convert.ToDateTime(ISI(0).P_Doc_R_Date).ToString()
+                TxtSToP.Text = ISI(0).F_Ok_S_Tc_P
+                TxtFSubmit.Text = ISI(0).F_Submit_P
+                TxtFileRegDate.Text = Convert.ToDateTime(ISI(0).File_Reg_Date).ToString()
+                TxtBISInspDate.Text = Convert.ToDateTime(ISI(0).BIS_Insp_Date).ToString()
+                TxtLicenceDate.Text = Convert.ToDateTime(ISI(0).Licence_Date).ToString()
+                TxtVender.Text = ISI(0).Vender
+                TxtRemark.Text = ISI(0).ISIRemark
+            End If
+
+
+            TblISIDesc.Clear()
+            '/ Fill Data by Tbl_ISIProcess_DetailMaster_Two Table
+            Dim ISIDes = linq_obj.SP_Select_Tbl_ISIProcess_DetailMaster_Two(Address_ID).ToList()
+            If ISIDes.Count > 0 Then
+                For Each item As SP_Select_Tbl_ISIProcess_DetailMaster_TwoResult In ISIDes
+                    Dim dr As DataRow
+                    dr = TblISIDesc.NewRow()
+                    dr("F_Date") = item.FDate
+                    dr("Followup") = item.FollowUp
+                    dr("N_F_FollowpDate") = item.NFDate
+                    dr("Status") = item.Status
+                    dr("ByWhom") = item.ByWhom
+                    dr("Pro_Type") = item.ProjectType
+                    dr("Remarks") = item.Remarks
+                    TblISIDesc.Rows.Add(dr)
+                Next
+                DataISIGrid.DataSource = TblISIDesc
+            End If
+
+            TblRawMaterial.Clear()
+            Dim rawMaterialData = linq_obj.SP_Tbl_OrderRawMaterialDetail_Select(Address_ID).ToList()
+            If rawMaterialData.Count > 0 Then
+                For Each item As SP_Tbl_OrderRawMaterialDetail_SelectResult In rawMaterialData
+                    Dim dr As DataRow
+                    dr = TblRawMaterial.NewRow()
+                    dr("ItemName") = item.ItemName
+                    dr("Qty") = item.Qty
+                    dr("Price") = item.Rate
+                    dr("Amount") = item.Amount
+                    dr("OrderConfirm") = If(item.IsOrderConfirm = True, "YES", "NO")
+                    dr("PaymentReceived") = If(item.IsPaymentReceived = True, "YES", "NO")
+                    TblRawMaterial.Rows.Add(dr)
+
+                Next
+                DGRawMaterialData.DataSource = TblRawMaterial
+            End If
+
+            tblLog.Clear()
+
+            Dim logdata = linq_obj.SP_Tbl_ProjectLetterLog_Select(Address_ID).ToList()
+            If logdata.Count > 0 Then
+                For Each item As SP_Tbl_ProjectLetterLog_SelectResult In logdata
+                    Dim dr As DataRow
+                    dr = tblLog.NewRow()
+                    dr("Title") = item.LetterTitle
+                    dr("MailDate") = item.MailDate
+                    dr("MailBy") = item.MailBy
+                    dr("CourierDate") = item.CourierDate
+                    dr("CourierBy") = item.CourierBy
+                    dr("RecMailDate") = item.RecMailDate
+                    dr("RecMailBy") = item.RecMailBy
+                    dr("RecCourierDate") = item.RecCourierDate
+                    dr("RecCourierBy") = item.RecCourierBy
+                    tblLog.Rows.Add(dr)
+                Next
+                dgLog.DataSource = tblLog
+            End If
+
+
+        Else
+            btnSave.Enabled = True
+        End If
+
+
+
+    End Sub
+
+
+
+    Private Sub btnsavefolwup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnsavefolwup.Click
+        ''add new row runtime and display into grid. it will save after click on save button
+        Dim dr As DataRow
+
+
+
+        dr = tblSFollowup.NewRow()
+        dr("Date") = dtSFDate.Text
+        dr("ServiceType") = txtSerType.Text
+        dr("ComplainNo") = txtComplainNo.Text
+        dr("AttendDate") = dtAttendDate.Text
+        dr("AttendBy") = txtAtendedBy.Text
+        dr("Engineer") = txtEnginer.Text
+        dr("FollowUp") = txtFolowup1.Text
+        dr("TentativeDate") = dtTentativeAttendDate.Text
+        dr("Status") = txtstatus.Text
+        dr("Remarks") = txtSfolwRemarks.Text
+
+        linq_obj.SP_Insert_Tbl_OrderServiceFollowUpDetail(dtSFDate.Text,
+                                                               txtSerType.Text,
+                                                              txtComplainNo.Text,
+                                                               dtAttendDate.Text,
+                                                               txtAtendedBy.Text,
+                                                               txtEnginer.Text,
+                                                               txtFolowup1.Text,
+                                                               dtTentativeAttendDate.Text,
+                                                               txtstatus.Text,
+                                                               txtSfolwRemarks.Text,
+                                                               Address_ID)
+
+
+        tblSFollowup.Rows.Add(dr)
+        DGVFolowup.DataSource = tblSFollowup
+        txtSerType.Text = ""
+        txtComplainNo.Text = ""
+        txtAtendedBy.Text = ""
+        txtEnginer.Text = ""
+        txtFolowup1.Text = ""
+        txtstatus.Text = ""
+        txtSfolwRemarks.Text = ""
+        dtSFDate.Value = DateTime.Now
+        dtAttendDate.Value = DateTime.Now
+        dtTentativeAttendDate.Value = DateTime.Now
+        txtFolowup3.Text = ""
+    End Sub
+
+    Private Sub btnSaveFollowup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSaveFollowup.Click
+        ''add new row runtime and display into grid. it will save after click on save button
+        Dim dr As DataRow
+        dr = tblFollowup.NewRow()
+        dr("F_Date") = dtFollowDate.Text
+        dr("Followup") = txtFolloupDetail.Text
+        dr("N_F_FollowpDate") = dtNFDate.Text
+        dr("Status") = txtorderstatus.Text
+        dr("ByWhom") = txtBWHOM.Text
+        dr("Pro_Type") = txtProType.Text
+        dr("Remarks") = txtRemarksFollowup.Text
+        tblFollowup.Rows.Add(dr)
+        DGVfollowUp.DataSource = tblFollowup
+
+        linq_obj.SP_Insert_Tbl_OrderFollowupDetail(Address_ID,
+                                                                  dtFollowDate.Text,
+                                                                  txtFolloupDetail.Text,
+                                                                  dtNFDate.Text,
+                                                                txtorderstatus.Text,
+                                                                 txtBWHOM.Text,
+                                                                 txtProType.Text,
+                                                                 txtRemarksFollowup.Text)
+        linq_obj.SubmitChanges()
+
+        txtRemarksFollowup.Text = ""
+        txtorderstatus.Text = ""
+        txtFolloupDetail.Text = ""
+        txtBWHOM.Text = ""
+        txtProType.Text = ""
+        txtDaysAfter.Text = ""
+
+        dtFollowDate.Value = DateTime.Now
+        dtNFDate.Value = DateTime.Now
+    End Sub
+
+    Private Sub btnDelOrder_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelOrder.Click
+        Dim result As DialogResult = MessageBox.Show("Are You Sure Delete?", "Important Message", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)
+        If result = DialogResult.Yes Then
+            tblProjectDetail.Rows(DGVOrderdtail.CurrentRow.Index).Delete()
+            DGVOrderdtail.DataSource = tblProjectDetail
+        End If
+
+    End Sub
+
+    Private Sub btnsaveOrder_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnsaveOrder.Click
+        ''add new row runtime and display into grid. it will save after click on save button
+        Dim dr As DataRow
+        dr = tblProjectDetail.NewRow()
+        dr("SrNo") = txtSrNo.Text
+        dr("PlantScheme") = txtPlantScheme.Text
+        dr("VendorName") = txtVendorName.Text
+        dr("DispatchDate") = dtDisDate.Text
+        tblProjectDetail.Rows.Add(dr)
+        DGVOrderdtail.DataSource = tblProjectDetail
+
+        linq_obj.SP_Insert_Tbl_ProjectDetail(Address_ID,
+                                                                    txtSrNo.Text,
+                                                                   txtPlantScheme.Text,
+                                                                 txtVendorName.Text,
+                                                                    Convert.ToDateTime(dtDisDate.Text))
+        linq_obj.SubmitChanges()
+
+        txtPlantScheme.Text = ""
+        txtVendorName.Text = ""
+        dtDisDate.Value = DateTime.Now
+        txtSrNo.Text = Convert.ToString(Convert.ToInt32(txtSrNo.Text) + 1)
+    End Sub
+
+    Private Sub btnAddOrder_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddOrder.Click
+        txtPlantScheme.Text = ""
+        txtVendorName.Text = ""
+        dtDisDate.Value = DateTime.Now
+        txtSrNo.Text = If(tblProjectDetail.Rows.Count = 0, 1, tblProjectDetail.Rows.Count + 1).ToString()
+    End Sub
+
+    Private Sub btnDelFollowup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelFollowup.Click
+        Dim result As DialogResult = MessageBox.Show("Are You Sure Delete?", "Important Message", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)
+        If result = DialogResult.Yes Then
+            tblFollowup.Rows(DGVfollowUp.CurrentRow.Index).Delete()
+            DGVfollowUp.DataSource = tblFollowup
+        End If
+
+    End Sub
+
+    Private Sub Button18_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddFollowup.Click
+        txtRemarksFollowup.Text = ""
+        txtorderstatus.Text = ""
+        txtBWHOM.Text = ""
+        txtFolloupDetail.Text = ""
+        txtProType.Text = ""
+        dtFollowDate.Value = DateTime.Now
+        dtNFDate.Value = DateTime.Now
+    End Sub
+
+    Private Sub btnDelfolwup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelfolwup.Click
+
+        tblSFollowup.Rows(DGVFolowup.CurrentRow.Index).Delete()
+        DGVFolowup.DataSource = tblSFollowup
+    End Sub
+
+    Private Sub btnBrowse1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowse1.Click
+        Dim openFileDialog1 As New OpenFileDialog
+        Dim imgSrc As String
+        Dim imgPath As String
+        openFileDialog1.ShowDialog()
+        imgSrc = openFileDialog1.FileName.ToString()
+        imgPath = (Path.GetDirectoryName(Application.ExecutablePath) & "\Images\") + openFileDialog1.SafeFileName
+        pic1.SizeMode = PictureBoxSizeMode.StretchImage
+        pic1.ImageLocation = imgSrc
+        pic1.SizeMode = PictureBoxSizeMode.StretchImage
+    End Sub
+
+    Private Sub btnBrowse2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowse2.Click
+        Dim openFileDialog1 As New OpenFileDialog
+        Dim imgSrc As String
+        Dim imgPath As String
+        openFileDialog1.ShowDialog()
+        imgSrc = openFileDialog1.FileName.ToString()
+        imgPath = (Path.GetDirectoryName(Application.ExecutablePath) & "\Images\") + openFileDialog1.SafeFileName
+        pic2.SizeMode = PictureBoxSizeMode.StretchImage
+        pic2.ImageLocation = imgSrc
+        pic2.SizeMode = PictureBoxSizeMode.StretchImage
+    End Sub
+
+    Private Sub btnBrowse3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowse3.Click
+        Dim openFileDialog1 As New OpenFileDialog
+        Dim imgSrc As String
+        Dim imgPath As String
+        openFileDialog1.ShowDialog()
+        imgSrc = openFileDialog1.FileName.ToString()
+        imgPath = (Path.GetDirectoryName(Application.ExecutablePath) & "\Images\") + openFileDialog1.SafeFileName
+        pic3.SizeMode = PictureBoxSizeMode.StretchImage
+        pic3.ImageLocation = imgSrc
+        pic3.SizeMode = PictureBoxSizeMode.StretchImage
+    End Sub
+
+    Private Sub btnChange_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnChange.Click
+        UpdateAll()
+
+    End Sub
+
+    Public Sub UpdateAll()
+        Try
+
+
+            'Save All Data
+            If Address_ID > 0 Then
+                'save main Order Details.
+                Dim resorder As Integer
+                resorder = linq_obj.SP_Update_Tbl_OrderOneMaster(txtOrderNo.Text, dtEntryDate.Text, txtPONo.Text, txtOrderNo.Text, Convert.ToDateTime(If(dtOrderDate.Text = "", "01-01-1900", dtOrderDate.Text)), Convert.ToDateTime(If(dtDispatchDate.Text = "", "01-01-1900", dtDispatchDate.Text)), txtPartyName.Text,
+                                                              txtBatchName.Text, Address_ID, txtOrderRec.Text, txtOrderFollowBy.Text, cmbOrderStatus.Text)
+                If (resorder > 0) Then
+                    linq_obj.SubmitChanges()
+                End If
+
+                'bind Address Detail
+                Dim resAddress As Integer
+                resAddress = linq_obj.SP_UpdateAddress(txtPartyName.Text, txtBillAdresss.Text, txtArea.Text, txtCity.Text, txtPincode.Text, txtTaluka.Text, txtDistrict.Text, txtState.Text, txtDeladress.Text, txtDelArea.Text, txtDelCity.Text, txtDelPincode.Text, txtDelTaluka.Text, txtDelDistrict.Text, txtDelState.Text, Address_ID)
+                If resAddress >= 0 Then
+                    linq_obj.SubmitChanges()
+                End If
+
+                'bind Project Information
+
+                Dim resProjectId As Integer
+                resProjectId = linq_obj.SP_Update_Tbl_ProjectInformationMaster(txtPlantName.Text, txtModel.Text, txtProject.Text, txtCapacity.Text, txtPowerAvail.Text, txtPlantShape.Text,
+                                                                             txtLandArea.Text, txtDtype.Text, txttentiveSchem.Text, txtJarDis.Text, txtBmouldDis.Text, Convert.ToDateTime(If(dtTentativeAttendDate.Text = "", "01-01-1900", dtTentativeAttendDate.Text)), Address_ID)
+                If (resProjectId > 0) Then
+                    linq_obj.SubmitChanges()
+                    'delete old data
+                    Dim delProjectDetail = linq_obj.SP_Delete_Tbl_ProjectDetail(Address_ID)
+                    linq_obj.SubmitChanges()
+                    For i As Integer = 0 To tblProjectDetail.Rows.Count - 1
+                        linq_obj.SP_Insert_Tbl_ProjectDetail(Address_ID,
+                                                                    tblProjectDetail.Rows(i)("SrNo").ToString(),
+                                                                    tblProjectDetail.Rows(i)("PlantScheme").ToString(),
+                                                                    tblProjectDetail.Rows(i)("VendorName").ToString(),
+                                                                     Convert.ToDateTime(tblProjectDetail.Rows(i)("DispatchDate").ToString()))
+                        linq_obj.SubmitChanges()
+                    Next
+                End If
+
+                'Save All Packing Details
+                Dim respackid As Integer
+                respackid = linq_obj.SP_Insert_Tbl_PackagingMaster(txtBottling.Text, txtType.Text, txtcapcity.Text, txtAvendor.Text, txtVendor2Bottle.Text, txtBPouch.Text, txtBtype.Text, txtSize.Text,
+                                                                  txtBvendor.Text, txtPouchvendor2.Text, txtCchiler.Text, txtCvendor.Text, txtC1vendor.Text, txtCompresor.Text, txtLab.Text, txtlabvendor.Text, txtlabvendor2.Text,
+                                                                  txtLetrDetal1.Text, txtLetrDetal2.Text, txtLetrDetalL21.Text, txtLetrDetalL22.Text, txtLetrDetalL31.Text, txtLetrDetalL32.Text, txtLetrDetalL41.Text, txtLetrDetalL42.Text,
+                                                                  txtLetrDetalL51.Text, txtLetrDetalL52.Text, txtRemarks.Text, txtProjType.Text, txtDisStatus.Text, txtDispatchRemarks.Text, Address_ID, txtmouldBotle.Text, txtvendor1.Text,
+                                                                    txtMould.Text, txtvendor2.Text, txtJarWashing.Text, txtJarWashingType.Text, txtJarWashingCapacity.Text, txtJarWashingVendor.Text, txtBlow.Text, txtBlowType.Text, txtBlowCapacity.Text, txtBlowVendor.Text, txtBulk.Text, txtBulkType.Text, txtBulkCapacity.Text, txtBulkVendor.Text, txtSoda.Text, txtSodaType.Text, txtSodaCapacity.Text, txtSodaVendor.Text, txtBatchCoding.Text, txtBatchCodingType.Text, txtBatchCodingCapacity.Text, txtBatchCodingVendor.Text)
+
+                If (respackid > 0) Then
+                    linq_obj.SubmitChanges()
+                End If
+
+                'Save Folloup Details
+                Dim resFollowupMaster As Integer
+                resFollowupMaster = linq_obj.SP_Update_Tbl_OrderFollowupMaster(txtProjectDetail.Text, Address_ID)
+                If (resFollowupMaster > 0) Then
+                    linq_obj.SubmitChanges()
+                    'delete Old Data
+                    Dim delfollowDetail = linq_obj.SP_Delete_Tbl_OrderFollowupDetail(Address_ID)
+                    linq_obj.SubmitChanges()
+
+                    For i As Integer = 0 To tblFollowup.Rows.Count - 1
+                        linq_obj.SP_Insert_Tbl_OrderFollowupDetail(Address_ID,
+                                                                    Convert.ToDateTime(tblFollowup.Rows(i)("F_Date").ToString()),
+                                                                    tblFollowup.Rows(i)("Followup").ToString(),
+                                                                     Convert.ToDateTime(tblFollowup.Rows(i)("N_F_FollowpDate").ToString()),
+                                                                   tblFollowup.Rows(i)("Status").ToString(),
+                                                                   tblFollowup.Rows(i)("ByWhom").ToString(),
+                                                                    tblFollowup.Rows(i)("Pro_Type").ToString(),
+                                                                   tblFollowup.Rows(i)("Remarks").ToString())
+                        linq_obj.SubmitChanges()
+                    Next
+
+                End If
+
+
+                'Save Service Folllowup detail
+                Dim delservicedata = linq_obj.SP_Delete_Tbl_OrderServiceFollowUpDetail(Address_ID)
+                linq_obj.SubmitChanges()
+
+
+                For i As Integer = 0 To tblSFollowup.Rows.Count - 1
+
+
+                    linq_obj.SP_Insert_Tbl_OrderServiceFollowUpDetail(
+                                                                Convert.ToDateTime(tblSFollowup.Rows(i)("Date").ToString()),
+                                                                tblSFollowup.Rows(i)("ServiceType").ToString(),
+                                                                tblSFollowup.Rows(i)("ComplainNo").ToString(),
+                                                                Convert.ToDateTime(tblSFollowup.Rows(i)("AttendDate").ToString()),
+                                                                tblSFollowup.Rows(i)("AttendBy").ToString(),
+                                                                tblSFollowup.Rows(i)("Engineer").ToString(),
+                                                                tblSFollowup.Rows(i)("FollowUp").ToString(),
+                                                                Convert.ToDateTime(tblSFollowup.Rows(i)("TentativeDate").ToString()),
+                                                                tblSFollowup.Rows(i)("Status").ToString(),
+                                                                tblSFollowup.Rows(i)("Remarks").ToString(),
+                                                                Address_ID)
+                    linq_obj.SubmitChanges()
+                Next
+
+                'Save Visitor Detail
+                Dim str1, str2, str3 As String
+                If (pic1.ImageLocation Is Nothing) Then
+                    str1 = ""
+                Else
+                    str1 = pic1.ImageLocation
+                End If
+                If (pic2.ImageLocation Is Nothing) Then
+                    str2 = ""
+                Else
+                    str2 = pic2.ImageLocation
+                End If
+                If (pic3.ImageLocation Is Nothing) Then
+                    str3 = ""
+                Else
+                    str3 = pic3.ImageLocation
+                End If
+
+
+                Dim resVisitor As Integer
+
+                resVisitor = linq_obj.SP_Update_Tbl_OrderVisitorDetail(str1, txtPhto11.Text, txtPhto12.Text, txtPhto13.Text, txtPhto14.Text, str2, txtPhto21.Text,
+                                                                     txtPhto22.Text, txtPhto23.Text, txtPhto24.Text, str3, txtPhto31.Text, txtPhto32.Text, txtPhto33.Text, txtPhto34.Text, Address_ID)
+
+                If (resVisitor > 0) Then
+                    linq_obj.SubmitChanges()
+
+                End If
+
+                'Save Plan Detail Detail
+                Dim pic1path1, pic1path2, pic1path3 As String
+                If (pic1.ImageLocation Is Nothing) Then
+                    pic1path1 = ""
+                Else
+                    pic1path1 = PB1.ImageLocation
+                End If
+                If (pic2.ImageLocation Is Nothing) Then
+                    pic1path2 = ""
+                Else
+                    pic1path2 = PB2.ImageLocation
+                End If
+                If (pic3.ImageLocation Is Nothing) Then
+                    pic1path3 = ""
+                Else
+                    pic1path3 = PB3.ImageLocation
+                End If
+
+
+                Dim resPlant As Integer
+                Dim dataPlantDetail = linq_obj.SP_Tbl_OrderPlanDrawing_Select(Address_ID).ToList()
+                If (dataPlantDetail.Count > 0) Then
+                    resPlant = linq_obj.SP_Tbl_OrderPlanDrawing_Update(txtDR11.Text, txtDR12.Text, pic1path1, txtDR21.Text, txtDR22.Text, pic1path2, txtDR31.Text, txtDR32.Text, pic1path3, Address_ID)
+
+                Else
+                    resPlant = linq_obj.SP_Tbl_OrderPlanDrawing_Insert(txtDR11.Text, txtDR12.Text, pic1path1, txtDR21.Text, txtDR22.Text, pic1path2, txtDR31.Text, txtDR32.Text, pic1path3, Address_ID)
+
+                End If
+
+                If (resPlant >= 0) Then
+                    linq_obj.SubmitChanges()
+
+                End If
+
+
+                'Save Order Details
+
+                '/ Letter Header 
+                linq_obj.SP_Update_Tbl_LetterMailComMaster_Two(Address_ID, TxtLetterProDetail.Text)
+                linq_obj.SubmitChanges()
+
+                '/ Letter Description
+                linq_obj.SP_Delete_Tbl_LetterMailComMaster_Detail_Two(Address_ID)
+                linq_obj.SubmitChanges()
+                For i As Integer = 0 To TblLetter.Rows.Count - 1
+                    linq_obj.SP_Insert_Tbl_LetterMailComMaster_Detail_Two(Address_ID,
+                    Convert.ToDateTime(TblLetter.Rows(i)("Date").ToString()),
+                    Convert.ToDateTime(TblLetter.Rows(i)("Card_Date").ToString()),
+                    TblLetter.Rows(i)("Card_Rem").ToString(),
+                    TblLetter.Rows(i)("Mail_Rec").ToString(),
+                    TblLetter.Rows(i)("Mail_Send").ToString(),
+                    TblLetter.Rows(i)("BY_Whom").ToString(),
+                    TblLetter.Rows(i)("Mail_Rem").ToString())
+                    linq_obj.SubmitChanges()
+                Next
+
+
+
+                '/ Product Instalation
+                linq_obj.SP_Delete_Tbl_ProductInstallationMaster_Two(Address_ID)
+                linq_obj.SubmitChanges()
+                For i As Integer = 0 To TblProInst.Rows.Count - 1
+                    linq_obj.SP_Insert_Tbl_ProductInstallationMaster_Two(Address_ID,
+                    Convert.ToDateTime(TblProInst.Rows(i)("PDate").ToString()),
+                    Convert.ToDateTime(TblProInst.Rows(i)("Dis_Date").ToString()),
+                    TblProInst.Rows(i)("Product_Name").ToString(),
+                    TblProInst.Rows(i)("Vendor_Name").ToString(),
+                    TblProInst.Rows(i)("Station").ToString(),
+                    TblProInst.Rows(i)("Send_CU_To").ToString(),
+                    TblProInst.Rows(i)("Rec_CU_From").ToString(),
+                    TblProInst.Rows(i)("CU_To_Venue").ToString(),
+                    Convert.ToDateTime(TblProInst.Rows(i)("Comp_Date_With_Inst").ToString()),
+                    TblProInst.Rows(i)("By_Whom").ToString(),
+                    TblProInst.Rows(i)("Remark").ToString())
+                    linq_obj.SubmitChanges()
+                Next
+
+
+                '/ISI Header
+
+                linq_obj.SP_Update_Tbl_ISIProcessMaster_Two(Address_ID,
+                                                            TxtScheme.Text,
+                                                            Convert.ToDateTime(TxtRecDate.Value),
+                                                            Convert.ToDateTime(TxtDocFDate.Value),
+                                                            Convert.ToDateTime(TxtDocRDate.Value),
+                                                            TxtSToP.Text, TxtFSubmit.Text,
+                                                            Convert.ToDateTime(TxtFileRegDate.Value),
+                                                            Convert.ToDateTime(TxtBISInspDate.Value),
+                                                            Convert.ToDateTime(TxtLicenceDate.Value),
+                                                            TxtVender.Text,
+                                                            TxtRemark.Text)
+                linq_obj.SubmitChanges()
+
+                '/ ISI Description 
+                linq_obj.SP_Delete_Tbl_ISIProcess_DetailMaster_Two(Address_ID)
+                linq_obj.SubmitChanges()
+
+                For i As Integer = 0 To TblISIDesc.Rows.Count - 1
+                    linq_obj.SP_Insert_Tbl_ISIProcess_DetailMaster_Two(Address_ID,
+                    Convert.ToDateTime(TblISIDesc.Rows(i)("F_Date").ToString()),
+                                                                    TblISIDesc.Rows(i)("Followup").ToString(),
+                                                                     Convert.ToDateTime(TblISIDesc.Rows(i)("N_F_FollowpDate").ToString()),
+                                                                   TblISIDesc.Rows(i)("Status").ToString(),
+                                                                   TblISIDesc.Rows(i)("ByWhom").ToString(),
+                                                                    TblISIDesc.Rows(i)("Pro_Type").ToString(),
+                                                                   TblISIDesc.Rows(i)("Remarks").ToString())
+                    linq_obj.SubmitChanges()
+                Next
+
+                MessageBox.Show("Successfully Updated")
+                clearAll()
+            Else
+                MessageBox.Show("No Address Informations Found")
+            End If
+
+        Catch ex As Exception
+            MessageBox.Show("Error :" + ex.Message)
+        End Try
+    End Sub
+
+    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+        clearAll()
+
+    End Sub
+
+    Public Sub clearAll()
+        cmbOrderStatus.SelectedIndex = -1
+        Address_ID = 0
+        tblFollowup.Clear()
+        tblProjectDetail.Clear()
+        tblSFollowup.Clear()
+        TblRawMaterial.Clear()
+        tblLog.Clear()
+        txtFolowup3.Text = ""
+        txtDaysAfter.Text = ""
+        txtFolloupDetail.Text = ""
+
+        'clear visitordata
+        pic1.ImageLocation = Nothing
+        txtPhto11.Text = ""
+        txtPhto12.Text = ""
+        txtPhto13.Text = ""
+        txtPhto14.Text = ""
+        pic2.ImageLocation = Nothing
+        txtPhto21.Text = ""
+        txtPhto22.Text = ""
+        txtPhto23.Text = ""
+        txtPhto24.Text = ""
+        pic3.ImageLocation = Nothing
+        txtPhto31.Text = ""
+        txtPhto32.Text = ""
+        txtPhto33.Text = ""
+        txtPhto34.Text = ""
+
+
+        txtOrderFollowBy.Text = ""
+        txtOrderRec.Text = ""
+        dtTentativeDate.Text = ""
+
+        ''packing detail clear
+        txtBottling.Text = ""
+        txtType.Text = ""
+        txtcapcity.Text = ""
+        txtAvendor.Text = ""
+        txtVendor2Bottle.Text = ""
+        txtBPouch.Text = ""
+        txtBtype.Text = ""
+
+        txtSize.Text = ""
+        txtBvendor.Text = ""
+        txtPouchvendor2.Text = ""
+        txtCchiler.Text = ""
+        txtCvendor.Text = ""
+        txtC1vendor.Text = ""
+        txtCompresor.Text = ""
+        txtLab.Text = ""
+        txtlabvendor.Text = ""
+        txtlabvendor2.Text = ""
+        txtLetrDetal1.Text = ""
+        txtLetrDetal2.Text = ""
+        txtLetrDetalL21.Text = ""
+        txtLetrDetalL22.Text = ""
+
+        txtLetrDetalL31.Text = ""
+        txtLetrDetalL32.Text = ""
+        txtLetrDetalL41.Text = ""
+        txtLetrDetalL42.Text = ""
+        txtLetrDetalL51.Text = ""
+        txtLetrDetalL52.Text = ""
+        txtRemarks.Text = ""
+        txtProjType.Text = ""
+        txtDisStatus.Text = ""
+        txtDispatchRemarks.Text = ""
+        txtmouldBotle.Text = ""
+        txtvendor1.Text = ""
+        txtMould.Text = ""
+        txtvendor2.Text = ""
+
+        'clear a Project information
+        txtPlantName.Text = ""
+        txtModel.Text = ""
+        txtProject.Text = ""
+        txtCapacity.Text = ""
+        txtPowerAvail.Text = ""
+        txtPlantShape.Text = ""
+        txtLandArea.Text = ""
+        txtDtype.Text = ""
+        txttentiveSchem.Text = ""
+        txtJarDis.Text = ""
+        txtBmouldDis.Text = ""
+        dtTentativeAttendDate.Text = ""
+
+        'clear order detail
+
+
+        dtEntryDate.Text = DateTime.Now
+        txtPONo.Text = ""
+        txtOrderNo.Text = ""
+        dtOrderDate.Text = DateTime.Now
+        txtPartyName.Text = ""
+        dtDispatchDate.Text = ""
+        txtBatchName.Text = ""
+
+        'clear 
+        txtPartyName.Text = ""
+        txtBillAdresss.Text = ""
+        txtCity.Text = ""
+        txtState.Text = ""
+        txtDistrict.Text = ""
+        txtTaluka.Text = ""
+        txtPincode.Text = ""
+        txtArea.Text = ""
+        txtcontctName.Text = ""
+        txtConatactno.Text = ""
+        txtEmail.Text = ""
+
+        dtEntryDate.Value = DateTime.Now
+
+
+        txtDeladress.Text = ""
+        txtDelArea.Text = ""
+        txtDelCity.Text = ""
+        txtDelDistrict.Text = ""
+        txtDelPincode.Text = ""
+        txtDelState.Text = ""
+        txtDelTaluka.Text = ""
+
+        dtOrderDate.Text = ""
+        ''Clear All Data Of order[2] data
+
+        TxtScheme.Text = ""
+        TxtRecDate.Text = DateTime.Now
+        TxtDocFDate.Text = DateTime.Now
+        TxtDocRDate.Text = DateTime.Now
+        TxtSToP.Text = ""
+        TxtFSubmit.Text = ""
+        TxtFileRegDate.Text = DateTime.Now
+        TxtBISInspDate.Text = DateTime.Now
+        TxtLicenceDate.Text = DateTime.Now
+        TxtVender.Text = ""
+        TxtRemark.Text = ""
+
+        txtISIFollowRemarks.Text = ""
+        txtISIStatus.Text = ""
+        txtISIFollowUp.Text = ""
+        txtISIByWhom.Text = ""
+        txtISIProType.Text = ""
+        txtISINextDays.Text = ""
+        dtISIFDate.Value = DateTime.Now
+        dtISINFDate.Value = DateTime.Now
+
+        TxtProDate.Text = Date.Now
+        TxtProDisDate.Text = Date.Now
+        TxtProProductName.Text = ""
+        TxtProVenderName.Text = ""
+        TxtProStation.Text = ""
+        TxtProSendCuTo.Text = ""
+        TxtProRecCUFrom.Text = ""
+        TxtProCuToVenue.Text = ""
+        TxtProCompDateInst.Text = Date.Now
+        TxtProByWhom.Text = ""
+        TxtProRemark.Text = ""
+
+        TxtLetterProDetail.Text = ""
+        TxtLetterDate.Text = Date.Now
+        TxtLetterCreDate.Text = Date.Now
+        TxtLetterCardRem.Text = ""
+        TxtLetterMailRec.Text = ""
+        TxtLetterMailSend.Text = ""
+        TxtLetterByWhom.Text = ""
+        TxtLetterMailRem.Text = ""
+
+        TblISIDesc.Clear()
+        TblProInst.Clear()
+        TblLetter.Clear()
+        btnSave.Enabled = True
+
+        txtEmail1.Text = ""
+        txtEmail2.Text = ""
+
+        txtItemName.Text = ""
+        txtQty.Text = ""
+        txtAmount.Text = ""
+        txtPrice.Text = ""
+
+        txtContactNo.Text = ""
+        txtOrdermastEmail.Text = ""
+
+
+        txtDR11.Text = ""
+        txtDR12.Text = ""
+        txtDR21.Text = ""
+        txtDR22.Text = ""
+        txtDR31.Text = ""
+        txtDR32.Text = ""
+        PB1.ImageLocation = Nothing
+        PB2.ImageLocation = Nothing
+        PB3.ImageLocation = Nothing
+
+    End Sub
+
+    Private Sub btnAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd.Click
+        clearAll()
+    End Sub
+
+    Private Sub btnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete.Click
+        Dim result As DialogResult = MessageBox.Show("Are You Sure?", "Important Message", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)
+        If result = DialogResult.Yes Then
+
+            Dim resDelete As Integer
+            Dim resProjDelete As Integer
+            Dim resPack As Integer
+            Dim resFollowUp As Integer
+            Dim resFollowupDetail As Integer
+            Dim resSerFollow As Integer
+            Dim resVisDetail As Integer
+            Dim resPlant As Integer
+
+            resProjDelete = linq_obj.SP_Delete_Tbl_ProjectDetail(Address_ID)
+            resPack = linq_obj.SP_Delete_Tbl_PackagingMaster(Address_ID)
+            resDelete = linq_obj.SP_Delete_Tbl_OrderOneMaster(Address_ID)
+            resFollowUp = linq_obj.SP_Delete_Tbl_OrderFollowupMaster(Address_ID)
+            resFollowupDetail = linq_obj.SP_Delete_Tbl_OrderFollowupDetail(Address_ID)
+            resSerFollow = linq_obj.SP_Delete_Tbl_OrderServiceFollowUpDetail(Address_ID)
+            resVisDetail = linq_obj.SP_Delete_Tbl_OrderVisitorDetail(Address_ID)
+            resPlant = linq_obj.SP_Tbl_OrderPlanDrawing_Delete(Address_ID)
+
+
+
+            '/Letter Header
+            linq_obj.SP_Delete_Tbl_LetterMailComMaster_Two(Address_ID)
+            linq_obj.SubmitChanges()
+
+            '/Letter Detail
+            linq_obj.SP_Delete_Tbl_LetterMailComMaster_Detail_Two(Address_ID)
+            linq_obj.SubmitChanges()
+
+            '/Product Inst
+            linq_obj.SP_Delete_Tbl_ProductInstallationMaster_Two(Address_ID)
+            linq_obj.SubmitChanges()
+
+            '/ISI Header
+            linq_obj.SP_Delete_Tbl_ISIProcessMaster_Two(Address_ID)
+            linq_obj.SubmitChanges()
+
+            '/ISI Detail
+            linq_obj.SP_Delete_Tbl_ISIProcess_DetailMaster_Two(Address_ID)
+            linq_obj.SubmitChanges()
+            linq_obj.SubmitChanges()
+            clearAll()
+            MessageBox.Show("Successfully Deleted")
+        End If
+
+
+    End Sub
+
+    Private Sub txtFolowup3_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolowup3.TextChanged
+        If txtFolowup3.Text <> "" Then
+            dtTentativeAttendDate.Value = dtSFDate.Value.Date.AddDays(txtFolowup3.Text)
+        End If
+    End Sub
+
+    Private Sub txtDaysAfter_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtDaysAfter.TextChanged
+        If txtDaysAfter.Text <> "" Then
+            dtNFDate.Value = dtFollowDate.Value.Date.AddDays(txtDaysAfter.Text)
+        End If
+    End Sub
+
+    Private Sub txtEntryNo_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Dim data = linq_obj.SP_Get_AddressListByEnqNo(txtOrderNo.Text).ToList()
+        If (data.Count > 0) Then
+            clearAll()
+            Address_ID = data(0).Pk_AddressID
+            BindAllData()
+        End If
+    End Sub
+
+    Private Sub txtPartyName_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPartyName.Leave
+        If (txtPartyName.Text <> "") Then
+            Dim data = linq_obj.SP_Get_AddressListByName(txtPartyName.Text).ToList()
+            If (data.Count > 0) Then
+                Address_ID = data(0).Pk_AddressID
+                BindAllGridData()
+            End If
+
+
+        End If
+    End Sub
+
+    Private Sub btnNewReport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNewReport.Click
+        MessageBox.Show("Format Required")
+    End Sub
+
+    Private Sub btnProSumary_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnProSumary.Click
+        If Address_ID > 0 Then
+            Dim frm As New FollowUpReport(Address_ID, "Rpt_FollowUp_ProjectSummary")
+            frm.MdiParent = MDIMainForm
+            frm.StartPosition = FormStartPosition.CenterScreen
+            frm.Show()
+        End If
+
+    End Sub
+
+    Private Sub btnfolowup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnfolowup.Click
+        If Address_ID > 0 Then
+            Dim frm As New FollowUpReport(Address_ID, "Rpt_FollowUp")
+            frm.MdiParent = MDIMainForm
+            frm.StartPosition = FormStartPosition.CenterParent
+            frm.Show()
+        End If
+    End Sub
+
+    Private Sub btnSfolowup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSfolowup.Click
+        If Address_ID > 0 Then
+            Dim frm As New FollowUpReport(Address_ID, "Rpt_FollowUp-OrderDetails")
+            frm.MdiParent = MDIMainForm
+            frm.StartPosition = FormStartPosition.CenterParent
+            frm.Show()
+        End If
+
+    End Sub
+
+    Private Sub btnVisitor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVisitor.Click
+        MessageBox.Show("Format Required")
+    End Sub
+
+    '/ ISI Desc Add More
+    Private Sub BtnDescSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnDescSave.Click
+        ''add new row runtime and display into grid. it will save after click on save button
+        Dim dr As DataRow
+        dr = TblISIDesc.NewRow()
+        dr("F_Date") = dtISIFDate.Text
+        dr("Followup") = txtISIFollowUp.Text
+        dr("N_F_FollowpDate") = dtISINFDate.Text
+        dr("Status") = txtISIStatus.Text
+        dr("ByWhom") = txtISIByWhom.Text
+        dr("Pro_Type") = txtISIProType.Text
+        dr("Remarks") = txtISIFollowRemarks.Text
+        TblISIDesc.Rows.Add(dr)
+        DataISIGrid.DataSource = TblISIDesc
+
+        linq_obj.SP_Insert_Tbl_ISIProcess_DetailMaster_Two(Address_ID,
+                                          dtISIFDate.Text,
+                                         txtISIFollowUp.Text,
+                                         dtISINFDate.Text,
+                                         txtISIStatus.Text,
+                                         txtISIByWhom.Text,
+                                         txtISIProType.Text,
+                                         txtISIFollowRemarks.Text)
+
+        linq_obj.SubmitChanges()
+
+        txtISIFollowRemarks.Text = ""
+        txtISIStatus.Text = ""
+        txtISIFollowUp.Text = ""
+        txtISIByWhom.Text = ""
+        txtISIProType.Text = ""
+        txtISINextDays.Text = ""
+        dtISIFDate.Value = DateTime.Now
+        dtISINFDate.Value = DateTime.Now
+    End Sub
+
+    '/ Product Install Add More
+    Private Sub BtnSaveProInst_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSaveProInst.Click
+        Dim dr As DataRow
+        dr = TblProInst.NewRow()
+        dr("PDate") = TxtProDate.Text
+        dr("Dis_Date") = TxtProDisDate.Text
+        dr("Product_Name") = TxtProProductName.Text
+        dr("Vendor_Name") = TxtProVenderName.Text
+        dr("Station") = TxtProStation.Text
+        dr("Send_CU_To") = TxtProSendCuTo.Text
+        dr("Rec_CU_From") = TxtProRecCUFrom.Text
+        dr("CU_To_Venue") = TxtProCuToVenue.Text
+        dr("Comp_Date_With_Inst") = TxtProCompDateInst.Text
+        dr("By_Whom") = TxtProByWhom.Text
+        dr("Remark") = TxtProRemark.Text
+
+        TblProInst.Rows.Add(dr)
+        DataProInst.DataSource = TblProInst
+
+        linq_obj.SP_Insert_Tbl_ProductInstallationMaster_Two(Address_ID,
+                    TxtProDate.Text,
+                    TxtProDisDate.Text,
+                     TxtProProductName.Text,
+                     TxtProVenderName.Text,
+                    TxtProStation.Text,
+                    TxtProSendCuTo.Text,
+                    TxtProRecCUFrom.Text,
+                    TxtProCuToVenue.Text,
+                    TxtProCompDateInst.Text,
+                    TxtProByWhom.Text,
+                    TxtProRemark.Text)
+        linq_obj.SubmitChanges()
+
+        TxtProDate.Text = Date.Now
+        TxtProDisDate.Text = Date.Now
+        TxtProProductName.Text = ""
+        TxtProVenderName.Text = ""
+        TxtProStation.Text = ""
+        TxtProSendCuTo.Text = ""
+        TxtProRecCUFrom.Text = ""
+        TxtProCuToVenue.Text = ""
+        TxtProCompDateInst.Text = Date.Now
+        TxtProByWhom.Text = ""
+        TxtProRemark.Text = ""
+    End Sub
+
+
+    '/ Letter Desc Add More
+    Private Sub BtnLetterSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnLetterSave.Click
+        Dim dr As DataRow
+        dr = TblLetter.NewRow()
+        dr("Date") = TxtLetterDate.Text
+        dr("Card_Date") = TxtLetterCreDate.Text
+        dr("Card_Rem") = TxtLetterCardRem.Text
+        dr("Mail_Rec") = TxtLetterMailRec.Text
+        dr("Mail_Send") = TxtLetterMailSend.Text
+        dr("BY_Whom") = TxtLetterByWhom.Text
+        dr("Mail_Rem") = TxtLetterMailRem.Text
+        TblLetter.Rows.Add(dr)
+        DataLetter.DataSource = TblLetter
+
+        linq_obj.SP_Insert_Tbl_LetterMailComMaster_Detail_Two(Address_ID,
+                   TxtLetterDate.Text,
+                   TxtLetterCreDate.Text,
+                   TxtLetterCardRem.Text,
+                    TxtLetterMailRec.Text,
+                  TxtLetterMailSend.Text,
+                    TxtLetterByWhom.Text,
+                  TxtLetterMailRem.Text)
+        linq_obj.SubmitChanges()
+
+
+        TxtLetterDate.Text = Date.Now
+        TxtLetterCreDate.Text = Date.Now
+        TxtLetterCardRem.Text = ""
+        TxtLetterMailRec.Text = ""
+        TxtLetterMailSend.Text = ""
+        TxtLetterByWhom.Text = ""
+        TxtLetterMailRem.Text = ""
+
+    End Sub
+
+    '/ DatGrid Row Delete
+    Private Sub BtnLetterDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnLetterDelete.Click
+        TblLetter.Rows(DataLetter.CurrentRow.Index).Delete()
+        DataLetter.DataSource = TblLetter
+
+    End Sub
+    '/ DataProInst Row Delete
+    Private Sub BtnProDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnProDelete.Click
+        TblProInst.Rows(DataProInst.CurrentRow.Index).Delete()
+        DataProInst.DataSource = TblProInst
+    End Sub
+
+    '/ DataISIGrid Row Delete
+    Private Sub BtnDescDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnDescDelete.Click
+        Dim result As DialogResult = MessageBox.Show("Are You Sure Delete?", "Important Message", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)
+        If result = DialogResult.Yes Then
+            TblISIDesc.Rows(DataISIGrid.CurrentRow.Index).Delete()
+            DataISIGrid.DataSource = TblISIDesc
+        End If
+
+    End Sub
+
+    Private Sub BtnAddLetter_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnAddLetter.Click
+        TxtLetterDate.Text = Date.Now
+        TxtLetterCreDate.Text = Date.Now
+        TxtLetterCardRem.Text = ""
+        TxtLetterMailRec.Text = ""
+        TxtLetterMailSend.Text = ""
+        TxtLetterByWhom.Text = ""
+        TxtLetterMailRem.Text = ""
+    End Sub
+
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+        TxtProDate.Text = Date.Now
+        TxtProDisDate.Text = Date.Now
+        TxtProProductName.Text = ""
+        TxtProVenderName.Text = ""
+        TxtProStation.Text = ""
+        TxtProSendCuTo.Text = ""
+        TxtProRecCUFrom.Text = ""
+        TxtProCuToVenue.Text = ""
+        TxtProCompDateInst.Text = Date.Now
+        TxtProByWhom.Text = ""
+        TxtProRemark.Text = ""
+    End Sub
+
+    Private Sub BtnDescAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnDescAdd.Click
+        txtISIFollowRemarks.Text = ""
+        txtISIStatus.Text = ""
+        txtISIFollowUp.Text = ""
+        txtISIByWhom.Text = ""
+        txtISIProType.Text = ""
+        txtISINextDays.Text = ""
+        dtISIFDate.Value = DateTime.Now
+        dtISINFDate.Value = DateTime.Now
+    End Sub
+
+    Private Sub txtDaysAfter_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtDaysAfter.KeyPress
+        If Char.IsLetter(e.KeyChar) Then
+            e.Handled = True
+        Else
+            e.Handled = False
+        End If
+
+    End Sub
+
+    Private Sub txtFolowup3_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFolowup3.KeyPress
+        If Char.IsLetter(e.KeyChar) Then
+            e.Handled = True
+        Else
+            e.Handled = False
+        End If
+
+    End Sub
+
+    Private Sub btnLFolowup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnLFolowup.Click
+        If Address_ID > 0 Then
+            Dim frm As New FollowUpReport(Address_ID, "Rpt_FollowUp_LetterMail")
+            frm.MdiParent = MDIMainForm
+            frm.StartPosition = FormStartPosition.CenterParent
+            frm.Show()
+        End If
+    End Sub
+
+    Private Sub btnIfolowup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnIfolowup.Click
+        If Address_ID > 0 Then
+            Dim frm As New FollowUpReport(Address_ID, "Rpt_FollowUp_ISIProcess")
+            frm.MdiParent = MDIMainForm
+            frm.StartPosition = FormStartPosition.CenterParent
+            frm.Show()
+        End If
+    End Sub
+
+    Private Sub btnPfolowup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPfolowup.Click
+        If Address_ID > 0 Then
+            Dim frm As New FollowUpReport(Address_ID, "Rpt_FollowUp_ProjectSummary")
+            frm.MdiParent = MDIMainForm
+            frm.StartPosition = FormStartPosition.CenterScreen
+            frm.Show()
+        End If
+    End Sub
+
+    Private Sub DGVOrderDetails_PreviewKeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PreviewKeyDownEventArgs) Handles DGVOrderDetails.PreviewKeyDown
+        Try
+
+            clearAll()
+
+            If (e.KeyCode = Keys.Down) Then
+                Address_ID = Convert.ToInt64(Me.DGVOrderDetails.Rows(Me.DGVOrderDetails.CurrentRow.Index + 1).Cells(0).Value)
+            Else
+                Address_ID = Convert.ToInt64(Me.DGVOrderDetails.Rows(Me.DGVOrderDetails.CurrentRow.Index - 1).Cells(0).Value)
+            End If
+
+            BindAllGridData()
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+    End Sub
+
+
+    Private Sub btnClearItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearItem.Click
+        txtItemName.Text = ""
+        txtQty.Text = ""
+        txtAmount.Text = ""
+        txtPrice.Text = ""
+
+    End Sub
+
+    Private Sub btnAddItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddItem.Click
+        Dim dr As DataRow
+        dr = TblRawMaterial.NewRow()
+        dr("ItemName") = txtItemName.Text
+        dr("Qty") = txtQty.Text
+        dr("Price") = txtPrice.Text
+        dr("Amount") = txtAmount.Text
+        dr("OrderConfirm") = If(rbYes.Checked = True, "YES", "NO")
+        dr("PaymentReceived") = If(rbPYes.Checked = True, "YES", "NO")
+        TblRawMaterial.Rows.Add(dr)
+        DGRawMaterialData.DataSource = TblRawMaterial
+        linq_obj.SP_Tbl_OrderRawMaterialDetail_Insert(Address_ID,
+                   txtItemName.Text,
+                   txtQty.Text,
+                      txtPrice.Text,
+                     txtAmount.Text,
+                   If(rbYes.Checked = True, True, False),
+                    If(rbPYes.Checked = True, True, False))
+        linq_obj.SubmitChanges()
+
+        txtItemName.Text = ""
+        txtQty.Text = ""
+        txtAmount.Text = ""
+        txtPrice.Text = ""
+    End Sub
+
+    Public Sub insertRawMaterial()
+        linq_obj.SP_Tbl_OrderRawMaterialDetail_Delete(Address_ID)
+        linq_obj.SubmitChanges()
+        For i As Integer = 0 To TblRawMaterial.Rows.Count - 1
+            linq_obj.SP_Tbl_OrderRawMaterialDetail_Insert(Address_ID,
+                                                        TblRawMaterial.Rows(i)("ItemName").ToString(),
+                                                        Convert.ToInt32(TblRawMaterial.Rows(i)("Qty").ToString()),
+                                                        Convert.ToDecimal(TblRawMaterial.Rows(i)("Price").ToString()),
+                                                        Convert.ToDecimal(TblRawMaterial.Rows(i)("Amount").ToString()),
+                                                        If(TblRawMaterial.Rows(i)("OrderConfirm").ToString = "YES", True, False),
+                                                        If(TblRawMaterial.Rows(i)("PaymentReceived").ToString = "YES", True, False))
+        Next
+    End Sub
+
+    Private Sub btnDelItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelItem.Click
+        Dim result As DialogResult = MessageBox.Show("Are You Sure Delete?", "Important Message", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)
+        If result = DialogResult.Yes Then
+            TblRawMaterial.Rows(DGRawMaterialData.CurrentRow.Index).Delete()
+            DGRawMaterialData.DataSource = TblRawMaterial
+            insertRawMaterial()
+
+        End If
+
+    End Sub
+
+    Private Sub txtQty_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtQty.KeyPress
+        If Char.IsLetter(e.KeyChar) Then
+            e.Handled = True
+        Else
+            e.Handled = False
+        End If
+
+    End Sub
+
+    Private Sub txtPrice_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtPrice.KeyPress
+        If Char.IsLetter(e.KeyChar) Then
+            e.Handled = True
+        Else
+            e.Handled = False
+        End If
+
+    End Sub
+
+    Private Sub txtPrice_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPrice.Leave
+        txtAmount.Text = Convert.ToString(Convert.ToInt32(txtQty.Text) * Convert.ToDecimal(txtPrice.Text))
+
+    End Sub
+
+
+    Private Sub txtISINextDays_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtISINextDays.TextChanged
+        If txtISINextDays.Text <> "" Then
+            dtISINFDate.Value = dtISIFDate.Value.Date.AddDays(txtISINextDays.Text)
+        End If
+    End Sub
+
+    Private Sub txtISINextDays_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtISINextDays.KeyPress
+        If Char.IsLetter(e.KeyChar) Then
+            e.Handled = True
+        Else
+            e.Handled = False
+        End If
+
+    End Sub
+
+    Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddLog.Click
+        txtLetterTitle.Text = ""
+
+        txtSendCourierBy.Text = ""
+        txtSendCourierDate.Text = ""
+        txtSendMailBy.Text = ""
+        txtSendMailDate.Text = ""
+
+        txtRecCourierBy.Text = ""
+        txtRecCourierDate.Text = ""
+        txtRecMailBy.Text = ""
+        txtRecMailDate.Text = ""
+
+    End Sub
+
+    Private Sub btnLogSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnLogSave.Click
+        Dim dr As DataRow
+        dr = tblLog.NewRow()
+        dr("Title") = txtLetterTitle.Text
+        dr("MailDate") = txtSendMailDate.Text
+        dr("MailBy") = txtSendMailBy.Text
+        dr("CourierDate") = txtSendCourierDate.Text
+        dr("CourierBy") = txtSendCourierBy.Text
+        dr("RecMailDate") = txtRecMailDate.Text
+        dr("RecMailBy") = txtRecMailBy.Text
+        dr("RecCourierDate") = txtRecCourierDate.Text
+        dr("RecCourierBy") = txtRecCourierBy.Text
+
+        tblLog.Rows.Add(dr)
+        dgLog.DataSource = tblLog
+        linq_obj.SP_Tbl_ProjectLetterLog_Insert(txtLetterTitle.Text, txtSendMailBy.Text, txtSendMailDate.Text, txtSendCourierBy.Text, txtSendCourierDate.Text, txtRecMailBy.Text, txtRecMailDate.Text, txtRecCourierBy.Text, txtRecCourierDate.Text, Address_ID)
+
+        linq_obj.SubmitChanges()
+
+        txtLetterTitle.Text = ""
+
+        txtSendCourierBy.Text = ""
+        txtSendCourierDate.Text = ""
+        txtSendMailBy.Text = ""
+        txtSendMailDate.Text = ""
+
+        txtRecCourierBy.Text = ""
+        txtRecCourierDate.Text = ""
+        txtRecMailBy.Text = ""
+        txtRecMailDate.Text = ""
+
+    End Sub
+
+    Private Sub btnDelLog_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelLog.Click
+        Dim result As DialogResult = MessageBox.Show("Are You Sure Delete?", "Important Message", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)
+        If result = DialogResult.Yes Then
+            tblLog.Rows(dgLog.CurrentRow.Index).Delete()
+            dgLog.DataSource = tblLog
+            insertLog()
+
+        End If
+    End Sub
+
+    Public Sub insertLog()
+
+        linq_obj.SP_Tbl_ProjectLetterLog_Delete(Address_ID)
+        linq_obj.SubmitChanges()
+        For i As Integer = 0 To tblLog.Rows.Count - 1
+            linq_obj.SP_Tbl_ProjectLetterLog_Insert(Address_ID,
+                                                    tblLog.Rows(i)("Title").ToString(),
+            tblLog.Rows(i)("MailDate").ToString(),
+            tblLog.Rows(i)("MailBy").ToString(),
+            tblLog.Rows(i)("CourierDate").ToString(),
+            tblLog.Rows(i)("CourierBy").ToString(),
+            tblLog.Rows(i)("RecMailDate").ToString(),
+            tblLog.Rows(i)("RecMailBy").ToString(),
+            tblLog.Rows(i)("RecCourierDate").ToString(),
+            tblLog.Rows(i)("RecCourierBy").ToString())
+        Next
+    End Sub
+
+    Private Sub dgLog_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles dgLog.DoubleClick
+
+    End Sub
+
+    Private Sub btnViewFollowup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnViewFollowup.Click
+        Try
+            If (RBFollowUp.Checked = True) Then
+
+                Dim cmd As New SqlCommand
+                cmd.CommandText = "SP_Get_OrderFollowDetails"
+                cmd.Parameters.AddWithValue("@Start", dtStart.Value)
+                cmd.Parameters.AddWithValue("@End", dtEnd.Value)
+                Dim objclass As New Class1
+                Dim ds As New DataSet
+                ds = objclass.GetSearchData(cmd)
+                If ds.Tables(1).Rows.Count < 1 Then
+                    MessageBox.Show("Record Not Found", "No Records", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    DGVOrderDetails.DataSource = Nothing
+                Else
+                    DGVOrderDetails.DataSource = ds.Tables(1)
+                    DGVOrderDetails.Columns(0).Visible = False
+                End If
+
+            ElseIf (rbDisp.Checked = True) Then
+                Dim cmd As New SqlCommand
+                cmd.CommandText = "SP_Get_OrderDispatchDetails"
+                cmd.Parameters.AddWithValue("@Start", dtStart.Value)
+                cmd.Parameters.AddWithValue("@End", dtEnd.Value)
+                Dim objclass As New Class1
+
+                Dim ds As New DataSet
+                ds = objclass.GetSearchData(cmd)
+                If ds.Tables(1).Rows.Count < 1 Then
+                    MessageBox.Show("Record Not Found", "No Records", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    DGVOrderDetails.DataSource = Nothing
+                Else
+                    DGVOrderDetails.DataSource = ds.Tables(1)
+                    DGVOrderDetails.Columns(0).Visible = False
+
+                End If
+
+            ElseIf (rbReceive.Checked = True) Then
+                Dim cmd As New SqlCommand
+                cmd.CommandText = "SP_Get_OrderReceiveDetails"
+                cmd.Parameters.AddWithValue("@Start", dtStart.Value)
+                cmd.Parameters.AddWithValue("@End", dtEnd.Value)
+
+                Dim objclass As New Class1
+
+                Dim ds As New DataSet
+                ds = objclass.GetSearchData(cmd)
+                If ds.Tables(1).Rows.Count < 1 Then
+                    MessageBox.Show("Record Not Found", "No Records", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    DGVOrderDetails.DataSource = Nothing
+                Else
+                    DGVOrderDetails.DataSource = ds.Tables(1)
+                    DGVOrderDetails.Columns(0).Visible = False
+
+                End If
+
+            ElseIf (rbTentDis.Checked = True) Then
+                Dim cmd As New SqlCommand
+                cmd.CommandText = "SP_Get_OrderTentativeDispatchDetails"
+                cmd.Parameters.AddWithValue("@Start", dtStart.Value)
+                cmd.Parameters.AddWithValue("@End", dtEnd.Value)
+
+                Dim objclass As New Class1
+
+                Dim ds As New DataSet
+                ds = objclass.GetSearchData(cmd)
+                If ds.Tables(1).Rows.Count < 1 Then
+                    MessageBox.Show("Record Not Found", "No Records", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    DGVOrderDetails.DataSource = Nothing
+                Else
+                    DGVOrderDetails.DataSource = ds.Tables(1)
+                    DGVOrderDetails.Columns(0).Visible = False
+
+                End If
+
+
+
+            End If
+
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+        chkAllStatus.Checked = False
+    End Sub
+
+    Private Sub txtOrderNo_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtOrderNo.Leave
+        Dim data = linq_obj.SP_Get_AddressListByEnqNo(txtOrderNo.Text).ToList()
+        If (data.Count > 0) Then
+            Address_ID = data(0).Pk_AddressID
+            BindAllGridData()
+        End If
+    End Sub
+
+
+    Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+        GvInEnq_Bind()
+        chkAllStatus.Checked = False
+    End Sub
+
+    Private Sub DGVOrderDetails_CellClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles DGVOrderDetails.CellClick
+        clearAll()
+        Address_ID = Convert.ToInt64(Me.DGVOrderDetails.SelectedCells(0).Value)
+        BindAllGridData()
+    End Sub
+
+    Private Sub btnUpDR1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUpDR1.Click
+        Dim openFileDialog1 As New OpenFileDialog
+        Dim imgSrc As String
+        Dim imgPath As String
+        openFileDialog1.ShowDialog()
+        imgSrc = openFileDialog1.FileName.ToString()
+        imgPath = (Path.GetDirectoryName(Application.ExecutablePath) & "\Images\") + openFileDialog1.SafeFileName
+
+
+        PB1.SizeMode = PictureBoxSizeMode.StretchImage
+        PB1.ImageLocation = imgSrc
+        PB1.SizeMode = PictureBoxSizeMode.StretchImage
+    End Sub
+
+    Private Sub btnUPDr3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUPDr3.Click
+        Dim openFileDialog1 As New OpenFileDialog
+        Dim imgSrc As String
+        Dim imgPath As String
+        openFileDialog1.ShowDialog()
+        imgSrc = openFileDialog1.FileName.ToString()
+        imgPath = (Path.GetDirectoryName(Application.ExecutablePath) & "\Images\") + openFileDialog1.SafeFileName
+        PB3.SizeMode = PictureBoxSizeMode.StretchImage
+        PB3.ImageLocation = imgSrc
+        PB3.SizeMode = PictureBoxSizeMode.StretchImage
+    End Sub
+
+    Private Sub btnUPDr2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUPDr2.Click
+
+        Dim openFileDialog1 As New OpenFileDialog
+        Dim imgSrc As String
+        Dim imgPath As String
+        openFileDialog1.ShowDialog()
+        imgSrc = openFileDialog1.FileName.ToString()
+        imgPath = (Path.GetDirectoryName(Application.ExecutablePath) & "\Images\") + openFileDialog1.SafeFileName
+        PB2.SizeMode = PictureBoxSizeMode.StretchImage
+        PB2.ImageLocation = imgSrc
+        PB2.SizeMode = PictureBoxSizeMode.StretchImage
+    End Sub
+
+    Private Sub btnPrintDrawing_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPrintDrawing.Click
+        If Address_ID > 0 Then
+
+            If (RBDr1.Checked = True) Then
+                Dim frm As New Rpt_PlantDrawing(Address_ID, 1)
+                frm.MdiParent = MDIMainForm
+                frm.StartPosition = FormStartPosition.CenterScreen
+                frm.Show()
+            ElseIf (RBDr2.Checked = True) Then
+                Dim frm As New Rpt_PlantDrawing(Address_ID, 2)
+                frm.MdiParent = MDIMainForm
+                frm.StartPosition = FormStartPosition.CenterScreen
+                frm.Show()
+            ElseIf (RBDr3.Checked = True) Then
+                Dim frm As New Rpt_PlantDrawing(Address_ID, 3)
+                frm.MdiParent = MDIMainForm
+                frm.StartPosition = FormStartPosition.CenterScreen
+                frm.Show()
+            End If
+
+
+        Else
+            MessageBox.Show("Data Not Found...")
+        End If
+    End Sub
+
+    Private Sub PrintDocument1_PrintPage(ByVal sender As System.Object, ByVal e As System.Drawing.Printing.PrintPageEventArgs) Handles PrintDocument1.PrintPage
+        e.Graphics.DrawImage(PB1.Image, New Point(100, 100))
+    End Sub
+
+    Private Sub btnAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAll.Click
+        chkAllStatus.Checked = True
+        GvInEnq_Bind()
+    End Sub
+
+    Private Sub btnRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRefresh.Click
+        GvInEnq_Bind()
+        chkAllStatus.Checked = False
+    End Sub
+
+    Private Sub chkAllStatus_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkAllStatus.CheckedChanged
+        If (chkAllStatus.Checked = True) Then
+            btnAll_Click(Nothing, Nothing)
+        Else
+            btnRefresh_Click(Nothing, Nothing)
+        End If
+
+    End Sub
+
+    Private Sub lnkClear_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles lnkClear.LinkClicked
+        txtParty.Text = ""
+        txtcoPerson.Text = ""
+        txtDisStatus.Text = ""
+        txtConatactno.Text = ""
+        txtStation.Text = ""
+        txtEmail.Text = ""
+    End Sub
+
+    Private Sub btnClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClose.Click
+        lblEnqNo.Text = ""
+        lblLastDate.Text = ""
+        lblLastFollowUpBy.Text = ""
+        grpFollowDetail.Visible = False
+    End Sub
+
+    Private Sub btnSearchAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearchAll.Click
+        Dim criteria As String
+        criteria = " and "
+
+        If txtParty.Text.Trim() <> "" Then
+            criteria = criteria + " Name like '%" + txtParty.Text + "%' and"
+        End If
+        If txtcoPerson.Text.Trim() <> "" Then
+            criteria = criteria + " ContactPerson like '%" + txtcoPerson.Text + "%' and"
+        End If
+        If txtStation.Text.Trim <> "" Then
+            criteria = criteria + " City like '%" + txtStation.Text + "%' and"
+        End If
+        'If txtInqSearchLandLineNo.Text.Trim() <> "" Then
+        '    criteria = criteria + " LandlineNo like '%" + txtInqSearchLandLineNo.Text + "%' and"
+        'End If
+        If txtConatactno.Text.Trim() <> "" Then
+            criteria = criteria + " MobileNo like '%" + txtConatactno.Text + "%' and"
+        End If
+        If txtEmail.Text.Trim() <> "" Then
+            criteria = criteria + " EmialID like '%" + txtEmail.Text + "%' and"
+        End If
+        If txtDisStatus.Text.Trim() <> "" Then
+            criteria = criteria + " TypeOfEnq like '" + txtDisStatus.Text + "' and"
+        End If
+        If txtSearchEnqNo.Text.Trim() <> "" Then
+            criteria = criteria + " EnqNo like '%" + txtSearchEnqNo.Text + "%' and"
+        End If
+        If criteria = " and " Then
+            criteria = ""
+        End If
+
+        If (criteria.Length > 0) Then
+            criteria = criteria.ToString().Substring(0, criteria.Length - 3)
+        End If
+
+        Dim cmd As New SqlCommand
+        cmd.CommandText = "SP_Search_OrderForAll"
+        cmd.Parameters.Add("@criteria", SqlDbType.VarChar).Value = IIf(criteria = "", "", criteria)
+
+        Dim objclass As New Class1
+
+        Dim ds As New DataSet
+        ds = objclass.GetSearchData(cmd)
+        If ds.Tables(1).Rows.Count < 1 Then
+            MessageBox.Show("Record Not Found", "No Records", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            grpFollowDetail.Visible = False
+            lblEnqNo.Text = ""
+            lblLastDate.Text = ""
+            lblLastFollowUpBy.Text = ""
+        Else
+            For index = 0 To ds.Tables(1).Rows.Count - 1
+                lblEnqNo.Text = ds.Tables(1).Rows(0)("EnqNo").ToString()
+                lblLastDate.Text = ds.Tables(1).Rows(0)("LastFDate").ToString()
+                lblLastFollowUpBy.Text = ds.Tables(1).Rows(0)("LastFollowBy").ToString()
+            Next
+            grpFollowDetail.Visible = True
+            ds.Dispose()
+        End If
+        'txtInqSearchCOperson.Text = ""
+        'txtInqSearchEmailID.Text = ""
+        'txtInqSearchMobileNo.Text = ""
+        'txtInqSearchOfferNo.Text = ""
+        'txtInqSearchParty.Text = ""
+        'txtInqSearchStation.Text = ""
+    End Sub
+
+End Class

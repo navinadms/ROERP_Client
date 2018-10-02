@@ -1,0 +1,51 @@
+<?xml version="1.0" standalone="yes"?>
+<NewDataSet>
+  <SP_Select_All_Tbl_InwardDetailByInward>
+    <Pk_InwardDetailId>128</Pk_InwardDetailId>
+    <Fk_ProductRegisterId>12</Fk_ProductRegisterId>
+    <Fk_RowMaterialId>166</Fk_RowMaterialId>
+    <Fk_InwardId>73</Fk_InwardId>
+    <SrNo>1</SrNo>
+    <CategoryName>RUBBER</CategoryName>
+    <RowMaterialName>1" GASKET</RowMaterialName>
+    <Unit>Nos.</Unit>
+    <Quantity>100</Quantity>
+    <Remarks />
+  </SP_Select_All_Tbl_InwardDetailByInward>
+  <SP_Select_All_Tbl_InwardDetailByInward>
+    <Pk_InwardDetailId>129</Pk_InwardDetailId>
+    <Fk_ProductRegisterId>12</Fk_ProductRegisterId>
+    <Fk_RowMaterialId>167</Fk_RowMaterialId>
+    <Fk_InwardId>73</Fk_InwardId>
+    <SrNo>2</SrNo>
+    <CategoryName>RUBBER</CategoryName>
+    <RowMaterialName>1 1/4" GASKET</RowMaterialName>
+    <Unit>Nos.</Unit>
+    <Quantity>50</Quantity>
+    <Remarks />
+  </SP_Select_All_Tbl_InwardDetailByInward>
+  <SP_Select_All_Tbl_InwardDetailByInward>
+    <Pk_InwardDetailId>130</Pk_InwardDetailId>
+    <Fk_ProductRegisterId>12</Fk_ProductRegisterId>
+    <Fk_RowMaterialId>169</Fk_RowMaterialId>
+    <Fk_InwardId>73</Fk_InwardId>
+    <SrNo>3</SrNo>
+    <CategoryName>RUBBER</CategoryName>
+    <RowMaterialName>2" GASKET</RowMaterialName>
+    <Unit>Nos.</Unit>
+    <Quantity>100</Quantity>
+    <Remarks />
+  </SP_Select_All_Tbl_InwardDetailByInward>
+  <SP_Select_All_Tbl_InwardDetailByInward>
+    <Pk_InwardDetailId>1053</Pk_InwardDetailId>
+    <Fk_ProductRegisterId>9</Fk_ProductRegisterId>
+    <Fk_RowMaterialId>41</Fk_RowMaterialId>
+    <Fk_InwardId>73</Fk_InwardId>
+    <SrNo>4</SrNo>
+    <CategoryName>TDS METER </CategoryName>
+    <RowMaterialName>1/2"  NIPPLE 12"</RowMaterialName>
+    <Unit>NOS</Unit>
+    <Quantity>20</Quantity>
+    <Remarks />
+  </SP_Select_All_Tbl_InwardDetailByInward>
+</NewDataSet>

@@ -1,0 +1,106 @@
+﻿Public Class ProductRegister
+
+    Dim linq_obj As New RoErpDataContext(System.Configuration.ConfigurationManager.AppSettings("constr").ToString())
+    Dim PRID As Long
+    Dim tblItem As New DataTable
+    Private Sub ProductRegister_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        bindDropDown()
+    End Sub
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+        bindGrid()
+        GridBind()
+    End Sub
+    Public Sub bindGrid()
+        Dim prData = linq_obj.SP_Select_All_ProductRegisterMaster().ToList()
+        Dim dt As New DataTable
+        dt.Columns.Add("ID")
+        dt.Columns.Add("Category")
+        For Each item As SP_Select_All_ProductRegisterMasterResult In prData
+            dt.Rows.Add(item.Pk_ProductRegisterId, item.CategoryName)
+        Next
+        dgCategories.DataSource = dt
+
+    End Sub
+    Protected Sub bindDropDown()
+        cmb_Category.Items.Clear()
+        Dim dt As New DataTable
+        dt.Columns.Add("Id")
+        dt.Columns.Add("Category")
+        Dim productMain = linq_obj.SP_Select_All_ProductRegisterMaster().ToList()
+        For Each item As SP_Select_All_ProductRegisterMasterResult In productMain
+            dt.Rows.Add(item.Pk_ProductRegisterId, item.CategoryName)
+        Next
+        Dim dr As DataRow = dt.NewRow()
+        dr(1) = "Select"
+        dt.Rows.InsertAt(dr, 0)
+        cmb_Category.DataSource = dt
+        cmb_Category.DisplayMember = "Category"
+        cmb_Category.ValueMember = "Id"
+        cmb_Category.AutoCompleteMode = AutoCompleteMode.Append
+        cmb_Category.DropDownStyle = ComboBoxStyle.DropDownList
+        cmb_Category.AutoCompleteSource = AutoCompleteSource.ListItems
+    End Sub
+
+    Private Sub cmb_Category_SelectionChangeCommitted(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmb_Category.SelectionChangeCommitted
+        If cmb_Category.Text <> "Select" Then
+            PRID = cmb_Category.SelectedValue
+            Dim rowMaterial = linq_obj.SP_Select_All_RowMaterialMaster(PRID).ToList()
+            Cmb_RawMaterial.DataSource = rowMaterial
+            Cmb_RawMaterial.DisplayMember = "RowMaterialName"
+            Cmb_RawMaterial.ValueMember = "Pk_RowMaterialId"
+            Cmb_RawMaterial.AutoCompleteMode = AutoCompleteMode.Append
+            Cmb_RawMaterial.DropDownStyle = ComboBoxStyle.DropDownList
+            Cmb_RawMaterial.AutoCompleteSource = AutoCompleteSource.ListItems
+        End If
+    End Sub
+    Private Sub GridBind()
+
+        Dim Data = linq_obj.SP_Get_ProductMaster().ToList()
+
+        DataGridView1.DataSource = Data
+
+    End Sub
+
+    Private Sub btnsave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnsave.Click
+        Try
+            Dim res As Integer
+            res = linq_obj.SP_Insert_ProductMaster(Convert.ToInt64(cmb_Category.SelectedValue), Convert.ToInt64(Cmb_RawMaterial.SelectedValue), Convert.ToInt64(txtTotstock.Text), Convert.ToInt64(txtIssueStock.Text), Convert.ToInt64(txtReorder.Text), Convert.ToInt64(txtReStock.Text), txtunit.Text, DateTime.UtcNow)
+            linq_obj.SubmitChanges()
+            MessageBox.Show("Insert Sucessfully....")
+            GridBind()
+        Catch ex As Exception
+            MessageBox.Show("Error in Insertion")
+        End Try
+
+
+    End Sub
+    Private Sub BlankText()
+        txtIssueStock.Text = ""
+        txtTotstock.Text = ""
+        txtReorder.Text = ""
+        txtReStock.Text = ""
+        txtunit.Text = ""
+
+    End Sub
+
+    Private Sub dgCategories_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles dgCategories.DoubleClick
+
+    End Sub
+
+    Private Sub txtIssueStock_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtIssueStock.Leave
+
+
+        txtReStock.Text = Convert.ToString(Convert.ToInt32(txtTotstock.Text) - Convert.ToInt32(txtIssueStock.Text))
+
+    End Sub
+
+    Private Sub Cmb_RawMaterial_SelectionChangeCommitted(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cmb_RawMaterial.SelectionChangeCommitted
+        Dim dataRaw = linq_obj.SP_Select_RowMaterialMaster_ById(Cmb_RawMaterial.SelectedValue).ToList()
+        If (dataRaw.Count > 0) Then
+            txtunit.Text = Convert.ToString(dataRaw(0).Unit)
+            txtReorder.Text = Convert.ToString(dataRaw(0).ReOrder)
+        End If
+    End Sub
+End Class

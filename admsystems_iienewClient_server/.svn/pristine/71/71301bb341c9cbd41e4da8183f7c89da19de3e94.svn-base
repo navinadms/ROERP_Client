@@ -1,0 +1,442 @@
+﻿Imports System.Collections.Generic
+Imports System.Linq
+Imports System.Text
+Imports System.IO
+Class page
+
+    Shared Function Server() As Object
+        Throw New NotImplementedException
+    End Function
+    Class Class1
+    End Class
+
+    Public Class PdfPage
+        Public Sub New()
+        End Sub
+
+        Private page_id As Integer = 1
+        Private nextId As Integer = 1
+        Private new_num_pid As Integer = 1
+
+
+        Public Function GetNextId() As Integer
+            nextId = Me.new_num_pid + 3
+            Return nextId
+        End Function
+
+        Public Property pageId() As Integer
+            Get
+                Return Me.page_id
+            End Get
+            Set(ByVal value As Integer)
+                Me.page_id = value
+            End Set
+        End Property
+
+    End Class
+
+    ''' <summary>
+    ''' Summary description for Class1.
+    ''' </summary>
+    Public Class PdfWriter
+        'Initiation
+        Public pageWidth As Single = 842.0F
+        Public pageDepth As Single = 1190.0F
+        Public margin As Single = 30.0F
+        Public leadSize As Single = 10.0F
+        Public fontSize As Single = 10.0F
+        Private numPages As Integer = 0
+        Public numXrefs As Integer = 0
+        Private objectID As Integer = 1
+
+
+        'page
+        Public pageTreeID As Integer
+        Public pInsertPage As Long
+        Public start_xref As Long = 0
+        Public pXrefs As Long = 0
+
+        Public yPos As Single
+        'y-position
+        Public size As Integer = 0
+        Public bytes As [Byte]()
+
+        'stream
+        Private mStreamID As Integer
+        Private mStreamLenID As Integer
+        Private mStreamStart As Long
+
+        'files
+        Private outputStreamPath As String = "c:\temp\txtPdf.pdf"
+        Public outFileStream As FileStream
+
+
+        Public Sub New(ByVal width As Single, ByVal depth As Single, ByVal margin As Single, ByVal lead As Single)
+
+            Me.pageWidth = width
+            Me.pageDepth = depth
+            Me.margin = margin
+            Me.leadSize = lead
+
+            Me.numPages = 0
+            Me.numXrefs = 0
+            Me.objectID = 1
+
+            Me.fontSize = 12.0F
+        End Sub
+
+        ''' <summary>
+        ''' Write
+        ''' </summary>
+        Public Function Write(ByVal filePath As String) As Integer
+            outFileStream = New FileStream(outputStreamPath, FileMode.Create, FileAccess.Write)
+
+            Dim i As Integer, catalog_id As Integer, font_id As Integer
+
+            Dim str1 As String = "%PDF-1.4" & vbCr & vbLf
+            FileStreamWrite(outFileStream, str1)
+
+            'Increment pageTreeID
+            pageTreeID = System.Math.Max(System.Threading.Interlocked.Increment(objectID), objectID - 1)
+
+            Dim sr As New StreamReader(filePath)
+
+            'Invoke the DoText function
+            DoText(sr)
+
+            'Increment font_id
+            font_id = System.Math.Max(System.Threading.Interlocked.Increment(objectID), objectID - 1)
+            StartObject(font_id)
+
+            Dim strBaseFont As String = vbCr & vbLf & "<</Type/Font/Subtype/Type1/BaseFont/Courier/Encoding/WinAnsiEncoding>>" & vbCr & vbLf & "endobj" & vbCr & vbLf
+            FileStreamWrite(outFileStream, strBaseFont)
+
+            'Invoke the StartObject function
+            StartObject(pageTreeID)
+
+            'Write out page number
+            Dim strPageCount As String = "<</Type /Pages /Count " & Me.numPages & vbCr & vbLf
+            FileStreamWrite(outFileStream, strPageCount)
+
+            Dim strKids As String = "/Kids[" & vbCr & vbLf
+            FileStreamWrite(outFileStream, strKids)
+
+            Dim nextid As Integer = 0
+            For x As Integer = 1 To Me.numPages
+                nextid = x * 3 + 1
+                Dim strPage_id As String = String.Format("{0} 0 R ", nextid) & vbCr & vbLf
+
+                FileStreamWrite(outFileStream, strPage_id)
+            Next
+
+
+            'String strKidsClose
+            Dim strKidsClose As String = "]" & vbCr & vbLf
+            FileStreamWrite(outFileStream, strKidsClose)
+
+            'Fond id
+            If font_id < 0 Then
+                font_id = 1
+            End If
+
+
+            Dim strResources As String = String.Format("/Resources<</ProcSet[/PDF/Text]/Font<</F0 {0} 0 R>> >>", font_id, vbCr & vbLf)
+            FileStreamWrite(outFileStream, strResources)
+
+            'String MediaBox
+            Dim strMediaBox As String = String.Format(vbCr & vbLf & "/MediaBox [ 0 0 {0} {1} ]" & vbCr & vbLf, Me.pageWidth, Me.pageDepth)
+            FileStreamWrite(outFileStream, strMediaBox)
+
+            'String endobj
+            Dim strEndobj As String = ">>" & vbCr & vbLf & " endobj" & vbCr & vbLf
+            FileStreamWrite(outFileStream, strEndobj)
+
+
+            'Catalog ID
+            catalog_id = System.Math.Max(System.Threading.Interlocked.Increment(objectID), objectID - 1)
+
+            'Invoke the StartObject function
+            StartObject(catalog_id)
+
+            'String Catalog
+            Dim strCatalog As String = String.Format("<</Type/Catalog/Pages {0} 0 R>>" & vbCr & vbLf & "endobj", pageTreeID, vbCr & vbLf)
+            FileStreamWrite(outFileStream, strCatalog)
+
+            'String xref
+            Dim strXref As String = vbLf & "xref" & vbLf
+            FileStreamWrite(outFileStream, strXref)
+
+            start_xref = outFileStream.Length
+
+
+            'String ObjectID
+            Dim strObjectID As String = String.Format("0 {0} ", pageTreeID, vbLf)
+            FileStreamWrite(outFileStream, strObjectID)
+
+            'String ObjectID
+            Dim str65535 As String = "0000000000 65535 f " & vbLf
+            FileStreamWrite(outFileStream, str65535)
+
+            For i = 1 To objectID - 1
+                Dim str010ld As String = String.Format("{0} 00000 n " & vbCr & vbLf, (pXrefs + i))
+                FileStreamWrite(outFileStream, str010ld)
+            Next
+
+            Dim strTrailer As String = String.Format("trailer" & vbCr & vbLf & "<<" & vbCr & vbLf & "/Size {0}" & vbCr & vbLf & "/Root {1} 0 R" & vbCr & vbLf & ">>", objectID, catalog_id)
+            FileStreamWrite(outFileStream, strTrailer)
+
+            'xref
+            start_xref = 100
+            Dim strEOF As String = String.Format("startxref" & vbCr & vbLf & "{0}" & vbCr & vbLf & "%%EOF" & vbCr & vbLf, start_xref)
+            FileStreamWrite(outFileStream, strEOF)
+
+            outFileStream.Close()
+
+            Return 0
+
+        End Function
+
+        ''' <summary>
+        ''' StartPage
+        ''' </summary>
+        Private Sub StartPage()
+            mStreamID = System.Math.Max(System.Threading.Interlocked.Increment(objectID), objectID - 1)
+            mStreamLenID = System.Math.Max(System.Threading.Interlocked.Increment(objectID), objectID - 1)
+
+            StartObject(mStreamID)
+
+            'String Length
+            Dim strLength As String = String.Format("<< /Length {0} 0 R >>" & vbCr & vbLf, mStreamLenID)
+            FileStreamWrite(outFileStream, strLength)
+
+            'String Stream
+            Dim strStream As String = "stream" & vbCr & vbLf
+            FileStreamWrite(outFileStream, strStream)
+
+            mStreamStart = outFileStream.Length
+
+            'String BT
+            Dim strBT As String = String.Format("BT" & vbCr & vbLf & "/F0 {0} Tf" & vbCr & vbLf, Me.fontSize.ToString("G"))
+            FileStreamWrite(outFileStream, strBT)
+
+            'Calculate yPos
+            yPos = Me.pageDepth - Me.margin
+
+            'String Td
+            Dim strTd As String = String.Format("{0} {1} Td" & vbCr & vbLf, Me.margin.ToString("G"), yPos.ToString("G"))
+            FileStreamWrite(outFileStream, strTd)
+
+            'String TL
+            Dim strTL As String = String.Format("{0} TL" & vbCr & vbLf, leadSize.ToString("G"))
+            FileStreamWrite(outFileStream, strTL)
+        End Sub
+
+        ''' <summary>
+        ''' EndPage
+        ''' </summary>
+        Private Sub EndPage()
+            Dim stream_len As Long = 0
+            Dim page_id As Integer = System.Math.Max(System.Threading.Interlocked.Increment(objectID), objectID - 1)
+
+            'Invoke the StorePage function
+            StorePage(page_id)
+
+            'String ET
+            Dim strTL As String = vbCr & vbLf & "ET" & vbCr & vbLf
+            FileStreamWrite(outFileStream, strTL)
+
+            'Calculate stream length
+            stream_len = outFileStream.Length - mStreamStart
+
+            'String Endstream
+            Dim strEndstream As String = "endstream" & vbLf & "endobj" & vbCr & vbLf
+            FileStreamWrite(outFileStream, strEndstream)
+
+            'Invoke the "StartObject" function
+            StartObject(mStreamLenID)
+
+            Dim strEndobj As String = String.Format("{0}" & vbCr & vbLf & "endobj" & vbCr & vbLf, stream_len)
+            FileStreamWrite(outFileStream, strEndobj)
+
+            'Invoke the "StartObject"
+            StartObject(page_id)
+
+            'String Parent
+            Dim strParent As String = String.Format("<</Type/Page/Parent {0} 0 R/Contents {1} 0 R>>" & vbCr & vbLf & "endobj" & vbCr & vbLf, pageTreeID, mStreamID)
+            FileStreamWrite(outFileStream, strParent)
+        End Sub
+
+        ''' <summary>
+        ''' DoText
+        ''' </summary>
+        ''' <param name="arData">ArrayList</param>
+        Private Sub DoText(ByVal sr As StreamReader)
+            Dim strLine As String = String.Empty
+
+            'Start Page
+            StartPage()
+
+            Try
+                While sr.Peek() >= 0
+                    'Get one string at a time from the input text file
+                    strLine = sr.ReadLine() & vbCr & vbLf
+
+                    'If yPos <= this.margin?
+                    If yPos <= Me.margin Then
+                        'Invoke EndPage and StartPage functions
+                        EndPage()
+                        StartPage()
+                    End If
+
+                    If strLine = "" OrElse strLine Is Nothing Then
+                        FileStreamWrite(outFileStream, "T*\r\n")
+                    Else
+                        'Is there a page break "1"?
+                        Dim cmpPageVal As Integer = [String].Compare(strLine.Substring(0, 1), "1")
+
+                        'Is there a Formfeed?
+                        Dim cmpfVal As Integer = [String].Compare(strLine.Substring(0, 1), vbFormFeed)
+
+                        Dim bl As Boolean = False
+
+                        'Formfeed
+                        If cmpfVal = 0 Then
+                            'Invoke EndPage and StartPage functions
+                            EndPage()
+                            StartPage()
+                        Else
+                            'If there is a page break "1".
+                            If cmpPageVal = 0 Then
+                                'Invoke EndPage and StartPage functions
+                                EndPage()
+                                StartPage()
+
+                                'Remove the page break "1"
+                                strLine = strLine.Remove(0, 1)
+                            End If
+
+                            FileStreamWrite(outFileStream, "(")
+
+                            'Convert "strLine" to a char array
+                            Dim textchars As Char() = strLine.ToCharArray()
+
+                            For index As Integer = 0 To textchars.Length - 1
+                                Dim c As Char = textchars(index)
+
+                                'If there is page break?
+                                If c = "1"c AndAlso strLine.Length = 2 Then
+                                    EndPage()
+                                    StartPage()
+                                    'new line
+                                ElseIf c = ControlChars.Lf Then
+                                    If Not bl Then
+                                        FileStreamWrite(outFileStream, ")'")
+                                    Else
+                                        FileStreamWrite(outFileStream, "T*\n")
+                                    End If
+
+                                    bl = True
+                                Else
+                                    FileStreamWrite(outFileStream, c.ToString())
+                                    bl = False
+                                End If
+                            Next
+
+                            If Not bl Then
+                                FileStreamWrite(outFileStream, ")\r\n")
+                            End If
+
+                        End If
+                    End If
+
+                    'Set yPos
+                    yPos -= leadSize
+                End While
+                'for loop
+                'Close file
+                sr.Close()
+                sr = Nothing
+
+                'End Page
+
+                EndPage()
+            Catch ex As Exception
+                Dim [error] As String = ("The process failed: " + ex.Message)
+            End Try
+        End Sub
+
+
+        ''' <summary>
+        ''' StartObject
+        ''' </summary>
+        ''' <param name="id">int</param>
+        Private Sub StartObject(ByVal id As Integer)
+            If id >= numXrefs Then
+                Dim new_xrefs As Long = 0
+                Dim delta As Integer, new_num_xrefs As Integer
+                delta = numXrefs \ 5
+
+                If delta < 1000 Then
+                    delta += 1000
+                End If
+
+                new_num_xrefs = numXrefs + delta
+
+                new_xrefs = CLng(new_num_xrefs) * (new_xrefs + 8)
+
+                If new_xrefs = 0 Then
+                    Dim stderr As String = String.Format("Unable to allocate array for object {0}.", id)
+                    FileStreamWrite(outFileStream, stderr)
+                Else
+                    pXrefs = new_xrefs
+                    numXrefs = new_num_xrefs
+                End If
+            End If
+
+            pXrefs = outFileStream.Length
+
+            'String objId
+            Dim strobjId As String = String.Format("{0} 0 obj" & vbCr & vbLf, id)
+            FileStreamWrite(outFileStream, strobjId)
+
+        End Sub
+
+        ''' <summary>
+        ''' StorePage
+        ''' </summary>
+        ''' <param name="id">int</param>
+        Public Sub StorePage(ByVal id As Integer)
+            Dim pp As New PdfPage()
+
+            Dim n As Long = pp.GetNextId()
+
+            If n = 0 Then
+                Dim stderr As String = String.Format("Unable to allocate array for page {0}.", Me.numPages + 1)
+                FileStreamWrite(outFileStream, stderr)
+            End If
+
+            pp.pageId = id
+
+            pInsertPage = Me.numPages * 3 + 1
+            Me.numPages += 1
+
+        End Sub
+
+
+        ''' <summary>
+        ''' FileStreamWrite
+        ''' </summary>
+        ''' <param name="outFileStream">FileStream</param>
+        ''' <param name="str1">string</param>
+        Private Sub FileStreamWrite(ByVal outFileStream As FileStream, ByVal str1 As String)
+            Dim buffer As [Byte]() = Nothing
+            buffer = ASCIIEncoding.ASCII.GetBytes(str1)
+            outFileStream.Write(buffer, 0, buffer.Length)
+
+        End Sub
+
+
+    End Class
+    'class PdfWriter
+
+End Class

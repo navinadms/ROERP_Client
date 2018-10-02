@@ -1,0 +1,174 @@
+﻿
+Imports System.Collections.Generic
+Imports System.ComponentModel
+Imports System.Data
+Imports System.Drawing
+Imports System.Linq
+Imports System.Text
+Imports System.Windows.Forms
+Imports System.Data.SqlClient
+Imports System.Security.Principal
+
+Public Class Login
+
+
+    Public con1 As SqlConnection
+    Public cmd As SqlCommand
+    Public dr As SqlDataReader
+    Public da As SqlDataAdapter
+    Public ds As DataSet
+    Public Sub New()
+
+        InitializeComponent()
+        con1 = Class1.con
+
+    End Sub
+    ''' <summary>
+    ''' Get All The Global Variables and Values Used in Software.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
+    Private Sub btnLogin_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnLogin.Click
+        Dim str As String
+
+        Try
+            ' Dim dt As New DateTime(2012, 5, 25, 0, 0, 0)
+            ' If ((DateTime.Now.Day <= dt.Day) And (DateTime.Now.Year <= dt.Year) And (DateTime.Now.Month <= dt.Month)) Then
+            con1.Open()
+            str = "select * from User_Master where UserName='" + txtUserName.Text + "' and Password1='" + txtPassword.Text + "' "
+
+            cmd = New SqlCommand(str, con1)
+            dr = cmd.ExecuteReader()
+            If dr.HasRows Then
+                dr.Read()
+                Class1.global.UserPermissionDatasettmp.Clear()
+                Class1.global.UserPermissionDataset.Clear()
+                Class1.global.User = txtUserName.Text
+                Class1.global.QPath = dr("Path").ToString()
+                Class1.global.Signature = dr("Signature").ToString()
+                Class1.global.UserName = dr("FirstName") + " " + dr("LastName")
+                Class1.global.Designation = dr("Designation")
+                Class1.global.UserID = Convert.ToInt32(dr("Pk_UserId"))
+                Class1.global.TeamID = Convert.ToInt32(dr("Fk_TeamId"))
+                Class1.global.InquiryView = Convert.ToString(dr("IsViewAllInquiry"))
+                Class1.global.UserAllotType = Convert.ToString(dr("Status"))
+                Class1.global.Glb_User_Permission("SP_Tbl_PermissionMaster_SelectByUser", Class1.global.UserID)
+                Class1.global.Glb_User_Permissiontmp("SP_Tbl_PermissionMaster_SelectByUser", Class1.global.UserID)
+
+                Try
+                    Dim dv As New DataTable
+                    Dim dataView As DataView
+
+                    Dim Class1 As New Class1
+
+                    Dim strName As String = ""
+
+                    dataView = Class1.global.UserPermissionDatasettmp.Tables(0).DefaultView
+                    dataView.RowFilter = "([Name] like 'Inquiry Reports')"
+                    dv = dataView.ToTable()
+
+                    If (dv.Rows(0)("Type") = 1) Then
+                        Class1.global.RptUserType = True
+                    Else
+                        Class1.global.RptUserType = False
+                    End If
+
+                Catch ex As Exception
+
+                End Try
+
+                MDIMainForm.Show()
+
+            Else
+                Dim result As DialogResult = MessageBox.Show("Invalid UserName and Password", "Important Message", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)
+                If result = DialogResult.Yes Then
+                    Dim lg As New Login
+                    lg.Show()
+                Else
+                    Dim lg As New Login
+                    lg.Show()
+                End If
+                'MsgBox("Invalid UserName and Password")
+
+            End If
+            cmd.Dispose()
+            dr.Dispose()
+            con1.Close()
+
+            'Else
+            'MsgBox("Your trial version is expired, Contact administrator !")
+
+
+            'End If
+
+        Catch ex As Exception
+
+        End Try
+
+
+
+
+        Me.Hide()
+    End Sub
+
+    Private Sub Login_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
+
+    End Sub
+
+    Private Sub Login_FormClosing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+        Application.Exit()
+    End Sub
+
+    Private Sub Login_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
+        For Each control As Control In Me.Controls
+            ' The textbox control.
+            Dim parentControl As New Control
+
+
+            If (control.GetType() Is GetType(GroupBox)) Then
+                Dim grpBox As GroupBox = TryCast(control, GroupBox)
+                parentControl = grpBox
+            ElseIf (control.GetType() Is GetType(TabControl)) Then
+                Dim TC As TabControl = TryCast(control, TabControl)
+                parentControl = TC
+            Else
+                Try
+                    parentControl = control
+                Catch ex As Exception
+
+                End Try
+
+            End If
+
+            For Each subcontrol As Control In parentControl.Controls
+                If (subcontrol.GetType() Is GetType(TextBox)) Then
+                    Dim textBox As TextBox = TryCast(subcontrol, TextBox)
+
+                    ' If not null, set the handler.
+                    If textBox IsNot Nothing Then
+                        AddHandler textBox.Enter, AddressOf TextBox_Enter
+                        AddHandler textBox.Leave, AddressOf TextBox_Leave
+                    End If
+                End If
+
+                ' Set the handler.
+            Next
+
+            ' Set the handler.
+        Next
+    End Sub
+    Private Sub TextBox_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Dim txt As New TextBox()
+        txt = DirectCast(sender, TextBox)
+
+        txt.BackColor = Color.LightYellow
+    End Sub
+    Private Sub TextBox_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Dim txt As New TextBox()
+        txt = DirectCast(sender, TextBox)
+
+        txt.BackColor = Color.White
+    End Sub
+End Class

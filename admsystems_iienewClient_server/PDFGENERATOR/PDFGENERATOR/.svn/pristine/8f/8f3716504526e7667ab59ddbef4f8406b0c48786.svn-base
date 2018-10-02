@@ -1,0 +1,185 @@
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+Partial Class Rpt_DailyAllotment
+    Inherits System.Windows.Forms.Form
+
+    'Form overrides dispose to clean up the component list.
+    <System.Diagnostics.DebuggerNonUserCode()> _
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Try
+            If disposing AndAlso components IsNot Nothing Then
+                components.Dispose()
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
+    End Sub
+
+    'Required by the Windows Form Designer
+    Private components As System.ComponentModel.IContainer
+
+    'NOTE: The following procedure is required by the Windows Form Designer
+    'It can be modified using the Windows Form Designer.  
+    'Do not modify it using the code editor.
+    <System.Diagnostics.DebuggerStepThrough()> _
+    Private Sub InitializeComponent()
+        Me.btnSearch = New System.Windows.Forms.Button()
+        Me.dtEndDate = New System.Windows.Forms.DateTimePicker()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.dtStartDate = New System.Windows.Forms.DateTimePicker()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.CrystalReportViewer1 = New CrystalDecisions.Windows.Forms.CrystalReportViewer()
+        Me.cmbUser = New System.Windows.Forms.ComboBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.grpUser = New System.Windows.Forms.GroupBox()
+        Me.txtAllUsers = New System.Windows.Forms.TextBox()
+        Me.btnAddUser = New System.Windows.Forms.Button()
+        Me.GroupBox1.SuspendLayout()
+        Me.grpUser.SuspendLayout()
+        Me.SuspendLayout()
+        '
+        'btnSearch
+        '
+        Me.btnSearch.Location = New System.Drawing.Point(213, 55)
+        Me.btnSearch.Name = "btnSearch"
+        Me.btnSearch.Size = New System.Drawing.Size(121, 23)
+        Me.btnSearch.TabIndex = 18
+        Me.btnSearch.Text = "Search"
+        Me.btnSearch.UseVisualStyleBackColor = True
+        '
+        'dtEndDate
+        '
+        Me.dtEndDate.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.dtEndDate.Location = New System.Drawing.Point(233, 20)
+        Me.dtEndDate.Name = "dtEndDate"
+        Me.dtEndDate.Size = New System.Drawing.Size(121, 20)
+        Me.dtEndDate.TabIndex = 14
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Location = New System.Drawing.Point(197, 22)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(30, 13)
+        Me.Label2.TabIndex = 13
+        Me.Label2.Text = "To :"
+        '
+        'dtStartDate
+        '
+        Me.dtStartDate.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.dtStartDate.Location = New System.Drawing.Point(60, 16)
+        Me.dtStartDate.Name = "dtStartDate"
+        Me.dtStartDate.Size = New System.Drawing.Size(121, 20)
+        Me.dtStartDate.TabIndex = 12
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Location = New System.Drawing.Point(12, 18)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(42, 13)
+        Me.Label1.TabIndex = 11
+        Me.Label1.Text = "From :"
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.CrystalReportViewer1)
+        Me.GroupBox1.Location = New System.Drawing.Point(-1, 127)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(1208, 486)
+        Me.GroupBox1.TabIndex = 19
+        Me.GroupBox1.TabStop = False
+        '
+        'CrystalReportViewer1
+        '
+        Me.CrystalReportViewer1.ActiveViewIndex = -1
+        Me.CrystalReportViewer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.CrystalReportViewer1.Cursor = System.Windows.Forms.Cursors.Default
+        Me.CrystalReportViewer1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.CrystalReportViewer1.Location = New System.Drawing.Point(3, 16)
+        Me.CrystalReportViewer1.Name = "CrystalReportViewer1"
+        Me.CrystalReportViewer1.Size = New System.Drawing.Size(1202, 467)
+        Me.CrystalReportViewer1.TabIndex = 0
+        '
+        'cmbUser
+        '
+        Me.cmbUser.FormattingEnabled = True
+        Me.cmbUser.Location = New System.Drawing.Point(43, 18)
+        Me.cmbUser.Name = "cmbUser"
+        Me.cmbUser.Size = New System.Drawing.Size(76, 21)
+        Me.cmbUser.TabIndex = 32
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(8, 18)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(29, 13)
+        Me.Label3.TabIndex = 33
+        Me.Label3.Text = "User"
+        '
+        'grpUser
+        '
+        Me.grpUser.Controls.Add(Me.txtAllUsers)
+        Me.grpUser.Controls.Add(Me.cmbUser)
+        Me.grpUser.Controls.Add(Me.btnAddUser)
+        Me.grpUser.Controls.Add(Me.Label3)
+        Me.grpUser.Location = New System.Drawing.Point(363, 3)
+        Me.grpUser.Name = "grpUser"
+        Me.grpUser.Size = New System.Drawing.Size(384, 54)
+        Me.grpUser.TabIndex = 1
+        Me.grpUser.TabStop = False
+        '
+        'txtAllUsers
+        '
+        Me.txtAllUsers.Location = New System.Drawing.Point(209, 12)
+        Me.txtAllUsers.Multiline = True
+        Me.txtAllUsers.Name = "txtAllUsers"
+        Me.txtAllUsers.Size = New System.Drawing.Size(155, 39)
+        Me.txtAllUsers.TabIndex = 15
+        '
+        'btnAddUser
+        '
+        Me.btnAddUser.Location = New System.Drawing.Point(136, 19)
+        Me.btnAddUser.Name = "btnAddUser"
+        Me.btnAddUser.Size = New System.Drawing.Size(44, 23)
+        Me.btnAddUser.TabIndex = 12
+        Me.btnAddUser.Text = "Add"
+        Me.btnAddUser.UseVisualStyleBackColor = True
+        '
+        'Rpt_DailyAllotment
+        '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.ClientSize = New System.Drawing.Size(1210, 625)
+        Me.Controls.Add(Me.grpUser)
+        Me.Controls.Add(Me.GroupBox1)
+        Me.Controls.Add(Me.btnSearch)
+        Me.Controls.Add(Me.dtEndDate)
+        Me.Controls.Add(Me.Label2)
+        Me.Controls.Add(Me.dtStartDate)
+        Me.Controls.Add(Me.Label1)
+        Me.Name = "Rpt_DailyAllotment"
+        Me.Text = "Rpt_DailyAllotment"
+        Me.GroupBox1.ResumeLayout(False)
+        Me.grpUser.ResumeLayout(False)
+        Me.grpUser.PerformLayout()
+        Me.ResumeLayout(False)
+        Me.PerformLayout()
+
+    End Sub
+    Friend WithEvents btnSearch As System.Windows.Forms.Button
+    Friend WithEvents dtEndDate As System.Windows.Forms.DateTimePicker
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents dtStartDate As System.Windows.Forms.DateTimePicker
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents CrystalReportViewer1 As CrystalDecisions.Windows.Forms.CrystalReportViewer
+    Friend WithEvents cmbUser As System.Windows.Forms.ComboBox
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents grpUser As System.Windows.Forms.GroupBox
+    Friend WithEvents txtAllUsers As System.Windows.Forms.TextBox
+    Friend WithEvents btnAddUser As System.Windows.Forms.Button
+End Class
